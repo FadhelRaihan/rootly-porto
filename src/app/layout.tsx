@@ -22,6 +22,7 @@ export default function RootLayout({
     <html lang="id" className={`${inriaSerif.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="google-site-verification" content="2i6J4tfcd3A-Qt-saIWFFcVZTZE4yb01njXGxGcQae0" />
       </head>
       <body>
         {children}

@@ -67,7 +67,7 @@ export default async function HomePage() {
           <AnimatedSection>
             <div className="max-w-3xl">
               <h1 className="text-5xl md:text-7xl font-serif text-[#1C1C1A] leading-tight mb-6">
-                Technology with <span className="text-[#1D9E75] font-inria">Roots.</span>
+                Technology with <span className="text-[#1D9E75] font-inria">Rootly.</span>
               </h1>
               <p className="text-xl text-[#888780] mb-8 max-w-2xl">
                 We build digital products that matter designed to last, crafted with care, and rooted in honest partnership.
