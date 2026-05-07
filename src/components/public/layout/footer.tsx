@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { RootlyLogo } from './rootly-logo'
 import { Mail, Globe, Code2 } from 'lucide-react'
+import Image from 'next/image'
 
 const footerLinks = {
   services: [
@@ -23,7 +23,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
-            <RootlyLogo className="mb-6" />
+            <Image src="/icon/Logo-NameIconWhite.svg" width={150} height={150} className='mb-6' alt='IconWhite' />
             <p className="text-gray-400 max-w-md mb-6">
               Technology with roots. We build digital products that matter — designed to last, crafted with care.
             </p>

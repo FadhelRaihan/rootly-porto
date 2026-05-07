@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { RootlyLogo } from './rootly-logo'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -39,7 +39,7 @@ export function Navbar() {
     >
       <nav className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
         <Link href="/">
-          <RootlyLogo />
+          <Image src="/icon/Logo-NameIconBlack.svg" width={100} height={100} alt="LogoBlack" />
         </Link>
 
         <div className="hidden md:flex items-center gap-8">

@@ -1,5 +1,12 @@
 import './globals.css'
 import { Metadata } from 'next'
+import { Inria_Serif } from 'next/font/google'
+
+const inriaSerif = Inria_Serif({
+  subsets: ['latin'],
+  weight: ['300', '400', '700'],
+  variable: '--font-inria',
+})
 
 export const metadata: Metadata = {
   title: 'Rootly — Software House',
@@ -12,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="id">
+    <html lang="id" className={`${inriaSerif.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>

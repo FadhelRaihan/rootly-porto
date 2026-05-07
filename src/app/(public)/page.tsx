@@ -4,25 +4,25 @@ import { projects, services, testimonials } from '@/db/schema'
 import { eq, and, asc } from 'drizzle-orm'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Metadata } from 'next'
+// import { Metadata } from 'next'
 import { AnimatedSection } from '@/components/public/shared/animated-section'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, CheckCircle2, Star } from 'lucide-react'
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
-  title: 'Rootly — Software House | Technology with Roots',
-  description: 'Rootly adalah software house yang membangun web app, mobile app, dan sistem digital dengan pendekatan hangat, jujur, dan berakar pada nilai.',
-  openGraph: {
-    title: 'Rootly — Technology with Roots',
-    description: 'We build digital products that matter.',
-    url: 'https://rootly.id',
-    siteName: 'Rootly',
-    locale: 'en_US',
-    type: 'website',
-  },
-}
+// export const metadata: Metadata = {
+//   title: 'Rootly — Software House | Technology with Roots',
+//   description: 'Rootly adalah software house yang membangun web app, mobile app, dan sistem digital dengan pendekatan hangat, jujur, dan berakar pada nilai.',
+//   openGraph: {
+//     title: 'Rootly — Technology with Roots',
+//     description: 'We build digital products that matter.',
+//     url: 'https://rootly.id',
+//     siteName: 'Rootly',
+//     locale: 'en_US',
+//     type: 'website',
+//   },
+// }
 
 async function getData() {
   const featuredProjects = await db
@@ -67,10 +67,10 @@ export default async function HomePage() {
           <AnimatedSection>
             <div className="max-w-3xl">
               <h1 className="text-5xl md:text-7xl font-serif text-[#1C1C1A] leading-tight mb-6">
-                Technology with <span className="text-[#1D9E75]">roots.</span>
+                Technology with <span className="text-[#1D9E75] font-inria">Roots.</span>
               </h1>
               <p className="text-xl text-[#888780] mb-8 max-w-2xl">
-                We build digital products that matter — designed to last, crafted with care, and rooted in honest partnership.
+                We build digital products that matter designed to last, crafted with care, and rooted in honest partnership.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/contact">
