@@ -1,6 +1,9 @@
 import { auth, signOut } from '@/lib/auth'
 import Link from 'next/link'
-import { LayoutDashboard, FolderKanban, Wrench, Layers, MessageSquare, LogOut, ExternalLink } from 'lucide-react'
+import { LogOut, ExternalLink } from 'lucide-react'
+import { SidebarNav } from '@/components/admin/sidebar-nav'
+import { Toaster } from '@/components/ui/sonner'
+import Image from 'next/image'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -9,46 +12,33 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     return <>{children}</>
   }
 
-  const navItems = [
-    { href: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { href: '/admin/projects', icon: FolderKanban, label: 'Projects' },
-    { href: '/admin/services', icon: Wrench, label: 'Services' },
-    { href: '/admin/tech-stack', icon: Layers, label: 'Tech Stack' },
-    { href: '/admin/testimonials', icon: MessageSquare, label: 'Testimonials' },
-  ]
-
   return (
-    <div className="flex h-screen bg-[#111110]">
-      <aside className="w-60 bg-[#1C1C1A] border-r border-[#2E2E2C] flex flex-col">
-        <div className="p-4 border-b border-[#2E2E2C]">
+    <div className="flex h-screen bg-[#F7F6F2] text-[#1C1C1A]">
+      <aside className="w-60 bg-white border-r border-[#E2E2DF] flex flex-col">
+        <div className="p-4 border-b border-dashed border-[#E2E2DF] font-mono text-[9px] text-gray-400 space-y-2">
           <Link href="/admin/dashboard" className="flex items-center gap-2">
-            <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
-              <circle cx="24" cy="24" r="22" stroke="#1D9E75" strokeWidth="2" />
-              <path d="M24 12V32M24 12L18 18M24 12L30 18M18 24H32" stroke="#1D9E75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span className="text-white font-serif text-lg">Rootly</span>
+            <Image src="/icon/Logo-NameIconBlack.svg" width={105} height={105} alt="LogoBlack" className="h-8 w-auto" />
           </Link>
+          <div className="flex items-center justify-between text-gray-400 font-semibold uppercase tracking-wider text-[8px] pt-1">
+            <span>ADMIN_CORE // V1.0</span>
+            <span className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1D9E75] animate-pulse" />
+              ONLINE
+            </span>
+          </div>
         </div>
-        <nav className="flex-1 p-4 space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-[#242422] rounded-md transition-colors"
-            >
-              <item.icon size={20} />
-              <span>{item.label}</span>
-            </Link>
-          ))}
-        </nav>
-        <div className="p-4 border-t border-[#2E2E2C] space-y-1">
+        <SidebarNav />
+        <div className="p-4 border-t border-dashed border-[#E2E2DF] space-y-1.5 font-mono text-xs">
           <a
             href="/"
             target="_blank"
-            className="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-[#242422] rounded-md transition-colors"
+            className="flex items-center gap-3 px-3 py-2.5 text-gray-500 hover:text-[#1C1C1A] hover:bg-[#F7F6F2]/40 rounded-lg border border-transparent hover:border-[#E8E6E0] transition-all uppercase tracking-wider"
           >
-            <ExternalLink size={20} />
-            <span>View Site</span>
+            <ExternalLink size={15} className="text-gray-400" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-gray-300">SYS {"//"}</span>
+              <span>View Site</span>
+            </div>
           </a>
           <form action={async () => {
             'use server'
@@ -56,17 +46,21 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           }}>
             <button
               type="submit"
-              className="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-[#242422] rounded-md transition-colors w-full"
+              className="flex items-center gap-3 px-3 py-2.5 text-gray-500 hover:text-red-650 hover:bg-red-50/50 rounded-lg border border-transparent hover:border-red-200 transition-all uppercase tracking-wider w-full cursor-pointer text-left font-mono"
             >
-              <LogOut size={20} />
-              <span>Logout</span>
+              <LogOut size={15} className="text-gray-400" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-gray-300">AUTH {"//"}</span>
+                <span>Disconnect</span>
+              </div>
             </button>
           </form>
         </div>
       </aside>
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto bg-[#F7F6F2]">
         {children}
       </main>
+      <Toaster />
     </div>
   )
 }

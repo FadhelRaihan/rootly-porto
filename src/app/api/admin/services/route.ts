@@ -2,7 +2,7 @@ import { auth } from '@/lib/auth'
 import { db } from '@/db'
 import { services, serviceTechStacks } from '@/db/schema'
 import { serviceSchema } from '@/lib/validations/service'
-import { eq, desc } from 'drizzle-orm'
+import { desc, sql } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
@@ -36,7 +36,16 @@ export async function POST(request: Request) {
 
     const { techStackIds, ...serviceData } = parsed.data
 
-    const [service] = await db.insert(services).values(serviceData).returning()
+    // Get max displayOrder to assign the next position if default (0) is passed
+    const maxOrderResult = await db
+      .select({ maxOrder: sql<number>`coalesce(max(${services.displayOrder}), -1)` })
+      .from(services)
+    const nextOrder = (maxOrderResult[0]?.maxOrder ?? -1) + 1
+
+    const [service] = await db.insert(services).values({
+      ...serviceData,
+      displayOrder: serviceData.displayOrder === 0 ? nextOrder : serviceData.displayOrder,
+    }).returning()
 
     if (techStackIds && techStackIds.length > 0) {
       const techRelations = techStackIds.map((techId) => ({

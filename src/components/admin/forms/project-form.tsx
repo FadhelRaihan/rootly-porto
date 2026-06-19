@@ -2,38 +2,29 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { projectSchema, ProjectFormData } from '@/lib/validations/project'
 import { slugify, cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
 import { X, Upload } from 'lucide-react'
+import Image from 'next/image'
+import { DynamicConsoleForm, FormSection } from './dynamic-console-form'
 
 interface ProjectFormProps {
   initialData?: ProjectFormData & { id?: string; techStackIds?: string[] }
+  onSuccess?: () => void
 }
 
-export function ProjectForm({ initialData }: ProjectFormProps) {
+export function ProjectForm({ initialData, onSuccess }: ProjectFormProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [thumbnailPreview, setThumbnailPreview] = useState(initialData?.thumbnailUrl || '')
   const [techStackOptions, setTechStackOptions] = useState<{ id: string; name: string }[]>([])
   const [selectedTechs, setSelectedTechs] = useState<string[]>(initialData?.techStackIds || [])
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm({
+  const form = useForm({
     resolver: zodResolver(projectSchema),
     defaultValues: initialData || {
       title: '',
@@ -55,13 +46,13 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
     },
   })
 
-  const watchTitle = watch('title')
+  const watchTitle = useWatch({ control: form.control, name: 'title' })
 
   useEffect(() => {
     if (!initialData?.slug && watchTitle) {
-      setValue('slug', slugify(watchTitle))
+      form.setValue('slug', slugify(watchTitle))
     }
-  }, [watchTitle, initialData, setValue])
+  }, [watchTitle, initialData, form])
 
   useEffect(() => {
     fetch('/api/tech-stack')
@@ -74,7 +65,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
       })
   }, [])
 
-  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>, setValue: any) => {
     const file = e.target.files?.[0]
     if (!file) return
 
@@ -99,7 +90,7 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
     }
   }
 
-  const toggleTechStack = (techId: string) => {
+  const toggleTechStack = (techId: string, setValue: any) => {
     const newTechs = selectedTechs.includes(techId)
       ? selectedTechs.filter((id) => id !== techId)
       : [...selectedTechs, techId]
@@ -122,7 +113,12 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
       })
 
       if (res.ok) {
-        router.push('/admin/projects')
+        if (onSuccess) {
+          onSuccess()
+        } else {
+          router.push('/admin/projects')
+        }
+        router.refresh()
       }
     } catch (error) {
       console.error('Error saving project:', error)
@@ -131,156 +127,149 @@ export function ProjectForm({ initialData }: ProjectFormProps) {
     }
   }
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-      <Card className="bg-[#242422] border-[#2E2E2C]">
-        <CardHeader>
-          <CardTitle className="text-white">Basic Info</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label className="text-gray-300">Title</Label>
-              <Input {...register('title')} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-              {errors.title && <p className="text-red-400 text-sm mt-1">{errors.title.message}</p>}
+  const sections: FormSection[] = [
+    {
+      title: 'Basic Info Registry',
+      fields: [
+        { name: 'title', label: 'Title', type: 'text' },
+        {
+          name: 'slug',
+          label: 'Slug',
+          type: 'custom',
+          renderCustom: (f) => (
+            <div className="flex flex-col gap-1.5">
+              <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Slug</Label>
+              <Input
+                {...f.register('slug')}
+                className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black placeholder-gray-400 mt-1.5 focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
+              />
+              <span className="text-[9px] text-gray-400 block mt-1">{"// SYSTEM_GENERATED_NODE_URI"}</span>
             </div>
-            <div>
-              <Label className="text-gray-300">Slug</Label>
-              <Input {...register('slug')} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-              {errors.slug && <p className="text-red-400 text-sm mt-1">{errors.slug.message}</p>}
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label className="text-gray-300">Category</Label>
-              <Select value={watch('category')} onValueChange={(val) => setValue('category', val as any)}>
-                <SelectTrigger className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-[#242422] border-[#2E2E2C]">
-                  <SelectItem value="WEB_APP" className="text-white">Web App</SelectItem>
-                  <SelectItem value="MOBILE" className="text-white">Mobile</SelectItem>
-                  <SelectItem value="INTERNAL_SYSTEM" className="text-white">Internal System</SelectItem>
-                  <SelectItem value="DESIGN" className="text-white">Design</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-gray-300">Year</Label>
-              <Input type="number" {...register('year', { valueAsNumber: true })} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-            </div>
-            <div>
-              <Label className="text-gray-300">Display Order</Label>
-              <Input type="number" {...register('displayOrder', { valueAsNumber: true })} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label className="text-gray-300">Client</Label>
-              <Input {...register('client')} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-            </div>
-            <div className="flex items-center gap-3 mt-6">
-              <Switch checked={watch('showClient')} onCheckedChange={(checked) => setValue('showClient', checked)} />
-              <Label className="text-gray-300">Show Client</Label>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Switch checked={watch('isFeatured')} onCheckedChange={(checked) => setValue('isFeatured', checked)} />
-            <Label className="text-gray-300">Featured Project</Label>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-[#242422] border-[#2E2E2C]">
-        <CardHeader>
-          <CardTitle className="text-white">Content</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label className="text-gray-300">Summary (max 150 chars)</Label>
-            <Textarea {...register('summary')} maxLength={150} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-            <p className="text-gray-500 text-sm mt-1">{watch('summary')?.length || 0}/150</p>
-          </div>
-          <div>
-            <Label className="text-gray-300">Challenge</Label>
-            <Textarea {...register('challenge')} rows={4} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-          </div>
-          <div>
-            <Label className="text-gray-300">Solution</Label>
-            <Textarea {...register('solution')} rows={4} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-          </div>
-          <div>
-            <Label className="text-gray-300">Impact</Label>
-            <Textarea {...register('impact')} rows={4} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-[#242422] border-[#2E2E2C]">
-        <CardHeader>
-          <CardTitle className="text-white">Media</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label className="text-gray-300">Thumbnail</Label>
-            <div className="mt-1">
-              {thumbnailPreview ? (
-                <div className="relative inline-block">
-                  <img src={thumbnailPreview} alt="Thumbnail" className="w-32 h-20 object-cover rounded" />
-                  <button type="button" onClick={() => { setThumbnailPreview(''); setValue('thumbnailUrl', '') }} className="absolute -top-2 -right-2 bg-red-500 rounded-full p-1">
-                    <X size={14} className="text-white" />
-                  </button>
-                </div>
-              ) : (
-                <label className="border-2 border-dashed border-[#2E2E2C] rounded-lg p-8 block text-center cursor-pointer hover:border-[#1D9E75] transition-colors">
-                  <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-                  <p className="text-gray-400 text-sm">Click to upload</p>
-                  <input type="file" accept="image/*" onChange={handleThumbnailUpload} className="hidden" disabled={isLoading} />
-                </label>
-              )}
-            </div>
-            <input type="hidden" {...register('thumbnailUrl')} />
-          </div>
-          <div>
-            <Label className="text-gray-300">Live URL</Label>
-            <Input {...register('liveUrl')} placeholder="https://..." className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" />
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-[#242422] border-[#2E2E2C]">
-        <CardHeader>
-          <CardTitle className="text-white">Tech Stack</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {techStackOptions.map((tech) => (
-              <button
-                key={tech.id}
-                type="button"
-                onClick={() => toggleTechStack(tech.id)}
-                className={cn(
-                  'px-3 py-1 rounded-full text-sm transition-colors',
-                  selectedTechs.includes(tech.id)
-                    ? 'bg-[#1D9E75] text-white'
-                    : 'bg-[#1C1C1A] text-gray-300 hover:bg-[#2E2E2C]'
+          ),
+        },
+        {
+          name: 'category',
+          label: 'Category',
+          type: 'select',
+          options: [
+            { value: 'WEB_APP', label: 'WEB_APP' },
+            { value: 'MOBILE', label: 'MOBILE_APP' },
+            { value: 'INTERNAL_SYSTEM', label: 'INTERNAL_SYSTEM' },
+            { value: 'DESIGN', label: 'DESIGN_UI_UX' },
+          ],
+        },
+        { name: 'year', label: 'Year', type: 'number' },
+        { name: 'displayOrder', label: 'Display Order', type: 'number', disabled: true },
+        { name: 'client', label: 'Client', type: 'text' },
+        { name: 'showClient', label: 'Show Client Info', type: 'switch' },
+        { name: 'isFeatured', label: 'Featured Project Node', type: 'switch' },
+      ],
+    },
+    {
+      title: 'Project Metadata Content',
+      fields: [
+        { name: 'summary', label: 'Summary', type: 'textarea', gridClass: 'md:col-span-2' },
+        { name: 'challenge', label: 'Challenge', type: 'textarea', gridClass: 'md:col-span-2' },
+        { name: 'solution', label: 'Solution', type: 'textarea', gridClass: 'md:col-span-2' },
+        { name: 'impact', label: 'Impact', type: 'textarea', gridClass: 'md:col-span-2' },
+      ],
+    },
+    {
+      title: 'Media Asset Links',
+      fields: [
+        {
+          name: 'thumbnailUrl',
+          label: 'Thumbnail Node Image',
+          type: 'custom',
+          gridClass: 'md:col-span-2',
+          renderCustom: (f) => (
+            <div className="flex flex-col gap-1.5">
+              <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Thumbnail Node Image</Label>
+              <div className="mt-2">
+                {thumbnailPreview ? (
+                  <div className="relative inline-block border border-dashed border-[#E2E2DF] p-1.5 bg-[#F7F6F2]/50">
+                    <Image
+                      src={thumbnailPreview}
+                      alt="Thumbnail Node"
+                      width={128}
+                      height={80}
+                      className="w-32 h-20 object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setThumbnailPreview('')
+                        f.setValue('thumbnailUrl', '')
+                      }}
+                      className="absolute -top-1.5 -right-1.5 bg-red-500 rounded-full p-1 cursor-pointer hover:bg-red-650 transition-colors"
+                    >
+                      <X size={10} className="text-white" />
+                    </button>
+                  </div>
+                ) : (
+                  <label className="border-2 border-dashed border-[#E2E2DF] p-6 block text-center cursor-pointer hover:border-[#1D9E75] transition-colors bg-[#F7F6F2]/20 hover:bg-[#F7F6F2]/50">
+                    <Upload className="mx-auto h-5 w-5 text-gray-400 mb-1.5" />
+                    <p className="text-[10px] font-bold text-gray-500 uppercase">{"// UPLOAD_THUMBNAIL_STREAM"}</p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleThumbnailUpload(e, f.setValue)}
+                      className="hidden"
+                      disabled={isLoading}
+                    />
+                  </label>
                 )}
-              >
-                {tech.name}
-              </button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              </div>
+              <input type="hidden" {...f.register('thumbnailUrl')} />
+            </div>
+          ),
+        },
+        { name: 'liveUrl', label: 'Live Environment URL', type: 'text', gridClass: 'md:col-span-2' },
+      ],
+    },
+    {
+      title: 'Protocol Integrations',
+      fields: [
+        {
+          name: 'techStackIds',
+          label: 'Protocol Integrations',
+          type: 'custom',
+          gridClass: 'md:col-span-2',
+          renderCustom: (f) => (
+            <div className="flex flex-wrap gap-2">
+              {techStackOptions.map((tech) => {
+                const isSelected = selectedTechs.includes(tech.id)
+                return (
+                  <button
+                    key={tech.id}
+                    type="button"
+                    onClick={() => toggleTechStack(tech.id, f.setValue)}
+                    className={cn(
+                      'px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider border transition-all cursor-pointer font-mono',
+                      isSelected
+                        ? 'bg-[#1D9E75]/15 text-[#1D9E75] border-[#1D9E75] border-solid'
+                        : 'bg-transparent text-gray-500 border-[#E2E2DF] border-dashed hover:border-gray-400 hover:text-black'
+                    )}
+                  >
+                    {isSelected ? `[ ${tech.name} ]` : tech.name}
+                  </button>
+                )
+              })}
+            </div>
+          ),
+        },
+      ],
+    },
+  ]
 
-      <div className="flex justify-end gap-4">
-        <Button type="button" variant="outline" onClick={() => router.back()} className="border-[#2E2E2C] text-gray-300 hover:bg-[#242422]">
-          Cancel
-        </Button>
-        <Button type="submit" className="bg-[#1D9E75] hover:bg-[#1a8c66]" disabled={isLoading}>
-          {isLoading ? 'Saving...' : 'Save Project'}
-        </Button>
-      </div>
-    </form>
+  return (
+    <DynamicConsoleForm
+      form={form}
+      sections={sections}
+      onSubmit={onSubmit}
+      submitLabel="[ COMMIT_PROJECT_NODE ]"
+      executingLabel="EXECUTING_COMMIT..."
+      isLoading={isLoading}
+    />
   )
 }

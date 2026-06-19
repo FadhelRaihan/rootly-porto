@@ -32,6 +32,7 @@ export const projects = pgTable('projects', {
   title: text('title').notNull(),
   category: projectCategoryEnum('category').notNull(),
   client: text('client'),
+  serviceId: text('service_id').references(() => services.id, { onDelete: 'set null' }),
   showClient: boolean('show_client').notNull().default(false),
   year: integer('year').notNull(),
   summary: text('summary').notNull(),
@@ -122,6 +123,10 @@ export const admins = pgTable('admins', {
 
 export const projectsRelations = relations(projects, ({ many, one }) => ({
   techStacks: many(projectTechStacks),
+  service: one(services, {
+    fields: [projects.serviceId],
+    references: [services.id],
+  }),
   testimonial: one(testimonials, {
     fields: [projects.id],
     references: [testimonials.projectId],
@@ -130,6 +135,7 @@ export const projectsRelations = relations(projects, ({ many, one }) => ({
 
 export const servicesRelations = relations(services, ({ many }) => ({
   techStacks: many(serviceTechStacks),
+  projects: many(projects),
 }))
 
 export const techStacksRelations = relations(techStacks, ({ many }) => ({
@@ -161,3 +167,17 @@ export type NewService = typeof services.$inferInsert
 export type TechStack = typeof techStacks.$inferSelect
 export type Testimonial = typeof testimonials.$inferSelect
 export type Admin = typeof admins.$inferSelect
+
+export const leads = pgTable('leads', {
+  id: text('id').primaryKey().$defaultFn(() => createId()),
+  name: text('name').notNull(),
+  email: text('email').notNull(),
+  company: text('company'),
+  projectType: text('project_type').notNull(),
+  budget: text('budget'),
+  message: text('message').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+})
+
+export type Lead = typeof leads.$inferSelect
+export type NewLead = typeof leads.$inferInsert

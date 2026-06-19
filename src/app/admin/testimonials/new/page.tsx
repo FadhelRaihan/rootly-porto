@@ -1,2 +1,0 @@
-import { TestimonialForm } from '@/components/admin/forms/testimonial-form'
-export default function NewTestimonialPage() { return <div className="p-8"><h1 className="text-2xl text-white font-serif mb-8">New Testimonial</h1><TestimonialForm /></div> }

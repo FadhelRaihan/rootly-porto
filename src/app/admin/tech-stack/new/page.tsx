@@ -1,2 +1,0 @@
-import { TechStackForm } from '@/components/admin/forms/tech-stack-form'
-export default function NewTechStackPage() { return <div className="p-8"><h1 className="text-2xl text-white font-serif mb-8">New Tech Stack</h1><TechStackForm /></div> }

@@ -1,5 +1,6 @@
 'use client'
-import { useState } from 'react'
+
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -7,59 +8,268 @@ import { testimonialSchema, TestimonialFormData } from '@/lib/validations/testim
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { DynamicConsoleForm, FormSection } from '@/components/admin/forms/dynamic-console-form'
+import { Upload, X } from 'lucide-react'
+import Image from 'next/image'
+import { toast } from 'sonner'
 
-interface Props { initialData?: TestimonialFormData & { id?: string } }
+interface Props { 
+  initialData?: TestimonialFormData & { id?: string }
+  onSuccess?: () => void
+}
 
-export function TestimonialForm({ initialData }: Props) {
+export function TestimonialForm({ initialData, onSuccess }: Props) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+  const [isUploading, setIsUploading] = useState(false)
+  const [projectOptions, setProjectOptions] = useState<{ value: string; label: string }[]>([])
+
+  const form = useForm({
     resolver: zodResolver(testimonialSchema),
-    defaultValues: initialData || { clientName: '', clientRole: '', clientCompany: '', quote: '', rating: 5, isFeatured: false, isActive: true, displayOrder: 0 },
+    defaultValues: initialData || { 
+      clientName: '', 
+      clientRole: '', 
+      clientCompany: '', 
+      clientPhoto: '', 
+      quote: '', 
+      rating: 5, 
+      isFeatured: false, 
+      isActive: true, 
+      displayOrder: 0,
+      projectId: 'none' as any
+    },
   })
+
+  useEffect(() => {
+    fetch('/api/admin/projects')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data)) {
+          const options = data.data.map((p: any) => ({
+            value: p.id,
+            label: p.title
+          }))
+          setProjectOptions([{ value: 'none', label: 'None (Unlinked)' }, ...options])
+        }
+      })
+      .catch((err) => console.error('Failed to fetch projects:', err))
+  }, [])
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    setIsUploading(true)
+    try {
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      })
+      const data = await res.json()
+      if (data.success) {
+        form.setValue('clientPhoto', data.data.url)
+        toast.success('Photo uploaded successfully')
+      }
+    } catch {
+      console.error('Upload failed')
+      toast.error('Upload failed')
+    } finally {
+      setIsUploading(false)
+    }
+  }
 
   const onSubmit = async (data: TestimonialFormData) => {
     setIsLoading(true)
+    const payload = {
+      ...data,
+      projectId: data.projectId === 'none' ? null : data.projectId
+    }
+
     try {
       const url = initialData?.id ? `/api/admin/testimonials/${initialData.id}` : '/api/admin/testimonials'
       const method = initialData?.id ? 'PUT' : 'POST'
-      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-      if (res.ok) router.push('/admin/testimonials')
-    } catch (e) { console.error(e) }
-    finally { setIsLoading(false) }
+      const res = await fetch(url, { 
+        method, 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify(payload) 
+      })
+      if (res.ok) {
+        toast.success(initialData?.id ? 'Testimonial updated successfully' : 'Testimonial created successfully')
+        if (onSuccess) {
+          onSuccess()
+        } else {
+          router.push('/admin/testimonials')
+        }
+        router.refresh()
+      } else {
+        toast.error('Failed to save testimonial')
+      }
+    } catch (e) { 
+      console.error(e)
+      toast.error('An error occurred')
+    } finally { 
+      setIsLoading(false) 
+    }
   }
 
+  const sections: FormSection[] = [
+    {
+      title: 'Client Profile Metadata',
+      fields: [
+        {
+          name: 'clientName',
+          label: 'Client Name',
+          type: 'text',
+          placeholder: 'e.g. John Doe',
+          gridClass: 'col-span-1'
+        },
+        {
+          name: 'clientRole',
+          label: 'Client Role',
+          type: 'text',
+          placeholder: 'e.g. CEO / Lead Architect',
+          gridClass: 'col-span-1'
+        },
+        {
+          name: 'clientCompany',
+          label: 'Client Company',
+          type: 'text',
+          placeholder: 'e.g. Acme Corp',
+          gridClass: 'col-span-1 md:col-span-2'
+        }
+      ]
+    },
+    {
+      title: 'Client Avatar Signature',
+      fields: [
+        {
+          name: 'clientPhoto',
+          label: 'Client Photo',
+          type: 'custom',
+          gridClass: 'col-span-1 md:col-span-2',
+          renderCustom: (formInstance) => {
+            const watchClientPhoto = formInstance.watch('clientPhoto')
+            return (
+              <div className="space-y-2">
+                <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">
+                  CLIENT_PHOTO_NODE
+                </Label>
+                <div className="flex gap-4 items-start bg-white p-3 rounded-lg border border-dashed border-[#E2E2DF]">
+                  <div className="w-14 h-14 border border-dashed border-[#E2E2DF] bg-[#F7F6F2]/35 flex items-center justify-center overflow-hidden shrink-0">
+                    {watchClientPhoto ? (
+                      <Image 
+                        src={watchClientPhoto} 
+                        alt="Client Avatar" 
+                        width={56}
+                        height={56}
+                        className="w-14 h-14 object-cover"
+                      />
+                    ) : (
+                      <span className="text-[9px] font-bold text-gray-400">AVATAR</span>
+                    )}
+                  </div>
+
+                  <div className="flex-1 space-y-2 font-mono">
+                    <Input 
+                      {...formInstance.register('clientPhoto')} 
+                      className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black h-9 text-xs focus-visible:ring-[#1D9E75] font-mono" 
+                      placeholder="Paste photo URL or upload below" 
+                    />
+                    <div className="flex items-center gap-2">
+                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-dashed border-[#E2E2DF] hover:border-[#1D9E75] hover:bg-[#1D9E75]/5 text-[10px] font-bold text-gray-700 cursor-pointer transition-all">
+                        <Upload className="w-3.5 h-3.5 text-[#1D9E75]" />
+                        {isUploading ? 'UPLOADING...' : 'UPLOAD_PHOTO'}
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={handlePhotoUpload} 
+                          className="hidden" 
+                          disabled={isUploading} 
+                        />
+                      </label>
+                      {watchClientPhoto && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => formInstance.setValue('clientPhoto', '')}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50 text-[9px] font-bold h-7 cursor-pointer px-2 border border-transparent hover:border-red-200"
+                        >
+                          <X className="w-3.5 h-3.5 mr-1" />
+                          {"[ CLEAR ]"}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          }
+        }
+      ]
+    },
+    {
+      title: 'Review Registry Details',
+      fields: [
+        {
+          name: 'quote',
+          label: 'Quote Recommendation (min 20 characters)',
+          type: 'textarea',
+          placeholder: 'Excellent engineering execution, highly recommended...',
+          gridClass: 'col-span-1 md:col-span-2'
+        },
+        {
+          name: 'rating',
+          label: 'Node Rating Level',
+          type: 'select',
+          options: [
+            { value: '5', label: '★★★★★ (5 Stars)' },
+            { value: '4', label: '★★★★☆ (4 Stars)' },
+            { value: '3', label: '★★★☆☆ (3 Stars)' },
+            { value: '2', label: '★★☆☆☆ (2 Stars)' },
+            { value: '1', label: '★☆☆☆☆ (1 Star)' },
+          ],
+          gridClass: 'col-span-1'
+        },
+        {
+          name: 'projectId',
+          label: 'Linked System Project Ref',
+          type: 'select',
+          options: projectOptions,
+          gridClass: 'col-span-1'
+        }
+      ]
+    },
+    {
+      title: 'Console Telemetry Configs',
+      fields: [
+        {
+          name: 'isActive',
+          label: 'Active (Visible on public interface)',
+          type: 'switch',
+          gridClass: 'col-span-1'
+        },
+        {
+          name: 'isFeatured',
+          label: 'Featured (Promote on dashboard lists)',
+          type: 'switch',
+          gridClass: 'col-span-1'
+        }
+      ]
+    }
+  ]
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <Card className="bg-[#242422] border-[#2E2E2C]">
-        <CardHeader><CardTitle className="text-white">Client Info</CardTitle></CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-3 gap-4">
-            <div><Label className="text-gray-300">Name</Label><Input {...register('clientName')} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" /></div>
-            <div><Label className="text-gray-300">Role</Label><Input {...register('clientRole')} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" /></div>
-            <div><Label className="text-gray-300">Company</Label><Input {...register('clientCompany')} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" /></div>
-          </div>
-        </CardContent>
-      </Card>
-      <Card className="bg-[#242422] border-[#2E2E2C]">
-        <CardHeader><CardTitle className="text-white">Testimonial</CardTitle></CardHeader>
-        <CardContent className="space-y-4">
-          <div><Label className="text-gray-300">Quote</Label><Textarea {...register('quote')} rows={4} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" /></div>
-          <div className="grid grid-cols-3 gap-4">
-            <div><Label className="text-gray-300">Rating</Label><Input type="number" min={1} max={5} {...register('rating', { valueAsNumber: true })} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" /></div>
-            <div><Label className="text-gray-300">Display Order</Label><Input type="number" {...register('displayOrder', { valueAsNumber: true })} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" /></div>
-            <div className="flex items-center gap-3 mt-6"><Switch checked={watch('isFeatured')} onCheckedChange={(c) => setValue('isFeatured', c)} /><Label className="text-gray-300">Featured</Label></div>
-          </div>
-          <div className="flex items-center gap-3"><Switch checked={watch('isActive')} onCheckedChange={(c) => setValue('isActive', c)} /><Label className="text-gray-300">Active</Label></div>
-        </CardContent>
-      </Card>
-      <div className="flex justify-end gap-4">
-        <Button type="button" variant="outline" onClick={() => router.back()} className="border-[#2E2E2C] text-gray-300">Cancel</Button>
-        <Button type="submit" className="bg-[#1D9E75]" disabled={isLoading}>{isLoading ? 'Saving...' : 'Save'}</Button>
-      </div>
-    </form>
+    <DynamicConsoleForm
+      form={form}
+      sections={sections}
+      onSubmit={onSubmit}
+      submitLabel={initialData?.id ? '[ UPDATE_TESTIMONIAL_NODE ]' : '[ REGISTER_TESTIMONIAL_NODE ]'}
+      executingLabel="EXECUTING_NODE_REGISTRATION..."
+      isLoading={isLoading}
+    />
   )
 }

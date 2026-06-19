@@ -1,6 +1,8 @@
 import './globals.css'
 import { Metadata } from 'next'
 import { Inria_Serif } from 'next/font/google'
+import { SmoothScroll } from '@/components/public/shared/smooth-scroll'
+import Script from 'next/script'
 
 const inriaSerif = Inria_Serif({
   subsets: ['latin'],
@@ -25,7 +27,14 @@ export default function RootLayout({
         <meta name="google-site-verification" content="2i6J4tfcd3A-Qt-saIWFFcVZTZE4yb01njXGxGcQae0" />
       </head>
       <body>
-        {children}
+        <Script 
+          src="https://cloud.umami.is/script.js" 
+          data-website-id="0979ed4e-390b-4fbc-a4b6-50686f64232b"
+          strategy="afterInteractive"
+        />
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   )

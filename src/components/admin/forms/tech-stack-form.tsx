@@ -1,4 +1,5 @@
 'use client'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -7,55 +8,163 @@ import { techStackSchema, TechStackFormData } from '@/lib/validations/tech-stack
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Upload, X } from 'lucide-react'
+import Image from 'next/image'
+import { DynamicConsoleForm, FormSection } from './dynamic-console-form'
 
-interface Props { initialData?: TechStackFormData & { id?: string } }
+interface Props { 
+  initialData?: TechStackFormData & { id?: string }
+  onSuccess?: () => void
+}
 
 const categories = ['FRONTEND', 'BACKEND', 'MOBILE', 'DATABASE', 'DEVOPS', 'DESIGN'] as const
 
-export function TechStackForm({ initialData }: Props) {
+export function TechStackForm({ initialData, onSuccess }: Props) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+  const [isUploading, setIsUploading] = useState(false)
+
+  const form = useForm({
     resolver: zodResolver(techStackSchema),
     defaultValues: initialData || { name: '', category: 'FRONTEND', iconUrl: '', isActive: true },
   })
+
+  const handleIconUpload = async (e: React.ChangeEvent<HTMLInputElement>, setValue: any) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    setIsUploading(true)
+    try {
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      })
+      const data = await res.json()
+      if (data.success) {
+        setValue('iconUrl', data.data.url)
+      }
+    } catch {
+      console.error('Upload failed')
+    } finally {
+      setIsUploading(false)
+    }
+  }
 
   const onSubmit = async (data: TechStackFormData) => {
     setIsLoading(true)
     try {
       const url = initialData?.id ? `/api/admin/tech-stack/${initialData.id}` : '/api/admin/tech-stack'
       const method = initialData?.id ? 'PUT' : 'POST'
-      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-      if (res.ok) router.push('/admin/tech-stack')
-    } catch (e) { console.error(e) }
-    finally { setIsLoading(false) }
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      if (res.ok) {
+        if (onSuccess) {
+          onSuccess()
+        } else {
+          router.push('/admin/tech-stack')
+        }
+        router.refresh()
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
+  const sections: FormSection[] = [
+    {
+      title: 'Protocol Metadata Registry',
+      fields: [
+        { name: 'name', label: 'Stack Name', type: 'text' },
+        {
+          name: 'category',
+          label: 'Stack Category',
+          type: 'select',
+          options: categories.map((c) => ({ value: c, label: c })),
+        },
+        {
+          name: 'iconUrl',
+          label: 'Icon Asset Stream',
+          type: 'custom',
+          gridClass: 'md:col-span-2',
+          renderCustom: (f) => {
+            const currentIconUrl = f.watch('iconUrl')
+            return (
+              <div className="space-y-2 font-mono text-xs">
+                <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Icon Asset Stream</Label>
+                <div className="flex gap-4 items-start bg-white p-3 rounded-lg border border-dashed border-[#E2E2DF]">
+                  {/* Preview Container */}
+                  <div className="w-14 h-14 border border-dashed border-[#E2E2DF] bg-[#F7F6F2]/30 flex items-center justify-center overflow-hidden shrink-0">
+                    {currentIconUrl ? (
+                      <Image 
+                        src={currentIconUrl} 
+                        alt="Icon Preview" 
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 object-contain transition-transform duration-200 hover:scale-110"
+                      />
+                    ) : (
+                      <span className="text-[9px] font-bold text-gray-400">PREVIEW</span>
+                    )}
+                  </div>
+
+                  <div className="flex-1 space-y-2">
+                    <Input 
+                      {...f.register('iconUrl')} 
+                      className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black h-9 text-xs focus-visible:ring-[#1D9E75] font-mono" 
+                      placeholder="Paste icon URL (SVG/PNG) or upload file below" 
+                    />
+                    <div className="flex items-center gap-2">
+                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-dashed border-[#E2E2DF] hover:border-[#1D9E75] hover:bg-gray-50 text-[10px] font-bold text-gray-700 cursor-pointer transition-all">
+                        <Upload className="w-3.5 h-3.5 text-gray-500" />
+                        {isUploading ? 'UPLOADING...' : 'UPLOAD_FILE'}
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={(e) => handleIconUpload(e, f.setValue)} 
+                          className="hidden" 
+                          disabled={isUploading} 
+                        />
+                      </label>
+                      {currentIconUrl && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => f.setValue('iconUrl', '')}
+                          className="text-red-605 hover:text-red-700 hover:bg-red-50 h-7 text-[10px] cursor-pointer px-2.5 rounded-none border border-dashed border-[#E2E2DF] font-mono font-bold"
+                        >
+                          <X className="w-3.5 h-3.5 mr-1" />
+                          CLEAR
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          },
+        },
+        { name: 'isActive', label: 'Visible on Public Portfolio', type: 'switch', gridClass: 'md:col-span-2' },
+      ],
+    },
+  ]
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <Card className="bg-[#242422] border-[#2E2E2C]">
-        <CardHeader><CardTitle className="text-white">Tech Stack</CardTitle></CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div><Label className="text-gray-300">Name</Label><Input {...register('name')} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" /></div>
-            <div><Label className="text-gray-300">Icon URL</Label><Input {...register('iconUrl')} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1" /></div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div><Label className="text-gray-300">Category</Label>
-              <select {...register('category')} className="bg-[#1C1C1A] border-[#2E2E2C] text-white mt-1 p-2 rounded w-full">
-                {categories.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-            <div className="flex items-center gap-3 mt-6"><Switch checked={watch('isActive')} onCheckedChange={(c) => setValue('isActive', c)} /><Label className="text-gray-300">Active</Label></div>
-          </div>
-        </CardContent>
-      </Card>
-      <div className="flex justify-end gap-4">
-        <Button type="button" variant="outline" onClick={() => router.back()} className="border-[#2E2E2C] text-gray-300">Cancel</Button>
-        <Button type="submit" className="bg-[#1D9E75]" disabled={isLoading}>{isLoading ? 'Saving...' : 'Save'}</Button>
-      </div>
-    </form>
+    <DynamicConsoleForm
+      form={form}
+      sections={sections}
+      onSubmit={onSubmit}
+      submitLabel="[ COMMIT_STACK_NODE ]"
+      executingLabel="EXECUTING_COMMIT..."
+      isLoading={isLoading}
+    />
   )
 }

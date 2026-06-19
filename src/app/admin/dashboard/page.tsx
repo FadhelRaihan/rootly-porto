@@ -1,92 +1,88 @@
 import { db } from '@/db'
-import { projects, services, techStacks, testimonials } from '@/db/schema'
-import { count } from 'drizzle-orm'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { projects, services, techStacks, testimonials, leads } from '@/db/schema'
+import { count, desc } from 'drizzle-orm'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Plus } from 'lucide-react'
+import { DashboardCharts } from '@/components/admin/dashboard-charts'
 
 export default async function DashboardPage() {
-  const [projectCount, serviceCount, techCount, testimonialCount] = await Promise.all([
+  const [projectCount, serviceCount, techCount, testimonialCount, leadsList] = await Promise.all([
     db.select({ count: count() }).from(projects),
     db.select({ count: count() }).from(services),
     db.select({ count: count() }).from(techStacks),
     db.select({ count: count() }).from(testimonials),
+    db.select().from(leads).orderBy(desc(leads.createdAt)),
   ])
 
-  const recentProjects = await db
-    .select()
-    .from(projects)
-    .orderBy(projects.createdAt)
-    .limit(5)
-
   return (
-    <div className="p-8">
-      <h1 className="text-2xl text-white font-serif mb-8">Dashboard</h1>
+    <div className="p-8 bg-[#F7F6F2] min-h-screen text-[#1C1C1A]">
+      {/* Console Control Header */}
+      <div className="flex flex-wrap items-center justify-between border-b border-dashed border-[#E2E2DF] pb-4 mb-8 font-mono text-[10px] gap-4">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="text-[#1D9E75] font-bold">SYSTEM CONTROL PANEL // MAINNET</span>
+        </div>
+        <div className="text-gray-400 uppercase tracking-wider">
+          SECURE CONNECTION: ESTABLISHED // AUTH_OK
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <h1 className="text-3xl font-serif text-[#1C1C1A]">Dashboard Console</h1>
+        <p className="text-xs font-mono text-[#888780] mt-1">INITIALIZING MONITORING AGENTS... ACTIVE</p>
+      </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card className="bg-[#242422] border-[#2E2E2C]">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-400">Projects</CardTitle>
+      {/* Web3 Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Projects */}
+        <Card className="bg-white border-[#E2E2DF] border-dashed hover:border-[#1D9E75]/50 transition-all duration-300 shadow-xs relative overflow-hidden group">
+          <CardHeader className="pb-2 flex flex-row items-center justify-between">
+            <CardTitle className="text-xs text-gray-500 font-mono font-bold uppercase tracking-wider">{"[ PROJECTS ]"}</CardTitle>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </CardHeader>
           <CardContent>
-            <p className="text-3xl text-white font-bold">{projectCount[0].count}</p>
+            <p className="text-3xl text-[#1C1C1A] font-bold font-mono">{projectCount[0].count}</p>
+            <span className="text-[9px] text-[#888780] font-mono mt-2 block">{"// TOTAL ACTIVE BUILDS"}</span>
           </CardContent>
         </Card>
-        <Card className="bg-[#242422] border-[#2E2E2C]">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-400">Services</CardTitle>
+
+        {/* Services */}
+        <Card className="bg-white border-[#E2E2DF] border-dashed hover:border-[#1D9E75]/50 transition-all duration-300 shadow-xs relative overflow-hidden group">
+          <CardHeader className="pb-2 flex flex-row items-center justify-between">
+            <CardTitle className="text-xs text-gray-500 font-mono font-bold uppercase tracking-wider">{"[ SERVICES ]"}</CardTitle>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </CardHeader>
           <CardContent>
-            <p className="text-3xl text-white font-bold">{serviceCount[0].count}</p>
+            <p className="text-3xl text-[#1C1C1A] font-bold font-mono">{serviceCount[0].count}</p>
+            <span className="text-[9px] text-[#888780] font-mono mt-2 block">{"// DEPLOYED CAPABILITIES"}</span>
           </CardContent>
         </Card>
-        <Card className="bg-[#242422] border-[#2E2E2C]">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-400">Tech Stack</CardTitle>
+
+        {/* Tech Stack */}
+        <Card className="bg-white border-[#E2E2DF] border-dashed hover:border-[#1D9E75]/50 transition-all duration-300 shadow-xs relative overflow-hidden group">
+          <CardHeader className="pb-2 flex flex-row items-center justify-between">
+            <CardTitle className="text-xs text-gray-500 font-mono font-bold uppercase tracking-wider">{"[ TECH STACK ]"}</CardTitle>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </CardHeader>
           <CardContent>
-            <p className="text-3xl text-white font-bold">{techCount[0].count}</p>
+            <p className="text-3xl text-[#1C1C1A] font-bold font-mono">{techCount[0].count}</p>
+            <span className="text-[9px] text-[#888780] font-mono mt-2 block">{"// SYSTEM PROTOCOLS"}</span>
           </CardContent>
         </Card>
-        <Card className="bg-[#242422] border-[#2E2E2C]">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-400">Testimonials</CardTitle>
+
+        {/* Testimonials */}
+        <Card className="bg-white border-[#E2E2DF] border-dashed hover:border-[#1D9E75]/50 transition-all duration-300 shadow-xs relative overflow-hidden group">
+          <CardHeader className="pb-2 flex flex-row items-center justify-between">
+            <CardTitle className="text-xs text-gray-500 font-mono font-bold uppercase tracking-wider">{"[ TESTIMONY ]"}</CardTitle>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </CardHeader>
           <CardContent>
-            <p className="text-3xl text-white font-bold">{testimonialCount[0].count}</p>
+            <p className="text-3xl text-[#1C1C1A] font-bold font-mono">{testimonialCount[0].count}</p>
+            <span className="text-[9px] text-[#888780] font-mono mt-2 block">{"// CLIENT VERIFICATIONS"}</span>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="bg-[#242422] border-[#2E2E2C]">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-white">Recent Projects</CardTitle>
-          <Link href="/admin/projects/new">
-            <Button size="sm" className="bg-[#1D9E75] hover:bg-[#1a8c66]">
-              <Plus className="mr-2 h-4 w-4" />
-              New Project
-            </Button>
-          </Link>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {recentProjects.map((project) => (
-              <div key={project.id} className="flex items-center justify-between py-2 border-b border-[#2E2E2C] last:border-0">
-                <div>
-                  <p className="text-white font-medium">{project.title}</p>
-                  <p className="text-gray-400 text-sm">{project.category}</p>
-                </div>
-                <Link href={`/admin/projects/${project.id}`}>
-                  <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                    Edit
-                  </Button>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <DashboardCharts leads={leadsList} />
     </div>
   )
 }

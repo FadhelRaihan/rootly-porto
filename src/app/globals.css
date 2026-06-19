@@ -101,10 +101,10 @@
   --rootly-text: #1C1C1A;
   --rootly-background: #F7F6F2;
   --rootly-muted: #888780;
-  --rootly-admin-bg: #111110;
-  --rootly-admin-sidebar: #1C1C1A;
-  --rootly-admin-card: #242422;
-  --rootly-admin-border: #2E2E2C;
+  --rootly-admin-bg: #F7F6F2;
+  --rootly-admin-sidebar: #FFFFFF;
+  --rootly-admin-card: #FFFFFF;
+  --rootly-admin-border: #E2E2DF;
   
   /* Font variables */
   --font-serif: 'Georgia', 'Times New Roman', serif;
@@ -174,4 +174,36 @@
   .bg-rootly-background { background-color: var(--rootly-background); }
   .bg-rootly-muted { background-color: var(--rootly-muted); }
   .border-rootly-muted { border-color: var(--rootly-muted); }
+}
+
+/* Custom Scrollbars */
+body {
+  --sb-track-color: transparent;
+  --sb-thumb-color: #1d9e75;
+  --sb-size: 6px;
+}
+
+body::-webkit-scrollbar,
+::-webkit-scrollbar {
+  width: var(--sb-size);
+  height: var(--sb-size);
+}
+
+body::-webkit-scrollbar-track,
+::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 0px;
+}
+
+body::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 0px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body, * {
+    scrollbar-color: var(--sb-thumb-color)
+                     var(--sb-track-color);
+  }
 }

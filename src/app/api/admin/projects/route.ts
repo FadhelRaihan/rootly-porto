@@ -2,7 +2,7 @@ import { auth } from '@/lib/auth'
 import { db } from '@/db'
 import { projects, projectTechStacks } from '@/db/schema'
 import { projectSchema } from '@/lib/validations/project'
-import { eq, desc } from 'drizzle-orm'
+import { desc, sql } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
@@ -43,10 +43,17 @@ export async function POST(request: Request) {
 
     const { techStackIds, ...projectData } = parsed.data
 
+    // Get max displayOrder to assign the next position if default (0) is passed
+    const maxOrderResult = await db
+      .select({ maxOrder: sql<number>`coalesce(max(${projects.displayOrder}), -1)` })
+      .from(projects)
+    const nextOrder = (maxOrderResult[0]?.maxOrder ?? -1) + 1
+
     const [project] = await db
       .insert(projects)
       .values({
         ...projectData,
+        displayOrder: projectData.displayOrder === 0 ? nextOrder : projectData.displayOrder,
         images: projectData.images || [],
         liveUrl: projectData.liveUrl || null,
       })
