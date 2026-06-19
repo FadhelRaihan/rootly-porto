@@ -26,46 +26,58 @@ export const revalidate = 3600
 // }
 
 async function getData() {
-  const featuredProjects = await db
-    .select()
-    .from(projects)
-    .where(eq(projects.isFeatured, true))
-    .orderBy(asc(projects.displayOrder))
-    .limit(3)
+  try {
+    const featuredProjects = await db
+      .select()
+      .from(projects)
+      .where(eq(projects.isFeatured, true))
+      .orderBy(asc(projects.displayOrder))
+      .limit(3)
 
-  const activeServices = await db
-    .select()
-    .from(services)
-    .where(eq(services.isActive, true))
-    .orderBy(asc(services.displayOrder))
-    .limit(4)
+    const activeServices = await db
+      .select()
+      .from(services)
+      .where(eq(services.isActive, true))
+      .orderBy(asc(services.displayOrder))
+      .limit(4)
 
-  const featuredTestimonials = await db
-    .select()
-    .from(testimonials)
-    .where(and(eq(testimonials.isFeatured, true), eq(testimonials.isActive, true)))
-    .orderBy(asc(testimonials.displayOrder))
+    const featuredTestimonials = await db
+      .select()
+      .from(testimonials)
+      .where(and(eq(testimonials.isFeatured, true), eq(testimonials.isActive, true)))
+      .orderBy(asc(testimonials.displayOrder))
 
-  const clientProjects = await db
-    .select({ client: projects.client })
-    .from(projects)
-    .where(eq(projects.showClient, true))
-    .orderBy(asc(projects.displayOrder))
+    const clientProjects = await db
+      .select({ client: projects.client })
+      .from(projects)
+      .where(eq(projects.showClient, true))
+      .orderBy(asc(projects.displayOrder))
 
-  const dbProjects = await db
-    .select({
-      id: projects.id,
-      serviceId: projects.serviceId,
-      category: projects.category,
-    })
-    .from(projects)
+    const dbProjects = await db
+      .select({
+        id: projects.id,
+        serviceId: projects.serviceId,
+        category: projects.category,
+      })
+      .from(projects)
 
-  const activeTech = await db
-    .select()
-    .from(techStacks)
-    .where(eq(techStacks.isActive, true))
+    const activeTech = await db
+      .select()
+      .from(techStacks)
+      .where(eq(techStacks.isActive, true))
 
-  return { featuredProjects, activeServices, featuredTestimonials, clientProjects, dbProjects, activeTech }
+    return { featuredProjects, activeServices, featuredTestimonials, clientProjects, dbProjects, activeTech }
+  } catch (error) {
+    console.error('Database fetch failed in homepage getData, using fallback:', error)
+    return {
+      featuredProjects: [],
+      activeServices: [],
+      featuredTestimonials: [],
+      clientProjects: [],
+      dbProjects: [],
+      activeTech: []
+    }
+  }
 }
 
 

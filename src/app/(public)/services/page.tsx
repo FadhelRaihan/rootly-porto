@@ -23,8 +23,15 @@ const iconMap: Record<string, any> = {
 }
 
 export default async function ServicesPage() {
-  const serviceList = await db.select().from(services).where(eq(services.isActive, true)).orderBy(asc(services.displayOrder))
-  const techList = await db.select().from(techStacks).where(eq(techStacks.isActive, true))
+  let serviceList: any[] = []
+  let techList: any[] = []
+
+  try {
+    serviceList = await db.select().from(services).where(eq(services.isActive, true)).orderBy(asc(services.displayOrder))
+    techList = await db.select().from(techStacks).where(eq(techStacks.isActive, true))
+  } catch (error) {
+    console.error('Database fetch failed in ServicesPage, using fallback:', error)
+  }
 
   return (
     <div className="pt-20 bg-[#F7F6F2] min-h-screen text-[#1C1C1A]">

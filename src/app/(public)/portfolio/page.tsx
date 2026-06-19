@@ -23,10 +23,16 @@ const categoryLabels: Record<string, string> = {
 
 export default async function PortfolioPage({ searchParams }: { searchParams: Promise<{ category?: string; page?: string }> }) {
   const { category } = await searchParams
-  const allProjects = await db
-    .select()
-    .from(projects)
-    .orderBy(asc(projects.displayOrder))
+  let allProjects: any[] = []
+
+  try {
+    allProjects = await db
+      .select()
+      .from(projects)
+      .orderBy(asc(projects.displayOrder))
+  } catch (error) {
+    console.error('Database fetch failed in PortfolioPage, using fallback:', error)
+  }
 
   const filteredProjects = category
     ? allProjects.filter((p) => p.category === category)
