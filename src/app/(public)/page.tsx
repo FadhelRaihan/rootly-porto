@@ -18,9 +18,18 @@ export const metadata: Metadata = {
   },
   description: 'Rootly adalah software house yang membangun web app, mobile app, dan sistem digital dengan pendekatan hangat, jujur, dan berakar pada nilai.',
   openGraph: {
-    title: 'Rootly — Technology with Roots',
-    description: 'We build digital products that matter.',
-    url: 'https://rootly.id',
+    title: 'Rootly — Software House | Technology with Roots',
+    description: 'Rootly adalah software house yang membangun web app, mobile app, dan sistem digital dengan pendekatan hangat, jujur, dan berakar pada nilai.',
+    url: 'https://rootly-self.vercel.app/',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Rootly — Technology with Roots',
+      },
+    ],
   },
 }
 
