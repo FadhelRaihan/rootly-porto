@@ -11,23 +11,23 @@ const inriaSerif = Inria_Serif({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://rootly.id'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://rootly-self.vercel.app/'),
   title: {
     default: 'Rootly — Software House',
     template: '%s | Rootly',
   },
-  description: 'We build digital products designed to last. Crafted with software-craftsmanship care and rooted in quality.',
+  description: 'We build resilient digital products designed to last. Crafted with software-craftsmanship care and rooted in quality.',
   openGraph: {
     title: 'Rootly — Software House',
-    description: 'We build digital products designed to last, crafted with software-craftsmanship care.',
+    description: 'We build resilient digital products designed to last. Crafted with software-craftsmanship care and rooted in decentralized values.',
     url: 'https://rootly.id',
     siteName: 'Rootly',
     images: [
       {
-        url: '/icon/Logo-NameIconBlack.svg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Rootly Logo',
+        alt: 'Rootly — Technology with Roots',
       },
     ],
     locale: 'id_ID',
@@ -36,8 +36,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Rootly — Software House',
-    description: 'We build digital products designed to last.',
-    images: ['/icon/Logo-NameIconBlack.svg'],
+    description: 'We build resilient digital products designed to last. Crafted with software-craftsmanship care and rooted in quality.',
+    images: ['/og-image.png'],
   },
 }
 
