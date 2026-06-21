@@ -4,7 +4,7 @@ import { projects, services, testimonials, techStacks } from '@/db/schema'
 import { eq, and, asc } from 'drizzle-orm'
 import Link from 'next/link'
 import Image from 'next/image'
-// import { Metadata } from 'next'
+import { Metadata } from 'next'
 import { AnimatedSection } from '@/components/public/shared/animated-section'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -12,18 +12,17 @@ import { ArrowRight, CheckCircle2, Sparkles, Cpu, Layers, Network } from 'lucide
 
 export const revalidate = 3600
 
-// export const metadata: Metadata = {
-//   title: 'Rootly — Software House | Technology with Roots',
-//   description: 'Rootly adalah software house yang membangun web app, mobile app, dan sistem digital dengan pendekatan hangat, jujur, dan berakar pada nilai.',
-//   openGraph: {
-//     title: 'Rootly — Technology with Roots',
-//     description: 'We build digital products that matter.',
-//     url: 'https://rootly.id',
-//     siteName: 'Rootly',
-//     locale: 'en_US',
-//     type: 'website',
-//   },
-// }
+export const metadata: Metadata = {
+  title: {
+    absolute: 'Rootly — Software House | Technology with Roots',
+  },
+  description: 'Rootly adalah software house yang membangun web app, mobile app, dan sistem digital dengan pendekatan hangat, jujur, dan berakar pada nilai.',
+  openGraph: {
+    title: 'Rootly — Technology with Roots',
+    description: 'We build digital products that matter.',
+    url: 'https://rootly.id',
+  },
+}
 
 async function getData() {
   try {
