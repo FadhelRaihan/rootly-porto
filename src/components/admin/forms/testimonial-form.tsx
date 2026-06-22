@@ -122,21 +122,21 @@ export function TestimonialForm({ initialData, onSuccess }: Props) {
         {
           name: 'clientName',
           label: 'Client Name',
-          type: 'text',
+          type: 'bilingual-text',
           placeholder: 'e.g. John Doe',
           gridClass: 'col-span-1'
         },
         {
           name: 'clientRole',
           label: 'Client Role',
-          type: 'text',
+          type: 'bilingual-text',
           placeholder: 'e.g. CEO / Lead Architect',
           gridClass: 'col-span-1'
         },
         {
           name: 'clientCompany',
           label: 'Client Company',
-          type: 'text',
+          type: 'bilingual-text',
           placeholder: 'e.g. Acme Corp',
           gridClass: 'col-span-1 md:col-span-2'
         }
@@ -157,8 +157,8 @@ export function TestimonialForm({ initialData, onSuccess }: Props) {
                 <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">
                   CLIENT_PHOTO_NODE
                 </Label>
-                <div className="flex gap-4 items-start bg-white p-3 rounded-lg border border-dashed border-[#E2E2DF]">
-                  <div className="w-14 h-14 border border-dashed border-[#E2E2DF] bg-[#F7F6F2]/35 flex items-center justify-center overflow-hidden shrink-0">
+                <div className="flex gap-4 items-start bg-rootly-admin-card p-3 rounded-lg border border-dashed border-rootly-admin-border">
+                  <div className="w-14 h-14 border border-dashed border-rootly-admin-border bg-rootly-admin-bg/35 flex items-center justify-center overflow-hidden shrink-0">
                     {watchClientPhoto ? (
                       <Image 
                         src={watchClientPhoto} 
@@ -175,12 +175,12 @@ export function TestimonialForm({ initialData, onSuccess }: Props) {
                   <div className="flex-1 space-y-2 font-mono">
                     <Input 
                       {...formInstance.register('clientPhoto')} 
-                      className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black h-9 text-xs focus-visible:ring-[#1D9E75] font-mono" 
+                      className="bg-rootly-admin-bg/50 border-rootly-admin-border border-dashed text-rootly-text h-9 text-xs focus-visible:ring-[#1D9E75] font-mono" 
                       placeholder="Paste photo URL or upload below" 
                     />
                     <div className="flex items-center gap-2">
-                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-dashed border-[#E2E2DF] hover:border-[#1D9E75] hover:bg-[#1D9E75]/5 text-[10px] font-bold text-gray-700 cursor-pointer transition-all">
-                        <Upload className="w-3.5 h-3.5 text-[#1D9E75]" />
+                      <label className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-dashed border-rootly-admin-border hover:border-rootly-primary hover:bg-rootly-primary/5 text-[10px] font-bold text-gray-700 cursor-pointer transition-all">
+                        <Upload className="w-3.5 h-3.5 text-rootly-primary" />
                         {isUploading ? 'UPLOADING...' : 'UPLOAD_PHOTO'}
                         <input 
                           type="file" 
@@ -217,7 +217,7 @@ export function TestimonialForm({ initialData, onSuccess }: Props) {
         {
           name: 'quote',
           label: 'Quote Recommendation (min 20 characters)',
-          type: 'textarea',
+          type: 'bilingual-textarea',
           placeholder: 'Excellent engineering execution, highly recommended...',
           gridClass: 'col-span-1 md:col-span-2'
         },

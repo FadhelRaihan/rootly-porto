@@ -3,6 +3,9 @@ import { Metadata } from 'next'
 import { Inria_Serif } from 'next/font/google'
 import { SmoothScroll } from '@/components/public/shared/smooth-scroll'
 import Script from 'next/script'
+import { ThemeProvider } from '@/context/theme-provider'
+import { LanguageProvider } from '@/context/language-context'
+import { getServerTranslation } from '@/lib/i18n-server'
 
 const inriaSerif = Inria_Serif({
   subsets: ['latin'],
@@ -41,13 +44,15 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const { language } = await getServerTranslation()
+
   return (
-    <html lang="id" className={`${inriaSerif.variable}`}>
+    <html lang={language} className={`${inriaSerif.variable}`} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" />
         <meta name="google-site-verification" content="2i6J4tfcd3A-Qt-saIWFFcVZTZE4yb01njXGxGcQae0" />
@@ -58,9 +63,13 @@ export default function RootLayout({
           data-website-id="0979ed4e-390b-4fbc-a4b6-50686f64232b"
           strategy="afterInteractive"
         />
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        <LanguageProvider initialLanguage={language}>
+          <ThemeProvider>
+            <SmoothScroll>
+              {children}
+            </SmoothScroll>
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   )

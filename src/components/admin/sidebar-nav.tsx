@@ -30,14 +30,14 @@ export function SidebarNav() {
             className={cn(
               "flex items-center justify-between px-3 py-2.5 rounded-lg border transition-all duration-200 uppercase tracking-wider",
               isActive 
-                ? "bg-[#1D9E75]/10 border-[#1D9E75]/35 text-[#1C1C1A] font-bold shadow-xs border-l-2" 
-                : "bg-transparent border-transparent text-gray-500 hover:border-[#E8E6E0] hover:text-[#1C1C1A] hover:bg-[#F7F6F2]/40"
+                ? "bg-rootly-primary/10 border-rootly-primary/35 text-rootly-text font-bold shadow-xs border-l-2" 
+                : "bg-transparent border-transparent text-gray-500 hover:border-rootly-border hover:text-rootly-text hover:bg-rootly-admin-bg/40"
             )}
           >
             <div className="flex items-center gap-3">
-              <item.icon size={15} className={isActive ? "text-[#1D9E75]" : "text-gray-400"} />
+              <item.icon size={15} className={isActive ? "text-rootly-primary" : "text-gray-400"} />
               <div className="flex items-center gap-1.5">
-                <span className={isActive ? "text-[#1D9E75]/80" : "text-gray-300"}>{idxStr} {"//"}</span>
+                <span className={isActive ? "text-rootly-primary/80" : "text-gray-300"}>{idxStr} {"//"}</span>
                 <span>{item.label}</span>
               </div>
             </div>

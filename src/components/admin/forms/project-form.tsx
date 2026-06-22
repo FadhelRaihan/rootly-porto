@@ -131,7 +131,7 @@ export function ProjectForm({ initialData, onSuccess }: ProjectFormProps) {
     {
       title: 'Basic Info Registry',
       fields: [
-        { name: 'title', label: 'Title', type: 'text' },
+        { name: 'title', label: 'Title', type: 'bilingual-text' },
         {
           name: 'slug',
           label: 'Slug',
@@ -141,7 +141,7 @@ export function ProjectForm({ initialData, onSuccess }: ProjectFormProps) {
               <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Slug</Label>
               <Input
                 {...f.register('slug')}
-                className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black placeholder-gray-400 mt-1.5 focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
+                className="bg-rootly-admin-bg/50 border-rootly-admin-border border-dashed text-rootly-text placeholder-gray-400 mt-1.5 focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
               />
               <span className="text-[9px] text-gray-400 block mt-1">{"// SYSTEM_GENERATED_NODE_URI"}</span>
             </div>
@@ -160,7 +160,7 @@ export function ProjectForm({ initialData, onSuccess }: ProjectFormProps) {
         },
         { name: 'year', label: 'Year', type: 'number' },
         { name: 'displayOrder', label: 'Display Order', type: 'number', disabled: true },
-        { name: 'client', label: 'Client', type: 'text' },
+        { name: 'client', label: 'Client', type: 'bilingual-text' },
         { name: 'showClient', label: 'Show Client Info', type: 'switch' },
         { name: 'isFeatured', label: 'Featured Project Node', type: 'switch' },
       ],
@@ -168,10 +168,10 @@ export function ProjectForm({ initialData, onSuccess }: ProjectFormProps) {
     {
       title: 'Project Metadata Content',
       fields: [
-        { name: 'summary', label: 'Summary', type: 'textarea', gridClass: 'md:col-span-2' },
-        { name: 'challenge', label: 'Challenge', type: 'textarea', gridClass: 'md:col-span-2' },
-        { name: 'solution', label: 'Solution', type: 'textarea', gridClass: 'md:col-span-2' },
-        { name: 'impact', label: 'Impact', type: 'textarea', gridClass: 'md:col-span-2' },
+        { name: 'summary', label: 'Summary', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
+        { name: 'challenge', label: 'Challenge', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
+        { name: 'solution', label: 'Solution', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
+        { name: 'impact', label: 'Impact', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
       ],
     },
     {
@@ -187,7 +187,7 @@ export function ProjectForm({ initialData, onSuccess }: ProjectFormProps) {
               <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Thumbnail Node Image</Label>
               <div className="mt-2">
                 {thumbnailPreview ? (
-                  <div className="relative inline-block border border-dashed border-[#E2E2DF] p-1.5 bg-[#F7F6F2]/50">
+                  <div className="relative inline-block border border-dashed border-rootly-admin-border p-1.5 bg-rootly-admin-bg/50">
                     <Image
                       src={thumbnailPreview}
                       alt="Thumbnail Node"
@@ -207,7 +207,7 @@ export function ProjectForm({ initialData, onSuccess }: ProjectFormProps) {
                     </button>
                   </div>
                 ) : (
-                  <label className="border-2 border-dashed border-[#E2E2DF] p-6 block text-center cursor-pointer hover:border-[#1D9E75] transition-colors bg-[#F7F6F2]/20 hover:bg-[#F7F6F2]/50">
+                  <label className="border-2 border-dashed border-rootly-admin-border p-6 block text-center cursor-pointer hover:border-rootly-primary transition-colors bg-rootly-admin-bg/20 hover:bg-rootly-admin-bg/50">
                     <Upload className="mx-auto h-5 w-5 text-gray-400 mb-1.5" />
                     <p className="text-[10px] font-bold text-gray-500 uppercase">{"// UPLOAD_THUMBNAIL_STREAM"}</p>
                     <input
@@ -247,8 +247,8 @@ export function ProjectForm({ initialData, onSuccess }: ProjectFormProps) {
                     className={cn(
                       'px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider border transition-all cursor-pointer font-mono',
                       isSelected
-                        ? 'bg-[#1D9E75]/15 text-[#1D9E75] border-[#1D9E75] border-solid'
-                        : 'bg-transparent text-gray-500 border-[#E2E2DF] border-dashed hover:border-gray-400 hover:text-black'
+                        ? 'bg-rootly-primary/15 text-rootly-primary border-[#1D9E75] border-solid'
+                        : 'bg-transparent text-gray-500 border-rootly-admin-border border-dashed hover:border-gray-400 hover:text-rootly-text'
                     )}
                   >
                     {isSelected ? `[ ${tech.name} ]` : tech.name}

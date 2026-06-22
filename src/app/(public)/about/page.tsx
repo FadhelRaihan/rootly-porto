@@ -2,19 +2,19 @@ import { Metadata } from 'next'
 import { AnimatedSection } from '@/components/public/shared/animated-section'
 import { Shield, Target, Heart, Infinity, Terminal, Network } from 'lucide-react'
 import { CTA } from '@/components/public/shared/cta'
-
-export const dynamic = 'force-static'
+import { getServerTranslation } from '@/lib/i18n-server'
 
 export const metadata: Metadata = {
   title: 'About — Rootly',
   description: 'Rootly adalah software house yang dibangun di atas fondasi nilai: grounded, purposeful, warmth, dan long-lasting.',
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { t } = await getServerTranslation()
   return (
-    <div className="pt-20 bg-[#F7F6F2] min-h-screen text-[#1C1C1A]">
+    <div className="pt-20 bg-rootly-background min-h-screen text-rootly-text">
       {/* Hero */}
-      <section className="py-20 relative overflow-hidden border-b border-dashed border-[#E8E6E0]">
+      <section className="py-20 relative overflow-hidden border-b border-dashed border-rootly-border">
         {/* Warm Dotted Grid Background */}
         <div className="absolute inset-0 bg-[radial-gradient(#1d9e7508_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
         
@@ -22,22 +22,22 @@ export default function AboutPage() {
           <AnimatedSection>
             <div className="flex items-center gap-2 mb-4">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-mono text-xs tracking-widest text-[#1D9E75] uppercase">
+              <span className="font-mono text-xs tracking-widest text-rootly-primary uppercase">
                 {"[ SYSTEM // ROOT PROFILE CONFIGURATION ]"}
               </span>
             </div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif text-[#1C1C1A] mb-6 leading-tight">
-              About Rootly
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif text-rootly-text mb-6 leading-tight">
+              {t('about.title')}
             </h1>
             
-            <div className="bg-white/60 backdrop-blur-sm border border-[#E8E6E0] rounded-xl p-4 sm:p-6 max-w-3xl font-mono text-xs text-[#888780] shadow-sm">
-              <div className="flex items-center justify-between border-b border-dashed border-[#E8E6E0] pb-2 mb-3">
-                <span className="text-[#1D9E75] font-bold">INITIALIZING CORE...</span>
+            <div className="bg-rootly-surface/60 backdrop-blur-sm border border-rootly-border rounded-xl p-4 sm:p-6 max-w-3xl font-mono text-xs text-rootly-muted shadow-sm">
+              <div className="flex items-center justify-between border-b border-dashed border-rootly-border pb-2 mb-3">
+                <span className="text-rootly-primary font-bold">INITIALIZING CORE...</span>
                 <span>VER. 2.6.0-MAINNET</span>
               </div>
-              <p className="text-sm leading-relaxed text-[#1C1C1A] font-serif">
-                We are a software house built on the belief that technology should serve a purpose. We anchor our ideas in solid ground, design with intent, communicate with warmth, and build architecture meant to last.
+              <p className="text-sm leading-relaxed text-rootly-text font-serif">
+                {t('about.hero')}
               </p>
             </div>
           </AnimatedSection>
@@ -45,7 +45,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story */}
-      <section className="py-24 bg-white relative overflow-hidden border-b border-[#E8E6E0]">
+      <section className="py-24 bg-rootly-surface relative overflow-hidden border-b border-rootly-border">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
@@ -53,19 +53,13 @@ export default function AboutPage() {
             <div className="lg:col-span-7">
               <AnimatedSection>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="font-mono text-[10px] tracking-widest text-[#1D9E75] uppercase">{"[ ORIGIN ARCHIVE ]"}</span>
+                  <span className="font-mono text-[10px] tracking-widest text-rootly-primary uppercase">{"[ ORIGIN ARCHIVE ]"}</span>
                 </div>
-                <h2 className="text-3xl font-serif text-[#1C1C1A] mb-6">Our Story</h2>
-                <div className="space-y-5 text-[#888780] leading-relaxed text-sm">
-                  <p>
-                    Rootly was born from a simple observation: too many software projects fail to deliver real value. They look impressive on the surface but crumble under the weight of poor architecture, short-sighted decisions, and disconnected teams.
-                  </p>
-                  <p>
-                    We decided to build differently. We set out to create a software house that puts lasting value above short-term wins. Where honest communication replaces corporate speak. Where every feature exists because it solves a real problem.
-                  </p>
-                  <p>
-                    The name <strong className="text-[#1C1C1A] font-semibold">Rootly</strong> comes from our philosophy: <em className="italic">build with roots</em>. Roots that dig deep into understanding your business, roots that anchor your software in solid architecture, and roots that keep your product growing strong for years to come.
-                  </p>
+                <h2 className="text-3xl font-serif text-rootly-text mb-6">{t('about.story.title')}</h2>
+                <div className="space-y-5 text-rootly-muted leading-relaxed text-sm">
+                  <p>{t('about.story.p1')}</p>
+                  <p>{t('about.story.p2')}</p>
+                  <p>{t('about.story.p3')}</p>
                 </div>
               </AnimatedSection>
             </div>
@@ -73,12 +67,12 @@ export default function AboutPage() {
             {/* Right Web3 Console Graphic Visual */}
             <div className="lg:col-span-5">
               <AnimatedSection delay={0.2}>
-                <div className="bg-[#1C1C1A] text-gray-300 rounded-2xl p-6 border border-[#2A2A28] shadow-2xl font-mono text-xs relative overflow-hidden group hover:border-[#1D9E75]/40 transition-all duration-300">
+                <div className="bg-rootly-deep-bg text-gray-300 rounded-2xl p-6 border border-rootly-border/60 shadow-2xl font-mono text-xs relative overflow-hidden group hover:border-rootly-primary/40 transition-all duration-300">
                   {/* Hexagon Pattern Overlay */}
                   <div className="absolute inset-0 bg-[radial-gradient(rgba(29,158,117,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
                   
                   {/* Console Header */}
-                  <div className="flex items-center justify-between border-b border-[#2A2A28] pb-4 mb-4">
+                  <div className="flex items-center justify-between border-b border-rootly-border/60 pb-4 mb-4">
                     <div className="flex items-center gap-2">
                       <div className="flex gap-1.5">
                         <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -99,12 +93,12 @@ export default function AboutPage() {
                         <span>NODE CORE STATUS</span>
                         <span className="text-emerald-400">99.98% UPTIME</span>
                       </div>
-                      <div className="h-1.5 w-full bg-[#2A2A28] rounded-full overflow-hidden">
+                      <div className="h-1.5 w-full bg-rootly-surface/50 rounded-full overflow-hidden">
                         <div className="h-full w-[99.98%] bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full" />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 py-2 border-y border-dashed border-[#2A2A28]">
+                    <div className="grid grid-cols-2 gap-3 py-2 border-y border-dashed border-rootly-border/60">
                       <div>
                         <span className="text-gray-500 block text-[9px]">PROTOCOL SECURE</span>
                         <span className="text-white font-bold flex items-center gap-1.5 mt-0.5">
@@ -137,7 +131,7 @@ export default function AboutPage() {
                     </div>
 
                     {/* Simulation Console Screen */}
-                    <div className="bg-[#121211] p-3 rounded-lg border border-[#2A2A28] font-mono text-[9px] text-emerald-400/90 space-y-1">
+                    <div className="bg-rootly-deep-bg/80 p-3 rounded-lg border border-rootly-border/60 font-mono text-[9px] text-emerald-400/90 space-y-1">
                       <div className="flex items-center gap-1.5 text-gray-500">
                         <Terminal className="w-3 h-3" />
                         <span>system_diagnostic.log</span>
@@ -156,30 +150,30 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-24 bg-[#F7F6F2] relative overflow-hidden border-b border-dashed border-[#E8E6E0]">
+      <section className="py-24 bg-rootly-background relative overflow-hidden border-b border-dashed border-rootly-border">
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             
             {/* Mission */}
             <AnimatedSection>
-              <div className="bg-white p-8 rounded-2xl border border-[#E8E6E0] hover:border-[#1D9E75]/30 transition-all duration-300 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-[#1D9E75]/5 rounded-bl-full pointer-events-none" />
-                <span className="font-mono text-[9px] text-[#1D9E75] tracking-widest uppercase block mb-3">{"[ MISSION // TARGET PROTOCOL ]"}</span>
-                <h3 className="text-2xl font-serif text-[#1C1C1A] mb-4">Our Mission</h3>
-                <p className="text-[#888780] text-sm leading-relaxed">
-                  To build software that solves real problems, creates lasting value, and forms genuine, transparent partnerships with our clients. We avoid corporate buzzwords to deliver raw, functional quality.
+              <div className="bg-rootly-surface p-8 rounded-2xl border border-rootly-border hover:border-rootly-primary/30 transition-all duration-300 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-rootly-primary/5 rounded-bl-full pointer-events-none" />
+                <span className="font-mono text-[9px] text-rootly-primary tracking-widest uppercase block mb-3">{"[ MISSION // TARGET PROTOCOL ]"}</span>
+                <h3 className="text-2xl font-serif text-rootly-text mb-4">{t('about.mission.title')}</h3>
+                <p className="text-rootly-muted text-sm leading-relaxed">
+                  {t('about.mission.desc')}
                 </p>
               </div>
             </AnimatedSection>
 
             {/* Vision */}
             <AnimatedSection delay={0.15}>
-              <div className="bg-white p-8 rounded-2xl border border-[#E8E6E0] hover:border-[#1D9E75]/30 transition-all duration-300 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-[#1D9E75]/5 rounded-bl-full pointer-events-none" />
-                <span className="font-mono text-[9px] text-[#1D9E75] tracking-widest uppercase block mb-3">{"[ VISION // FUTURE MATRIX ]"}</span>
-                <h3 className="text-2xl font-serif text-[#1C1C1A] mb-4">Our Vision</h3>
-                <p className="text-[#888780] text-sm leading-relaxed">
-                  To be the most trusted software partner for businesses that care about quality over quantity, and substance over style. We aim to anchor every digital product on clean, long-lasting architectural code.
+              <div className="bg-rootly-surface p-8 rounded-2xl border border-rootly-border hover:border-rootly-primary/30 transition-all duration-300 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-rootly-primary/5 rounded-bl-full pointer-events-none" />
+                <span className="font-mono text-[9px] text-rootly-primary tracking-widest uppercase block mb-3">{"[ VISION // FUTURE MATRIX ]"}</span>
+                <h3 className="text-2xl font-serif text-rootly-text mb-4">{t('about.vision.title')}</h3>
+                <p className="text-rootly-muted text-sm leading-relaxed">
+                  {t('about.vision.desc')}
                 </p>
               </div>
             </AnimatedSection>
@@ -189,62 +183,39 @@ export default function AboutPage() {
       </section>
 
       {/* Core Values */}
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-24 bg-rootly-surface relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
           <AnimatedSection>
             <div className="text-center mb-16">
-              <span className="text-[10px] font-mono tracking-widest text-[#1D9E75] uppercase block mb-3">{"[ CORE PARAMETERS // 04 VALUES ]"}</span>
-              <h2 className="text-3xl sm:text-4xl font-serif text-[#1C1C1A] mb-4">Our Core Values</h2>
-              <p className="text-[#888780] text-xs font-mono">SECURE AND STEADY PROTOCOLS FOR EVERY BUILD</p>
+              <span className="text-[10px] font-mono tracking-widest text-rootly-primary uppercase block mb-3">{"[ CORE PARAMETERS // 04 VALUES ]"}</span>
+              <h2 className="text-3xl sm:text-4xl font-serif text-rootly-text mb-4">{t('about.coreValues')}</h2>
+              <p className="text-rootly-muted text-xs font-mono">SECURE AND STEADY PROTOCOLS FOR EVERY BUILD</p>
             </div>
           </AnimatedSection>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { 
-                title: 'Grounded', 
-                index: '0X01',
-                icon: Shield,
-                desc: 'We build software that solves actual problems, not just impressive-looking features. We stay rooted in utility.' 
-              },
-              { 
-                title: 'Purposeful', 
-                index: '0X02',
-                icon: Target,
-                desc: 'Every line of code serves a clear purpose and delivers measurable value to your business. No bloat.' 
-              },
-              { 
-                title: 'Warmth', 
-                index: '0X03',
-                icon: Heart,
-                desc: 'We communicate honestly, transparently, and treat your project like it is our own. Real developer connection.' 
-              },
-              { 
-                title: 'Long-lasting', 
-                index: '0X04',
-                icon: Infinity,
-                desc: 'We build for the long term with maintainable code and scalable architectures that stand the test of time.' 
-              },
-            ].map((value, index) => {
+              { titleKey: 'about.value1.title', descKey: 'about.value1.desc', index: '0X01', icon: Shield },
+              { titleKey: 'about.value2.title', descKey: 'about.value2.desc', index: '0X02', icon: Target },
+              { titleKey: 'about.value3.title', descKey: 'about.value3.desc', index: '0X03', icon: Heart },
+              { titleKey: 'about.value4.title', descKey: 'about.value4.desc', index: '0X04', icon: Infinity },
+            ].map((value, i) => {
               const Icon = value.icon
               return (
-                <AnimatedSection key={value.title} delay={index * 0.1}>
-                  <div className="h-full bg-[#F7F6F2]/40 hover:bg-white p-6 rounded-xl border border-[#E8E6E0] hover:border-[#1D9E75]/40 hover:shadow-[0_0_20px_rgba(29,158,117,0.04)] transition-all duration-300 flex flex-col justify-between group">
+                <AnimatedSection key={value.titleKey} delay={i * 0.1}>
+                  <div className="h-full bg-rootly-background/40 hover:bg-rootly-surface p-6 rounded-xl border border-rootly-border hover:border-rootly-primary/40 hover:shadow-[0_0_20px_rgba(29,158,117,0.04)] transition-all duration-300 flex flex-col justify-between group">
                     <div>
-                      {/* Card Header Info */}
                       <div className="flex items-center justify-between mb-6">
-                        <div className="w-10 h-10 rounded-lg bg-[#1D9E75]/10 flex items-center justify-center border border-[#1D9E75]/20 group-hover:bg-[#1D9E75] group-hover:text-white transition-all duration-300 text-[#1D9E75]">
+                        <div className="w-10 h-10 rounded-lg bg-rootly-primary/10 flex items-center justify-center border border-rootly-primary/20 group-hover:bg-rootly-primary group-hover:text-white transition-all duration-300 text-rootly-primary">
                           <Icon className="w-5 h-5" />
                         </div>
-                        <span className="font-mono text-[9px] text-[#888780] tracking-wider">{`[ ${value.index} ]`}</span>
+                        <span className="font-mono text-[9px] text-rootly-muted tracking-wider">{`[ ${value.index} ]`}</span>
                       </div>
-
-                      {/* Content */}
-                      <h3 className="text-lg font-serif text-[#1C1C1A] mb-3 group-hover:text-[#1D9E75] transition-colors duration-300">
-                        {value.title}
+                      <h3 className="text-lg font-serif text-rootly-text mb-3 group-hover:text-rootly-primary transition-colors duration-300">
+                        {t(value.titleKey)}
                       </h3>
-                      <p className="text-[#888780] text-xs leading-relaxed font-sans">
-                        {value.desc}
+                      <p className="text-rootly-muted text-xs leading-relaxed font-sans">
+                        {t(value.descKey)}
                       </p>
                     </div>
                   </div>

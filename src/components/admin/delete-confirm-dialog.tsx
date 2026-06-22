@@ -41,7 +41,7 @@ export function DeleteConfirmDialog({
       subtitle="// WARNING: SYSTEM TERMINATION SEQUENCE INITIATED"
       maxWidth="sm:max-w-md"
     >
-      <div className="font-mono text-xs text-black space-y-4 py-3">
+      <div className="font-mono text-xs text-rootly-text space-y-4 py-3">
         <div className="p-3 border border-dashed border-red-200 bg-red-50/30 rounded-lg space-y-2">
           <div className="flex justify-between">
             <span className="text-gray-500 font-bold uppercase">TARGET_NODE</span>
@@ -58,13 +58,13 @@ export function DeleteConfirmDialog({
           </div>
         </div>
 
-        <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-3 border-t border-dashed border-[#E2E2DF]">
+        <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-3 border-t border-dashed border-rootly-admin-border">
           <Button
             type="button"
             variant="outline"
             onClick={onClose}
             disabled={isDeleting}
-            className="border-[#E2E2DF] border-dashed text-gray-700 font-mono text-xs uppercase tracking-wider h-9 px-4 cursor-pointer hover:bg-gray-50"
+            className="border-rootly-admin-border border-dashed text-gray-700 font-mono text-xs uppercase tracking-wider h-9 px-4 cursor-pointer hover:bg-gray-50"
           >
             {"[ ABORT_SEQUENCE ]"}
           </Button>

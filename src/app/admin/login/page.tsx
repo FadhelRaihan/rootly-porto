@@ -39,7 +39,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#111110] bg-[radial-gradient(#1c1c1a_1px,transparent_1px)] [background-size:24px_24px] flex items-center justify-center p-4">
       <Card className="w-full max-w-md bg-[#1C1C1A] border-[#2E2E2C] border-dashed rounded-lg text-white font-mono text-xs">
         <CardHeader className="text-center border-b border-dashed border-[#2E2E2C] pb-5">
-          <div className="mx-auto mb-4 h-12 px-5 border border-dashed border-[#1D9E75] bg-[#1D9E75]/5 flex items-center justify-center max-w-[180px]">
+            <div className="mx-auto mb-4 h-12 px-5 border border-dashed border-rootly-primary bg-rootly-primary/5 flex items-center justify-center max-w-[180px]">
             <Image src="/icon/Logo-NameIconWhite.svg" width={120} height={30} alt="Logo" className="h-6 w-auto" />
           </div>
           <CardTitle className="text-base text-white font-bold font-mono uppercase tracking-wider">
@@ -48,7 +48,7 @@ export default function LoginPage() {
           <div className="flex items-center justify-between text-gray-500 font-bold uppercase tracking-wider text-[8px] max-w-xs mx-auto mt-3 border-t border-dashed border-[#2E2E2C]/50 pt-2 w-full">
             <span>PORT_STATUS: ACTIVE</span>
             <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#1D9E75] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-rootly-primary animate-pulse" />
               SECURE
             </span>
           </div>
@@ -65,7 +65,7 @@ export default function LoginPage() {
                 placeholder="Enter authorized email..."
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-[#111110] border-[#2E2E2C] border-dashed text-white mt-1 h-10 font-mono text-xs focus-visible:ring-[#1D9E75]"
+                className="bg-[#111110] border-[#2E2E2C] border-dashed text-white mt-1 h-10 font-mono text-xs focus-visible:ring-rootly-primary"
                 required
               />
             </div>
@@ -80,7 +80,7 @@ export default function LoginPage() {
                   placeholder="Enter credential hash..."
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-[#111110] border-[#2E2E2C] border-dashed text-white pr-10 h-10 font-mono text-xs focus-visible:ring-[#1D9E75]"
+                  className="bg-[#111110] border-[#2E2E2C] border-dashed text-white pr-10 h-10 font-mono text-xs focus-visible:ring-rootly-primary"
                   required
                 />
                 <button
@@ -101,7 +101,7 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full bg-[#1D9E75] hover:bg-[#1a8c66] text-white font-mono text-xs uppercase tracking-wider border border-[#1D9E75] hover:border-[#1a8c66] rounded-md h-10 cursor-pointer shadow-xs transition-all duration-200 mt-2"
+              className="w-full bg-rootly-primary hover:brightness-90 text-white font-mono text-xs uppercase tracking-wider border border-rootly-primary hover:border-rootly-primary rounded-md h-10 cursor-pointer shadow-xs transition-all duration-200 mt-2"
               disabled={loading}
             >
               {loading ? 'EXECUTING_HANDSHAKE...' : '[ EXECUTE_SIGN_IN_SEQUENCE ]'}

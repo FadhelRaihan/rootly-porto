@@ -9,6 +9,10 @@ import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Service } from '@/db/schema'
 import { useLenis } from 'lenis/react'
+import { useTheme } from 'next-themes'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
+import { useTranslation } from '@/context/language-context'
+import { localizedField } from '@/lib/lang-utils'
 
 const NextImage = Image as any
 
@@ -27,6 +31,8 @@ export function Navbar({ services }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const lenis = useLenis()
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText('m.fadhelraihan@gmail.com')
@@ -54,6 +60,20 @@ export function Navbar({ services }: NavbarProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    let active = true
+    requestAnimationFrame(() => {
+      if (active) setMounted(true)
+    })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const { language, setLanguage, t } = useTranslation()
+
+  const logoSrc = mounted && resolvedTheme === 'dark' ? '/icon/Logo-NameIconWhite.svg' : '/icon/Logo-NameIconBlack.svg'
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: `
@@ -67,27 +87,58 @@ export function Navbar({ services }: NavbarProps) {
       `}} />
       <header
         className={cn(
-          'fixed max-w-4xl top-3 left-4 right-4 md:mx-auto rounded-full z-45 transition-all duration-300 border border-[#E8E6E0]/40',
+          'fixed max-w-4xl top-3 left-4 right-4 md:mx-auto rounded-full z-45 transition-all duration-300 border border-rootly-border/40',
           isScrolled
-            ? 'bg-white/90 backdrop-blur-md shadow-sm py-2'
-            : 'bg-[#F7F6F2]/80 backdrop-blur-sm py-3'
+            ? 'bg-rootly-surface/90 backdrop-blur-md shadow-sm py-2'
+            : 'bg-rootly-background/80 backdrop-blur-sm py-3'
         )}
         style={{ left: '50%', transform: 'translateX(-50%)', width: 'calc(100% - 2rem)' }}
       >
         <nav className="w-full mx-auto px-3 flex items-center justify-between">
           <Link href="/" className="transition-transform hover:scale-[1.02] active:scale-[0.98]">
-            <NextImage src="/icon/Logo-NameIconBlack.svg" width={105} height={105} alt="LogoBlack" className="h-8 w-auto" />
+            <NextImage src={logoSrc} width={105} height={105} alt="Logo" className="h-8 w-auto" />
           </Link>
 
-          {/* Premium Hamburger Toggle with pulsing server node */}
-          <button
-            onClick={() => setIsMenuOpen(true)}
-            className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-[#E8E6E0] bg-white text-sm font-semibold text-[#1C1C1A] hover:bg-[#1D9E75] hover:text-white hover:border-[#1D9E75] transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer group"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span className="font-sans">Menu</span>
-            <Menu size={16} className="group-hover:rotate-12 transition-transform duration-300" />
-          </button>
+          <div className="flex items-center gap-2.5">
+            {/* Language Toggle */}
+            <div className="flex items-center gap-0.5 border border-rootly-border rounded-full px-1 py-1 bg-rootly-surface/50">
+              <button
+                onClick={() => setLanguage('en')}
+                className={cn(
+                  'text-[10px] font-bold font-mono uppercase tracking-wider px-2 py-0.5 rounded-full cursor-pointer transition-all',
+                  language === 'en'
+                    ? 'bg-rootly-primary/15 text-rootly-primary border border-rootly-primary/40'
+                    : 'text-rootly-muted hover:text-rootly-text border border-transparent'
+                )}
+              >
+                {t('lang.en')}
+              </button>
+              <button
+                onClick={() => setLanguage('id')}
+                className={cn(
+                  'text-[10px] font-bold font-mono uppercase tracking-wider px-2 py-0.5 rounded-full cursor-pointer transition-all',
+                  language === 'id'
+                    ? 'bg-rootly-primary/15 text-rootly-primary border border-rootly-primary/40'
+                    : 'text-rootly-muted hover:text-rootly-text border border-transparent'
+                )}
+              >
+                {t('lang.id')}
+              </button>
+            </div>
+
+            {/* Theme Toggle Button */}
+            <ThemeToggle />
+
+            {/* Premium Hamburger Toggle with pulsing server node */}
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-rootly-border bg-rootly-surface text-sm font-semibold text-rootly-text hover:bg-rootly-primary hover:text-white hover:border-rootly-primary transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer group"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              <span className="font-sans">{t('nav.menu')}</span>
+              <Menu size={16} className="group-hover:rotate-12 transition-transform duration-300" />
+            </button>
+          </div>
         </nav>
       </header>
 
@@ -112,7 +163,7 @@ export function Navbar({ services }: NavbarProps) {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -25 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full max-w-4xl max-h-[calc(100dvh-4rem)] md:max-h-none overflow-y-auto md:overflow-visible p-5 md:p-8 pointer-events-auto no-scrollbar relative"
+                className="bg-rootly-surface rounded-3xl shadow-2xl border border-rootly-border w-full max-w-4xl max-h-[calc(100dvh-4rem)] md:max-h-none overflow-y-auto md:overflow-visible p-5 md:p-8 pointer-events-auto no-scrollbar relative"
                 data-lenis-prevent
                 onClick={(e) => e.stopPropagation()}
               >
@@ -120,36 +171,36 @@ export function Navbar({ services }: NavbarProps) {
                 <div className="absolute inset-0 bg-[radial-gradient(#1d9e7503_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none rounded-3xl" />
                 
                 {/* Header Row */}
-                <div className="flex items-center justify-between pb-4 md:pb-6 border-b border-gray-100 relative z-10">
+                <div className="flex items-center justify-between pb-4 md:pb-6 border-b border-rootly-border relative z-10">
                   <Link href="/" onClick={() => setIsMenuOpen(false)} className="transition-transform hover:scale-[1.02]">
-                    <NextImage src="/icon/Logo-NameIconBlack.svg" width={110} height={110} alt="Logo" className="h-8 w-auto" />
+                    <NextImage src={logoSrc} width={110} height={110} alt="Logo" className="h-8 w-auto" />
                   </Link>
                   
                   {/* Web3 command escape close button - responsive layout */}
                   <button
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-gray-200 hover:border-red-200 hover:bg-red-50 text-xs font-mono font-bold text-[#1C1C1A] hover:text-red-600 transition-all duration-200 cursor-pointer group shrink-0"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-rootly-border hover:border-red-200 hover:bg-red-50 text-xs font-mono font-bold text-rootly-text hover:text-red-600 transition-all duration-200 cursor-pointer group shrink-0"
                   >
                     <X size={13} className="group-hover:rotate-90 transition-transform duration-200" />
-                    <span className="hidden sm:inline">{"[ ESC // CLOSE ]"}</span>
-                    <span className="sm:hidden">{"[ ESC ]"}</span>
+                    <span className="hidden sm:inline">[ ESC // {t('nav.close')} ]</span>
+                    <span className="sm:hidden">[ ESC ]</span>
                   </button>
                 </div>
 
                 {/* Grid Layout (3 Columns) */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 py-4 md:py-6 relative z-10">
                   {/* Column 1: Services */}
-                  <div className="bg-[#F7F6F2] border border-[#E8E6E0] rounded-2xl p-4 md:p-6 flex flex-col justify-between relative group/col">
-                    <div className="absolute top-4 right-4 font-mono text-[8px] text-gray-400">
+                  <div className="bg-rootly-background border border-rootly-border rounded-2xl p-4 md:p-6 flex flex-col justify-between relative group/col">
+                    <div className="absolute top-4 right-4 font-mono text-[8px] text-rootly-muted">
                       {"[ SECURE_CONN ]"}
                     </div>
                     <div>
-                      <span className="text-[9px] font-mono tracking-widest text-[#1D9E75] uppercase block mb-3 md:mb-5">{"[ SYS // CAPABILITIES ]"}</span>
+                      <span className="text-[9px] font-mono tracking-widest text-rootly-primary uppercase block mb-3 md:mb-5">{"[ SYS // CAPABILITIES ]"}</span>
                       <div className="space-y-3.5">
                         {(() => {
                           const rawServices = services && services.length > 0
                             ? services.map((s) => ({
-                              label: s.title,
+                              label: localizedField(language, s.title, s.titleId),
                               href: `/services`,
                             }))
                             : [
@@ -166,20 +217,20 @@ export function Navbar({ services }: NavbarProps) {
                                   key={item.label}
                                   href={item.href}
                                   onClick={() => setIsMenuOpen(false)}
-                                  className="flex items-center justify-between py-2 border-b border-gray-200/50 hover:border-[#1D9E75]/40 group transition-all"
+                                  className="flex items-center justify-between py-2 border-b border-rootly-border/50 hover:border-rootly-primary/40 group transition-all"
                                 >
-                                  <span className="font-serif text-base font-regular text-[#1C1C1A] group-hover:text-[#1D9E75] transition-all flex items-center gap-1.5">
-                                    <span className="text-[9px] font-mono opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-[#1D9E75]">{"\u003e"}</span>
+                                  <span className="font-serif text-base font-regular text-rootly-text group-hover:text-rootly-primary transition-all flex items-center gap-1.5">
+                                    <span className="text-[9px] font-mono opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-rootly-primary">{"\u003e"}</span>
                                     <span className="flex items-center gap-2 transition-transform duration-300 group-hover:translate-x-0.5">
                                       {item.label}
                                       {item.isNew && (
-                                        <span className="text-[8px] font-sans font-extrabold bg-[#1D9E75] text-white px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
+                                        <span className="text-[8px] font-sans font-extrabold bg-rootly-primary text-white px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
                                           New
                                         </span>
                                       )}
                                     </span>
                                   </span>
-                                  <ArrowUpRight size={15} className="text-[#888780] group-hover:text-[#1D9E75] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                                  <ArrowUpRight size={15} className="text-rootly-muted group-hover:text-rootly-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                                 </Link>
                               ))}
                               {hasMoreThanThree && (
@@ -188,10 +239,10 @@ export function Navbar({ services }: NavbarProps) {
                                   onClick={() => setIsMenuOpen(false)}
                                   className="flex items-center justify-between py-2 group transition-all"
                                 >
-                                  <span className="font-sans text-xs font-bold text-[#1D9E75] hover:text-[#1a8c66] transition-colors flex items-center gap-1.5">
+                                  <span className="font-sans text-xs font-bold text-rootly-primary hover:brightness-90 transition-colors flex items-center gap-1.5">
                                     See more services
                                   </span>
-                                  <ArrowUpRight size={15} className="text-[#1D9E75] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                                  <ArrowUpRight size={15} className="text-rootly-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                                 </Link>
                               )}
                             </>
@@ -202,29 +253,29 @@ export function Navbar({ services }: NavbarProps) {
                   </div>
 
                   {/* Column 2: Company */}
-                  <div className="bg-[#F7F6F2] border border-[#E8E6E0] rounded-2xl p-4 md:p-6 flex flex-col justify-between relative group/col">
-                    <div className="absolute top-4 right-4 font-mono text-[8px] text-gray-400">
+                  <div className="bg-rootly-background border border-rootly-border rounded-2xl p-4 md:p-6 flex flex-col justify-between relative group/col">
+                    <div className="absolute top-4 right-4 font-mono text-[8px] text-rootly-muted">
                       {"[ DIR_NODES ]"}
                     </div>
                     <div>
-                      <span className="text-[9px] font-mono tracking-widest text-[#1D9E75] uppercase block mb-3 md:mb-5">{"[ ORG // DIRECTORY ]"}</span>
+                      <span className="text-[9px] font-mono tracking-widest text-rootly-primary uppercase block mb-3 md:mb-5">{"[ ORG // DIRECTORY ]"}</span>
                       <div className="space-y-3.5">
                         {[
-                          { label: 'About Us', href: '/about' },
-                          { label: 'Our Portfolio', href: '/portfolio' },
-                          { label: 'Working Process', href: '/process' },
+                          { label: t('nav.about'), href: '/about' },
+                          { label: t('nav.portfolio'), href: '/portfolio' },
+                          { label: t('nav.process'), href: '/process' },
                         ].map((item) => (
                           <Link
                             key={item.label}
                             href={item.href}
                             onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center justify-between py-2 border-b border-gray-200/50 hover:border-[#1D9E75]/40 group transition-all"
+                            className="flex items-center justify-between py-2 border-b border-rootly-border/50 hover:border-rootly-primary/40 group transition-all"
                           >
-                            <span className="font-serif text-base font-regular text-[#1C1C1A] group-hover:text-[#1D9E75] transition-all flex items-center gap-1.5">
-                              <span className="text-[9px] font-mono opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-[#1D9E75]">{"\u003e"}</span>
+                            <span className="font-serif text-base font-regular text-rootly-text group-hover:text-rootly-primary transition-all flex items-center gap-1.5">
+                              <span className="text-[9px] font-mono opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-rootly-primary">{"\u003e"}</span>
                               <span className="transition-transform duration-300 group-hover:translate-x-0.5">{item.label}</span>
                             </span>
-                            <ArrowUpRight size={15} className="text-[#888780] group-hover:text-[#1D9E75] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                            <ArrowUpRight size={15} className="text-rootly-muted group-hover:text-rootly-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                           </Link>
                         ))}
                       </div>
@@ -232,19 +283,19 @@ export function Navbar({ services }: NavbarProps) {
                   </div>
 
                   {/* Column 3: Contact */}
-                  <div className="bg-[#F7F6F2] border border-[#E8E6E0] rounded-2xl p-4 md:p-6 flex flex-col justify-between min-h-[140px] md:min-h-[200px] relative group/col">
-                    <div className="absolute top-4 right-4 font-mono text-[8px] text-gray-400">
+                  <div className="bg-rootly-background border border-rootly-border rounded-2xl p-4 md:p-6 flex flex-col justify-between min-h-[140px] md:min-h-[200px] relative group/col">
+                    <div className="absolute top-4 right-4 font-mono text-[8px] text-rootly-muted">
                       {"[ ADDR_PORT ]"}
                     </div>
                     <div>
-                      <span className="text-[9px] font-mono tracking-widest text-[#1D9E75] uppercase block mb-3 md:mb-5">{"[ ADDR // GATEWAY ]"}</span>
+                      <span className="text-[9px] font-mono tracking-widest text-rootly-primary uppercase block mb-3 md:mb-5">{"[ ADDR // GATEWAY ]"}</span>
                       <button
                         onClick={handleCopyEmail}
-                        className="font-serif text-lg font-regular text-[#1C1C1A] hover:text-[#1D9E75] transition-colors break-all block text-left hover:underline cursor-pointer focus:outline-none relative group"
+                        className="font-serif text-lg font-regular text-rootly-text hover:text-rootly-primary transition-colors break-all block text-left hover:underline cursor-pointer focus:outline-none relative group"
                       >
                         <span>rootly@gmail.com</span>
                         <span className={cn(
-                          "absolute left-0 -bottom-5 text-[10px] font-sans font-bold text-[#1D9E75] transition-all duration-200",
+                          "absolute left-0 -bottom-5 text-[10px] font-sans font-bold text-rootly-primary transition-all duration-200",
                           copied ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1 pointer-events-none"
                         )}>
                           Copied to clipboard!
@@ -262,7 +313,7 @@ export function Navbar({ services }: NavbarProps) {
                           href={social.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-gray-200 hover:bg-[#1D9E75] hover:text-white hover:border-[#1D9E75] transition-all text-[#1C1C1A] shadow-sm hover:shadow"
+                          className="w-10 h-10 rounded-full bg-rootly-surface flex items-center justify-center border border-rootly-border hover:bg-rootly-primary hover:text-white hover:border-rootly-primary transition-all text-rootly-text shadow-sm hover:shadow"
                         >
                           {social.icon}
                         </a>
@@ -272,15 +323,15 @@ export function Navbar({ services }: NavbarProps) {
                 </div>
 
                 {/* Footer Buttons */}
-                <div className="flex justify-center gap-4 pt-6 border-t border-dashed border-gray-200 relative z-10">
+                <div className="flex justify-center gap-4 pt-6 border-t border-dashed border-rootly-border relative z-10">
                   <Link href="/about" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="outline" className="border-gray-200 text-[#1C1C1A] hover:bg-gray-50 px-6 py-5 rounded-full font-semibold transition-all shadow-sm cursor-pointer">
-                      Our Story
+                    <Button variant="outline" className="border-rootly-border text-rootly-text hover:bg-rootly-background px-6 py-5 rounded-full font-semibold transition-all shadow-sm cursor-pointer">
+                      {t('footer.ourStory')}
                     </Button>
                   </Link>
                   <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
-                    <Button className="bg-[#1D9E75] hover:bg-[#1a8c66] hover:shadow-[0_0_15px_rgba(29,158,117,0.35)] text-white px-6 py-5 rounded-full font-semibold transition-all shadow-sm hover:shadow-md cursor-pointer">
-                      Start a Project
+                    <Button className="bg-rootly-primary hover:brightness-90 hover:shadow-[0_0_15px_rgba(29,158,117,0.35)] text-white px-6 py-5 rounded-full font-semibold transition-all shadow-sm hover:shadow-md cursor-pointer">
+                      {t('nav.startProject')}
                     </Button>
                   </Link>
                 </div>

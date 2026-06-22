@@ -10,11 +10,12 @@ import { Textarea } from '@/components/ui/textarea'
 import { AppSelect } from '@/components/ui/app-select'
 import { Switch } from '@/components/ui/switch'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { BilingualField } from './bilingual-field'
 
 export interface FormField {
   name: string
   label: string
-  type: 'text' | 'number' | 'textarea' | 'switch' | 'select' | 'custom'
+  type: 'text' | 'number' | 'textarea' | 'switch' | 'select' | 'custom' | 'bilingual-text' | 'bilingual-textarea'
   options?: { value: string; label: string }[]
   placeholder?: string
   disabled?: boolean
@@ -48,6 +49,7 @@ export function DynamicConsoleForm({
     register,
     handleSubmit,
     setValue,
+    watch,
     control,
     formState: { errors },
   } = form
@@ -55,8 +57,8 @@ export function DynamicConsoleForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-h-[80vh] overflow-y-auto px-1 py-2 font-mono text-xs">
       {sections.map((section, sIdx) => (
-        <Card key={section.title} className="bg-white border-[#E2E2DF] border-dashed text-black rounded-lg">
-          <CardHeader className="py-3 border-b border-dashed border-[#E2E2DF]">
+        <Card key={section.title} className="bg-rootly-admin-card border-rootly-admin-border border-dashed text-rootly-text rounded-lg">
+          <CardHeader className="py-3 border-b border-dashed border-rootly-admin-border">
             <CardTitle className="text-xs text-gray-500 uppercase tracking-wider font-bold">
               {`[ 0${sIdx + 1} // ${section.title.toUpperCase().replace(/\s+/g, '_')} ]`}
             </CardTitle>
@@ -69,7 +71,7 @@ export function DynamicConsoleForm({
 
                 return (
                   <div key={field.name} className={cn("flex flex-col gap-1.5", field.gridClass)}>
-                    {field.type !== 'custom' && field.type !== 'switch' && (
+                    {field.type !== 'custom' && field.type !== 'switch' && !field.type.startsWith('bilingual') && (
                       <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">
                         {field.label}
                       </Label>
@@ -80,7 +82,7 @@ export function DynamicConsoleForm({
                         {...register(field.name)}
                         disabled={field.disabled}
                         placeholder={field.placeholder}
-                        className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black placeholder-gray-400 focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
+                        className="bg-rootly-admin-bg/50 border-rootly-admin-border border-dashed text-rootly-text placeholder-gray-400 focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
                       />
                     )}
 
@@ -90,7 +92,7 @@ export function DynamicConsoleForm({
                         {...register(field.name, { valueAsNumber: true })}
                         disabled={field.disabled}
                         placeholder={field.placeholder}
-                        className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
+                        className="bg-rootly-admin-bg/50 border-rootly-admin-border border-dashed text-rootly-text focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
                       />
                     )}
 
@@ -99,7 +101,37 @@ export function DynamicConsoleForm({
                         {...register(field.name)}
                         disabled={field.disabled}
                         placeholder={field.placeholder}
-                        className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black focus-visible:ring-[#1D9E75] font-mono text-xs min-h-[60px]"
+                        className="bg-rootly-admin-bg/50 border-rootly-admin-border border-dashed text-rootly-text focus-visible:ring-[#1D9E75] font-mono text-xs min-h-[60px]"
+                      />
+                    )}
+
+                    {field.type === 'bilingual-text' && (
+                      <BilingualField
+                        enName={field.name}
+                        idName={`${field.name}Id`}
+                        label={field.label}
+                        register={register}
+                        setValue={setValue}
+                        watch={watch}
+                        type="input"
+                        placeholder={field.placeholder}
+                        disabled={field.disabled}
+                        errorMessage={errors[field.name]?.message as string | undefined}
+                      />
+                    )}
+
+                    {field.type === 'bilingual-textarea' && (
+                      <BilingualField
+                        enName={field.name}
+                        idName={`${field.name}Id`}
+                        label={field.label}
+                        register={register}
+                        setValue={setValue}
+                        watch={watch}
+                        type="textarea"
+                        placeholder={field.placeholder}
+                        disabled={field.disabled}
+                        errorMessage={errors[field.name]?.message as string | undefined}
                       />
                     )}
 
@@ -128,10 +160,10 @@ export function DynamicConsoleForm({
         </Card>
       ))}
 
-      <div className="flex justify-end gap-3 pt-4 border-t border-dashed border-[#E2E2DF]">
+      <div className="flex justify-end gap-3 pt-4 border-t border-dashed border-rootly-admin-border">
         <Button
           type="submit"
-          className="bg-[#1D9E75] hover:bg-[#1a8c66] text-white font-mono text-xs uppercase tracking-wider border border-[#1D9E75] rounded-md h-10 px-6 cursor-pointer shadow-xs transition-all duration-200"
+          className="bg-rootly-primary hover:brightness-90 text-white font-mono text-xs uppercase tracking-wider border border-[#1D9E75] rounded-md h-10 px-6 cursor-pointer shadow-xs transition-all duration-200"
           disabled={isLoading}
         >
           {isLoading ? executingLabel : submitLabel}
@@ -149,7 +181,7 @@ function SelectField({ field, control, setValue }: { field: FormField; control: 
       onValueChange={(val) => setValue(field.name, val)}
       options={field.options || []}
       width="w-full"
-      className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black h-9 text-xs"
+      className="bg-rootly-admin-bg/50 border-rootly-admin-border border-dashed text-rootly-text h-9 text-xs"
     />
   )
 }
@@ -161,7 +193,7 @@ function SwitchField({ field, control, setValue }: { field: FormField; control: 
       <Switch
         checked={checked}
         onCheckedChange={(checked) => setValue(field.name, checked)}
-        className="data-[state=checked]:bg-[#1D9E75]"
+        className="data-[state=checked]:bg-rootly-primary"
         disabled={field.disabled}
       />
       <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px] cursor-pointer">

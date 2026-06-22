@@ -58,6 +58,9 @@
   --color-rootly-admin-sidebar: var(--rootly-admin-sidebar);
   --color-rootly-admin-card: var(--rootly-admin-card);
   --color-rootly-admin-border: var(--rootly-admin-border);
+  --color-rootly-surface: var(--rootly-surface);
+  --color-rootly-border: var(--rootly-border);
+  --color-rootly-deep-bg: var(--rootly-deep-bg);
 }
 
 :root {
@@ -105,6 +108,10 @@
   --rootly-admin-sidebar: #FFFFFF;
   --rootly-admin-card: #FFFFFF;
   --rootly-admin-border: #E2E2DF;
+  --rootly-surface: #FFFFFF;
+  --rootly-border: #E8E6E0;
+  --rootly-deep-bg: #1C1C1A;
+  --rootly-marquee-fade: #FFFFFF;
   
   /* Font variables */
   --font-serif: 'Georgia', 'Times New Roman', serif;
@@ -143,6 +150,22 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Rootly Brand Colors — Dark Mode */
+  --rootly-primary: #1D9E75;
+  --rootly-secondary: #5DCAA5;
+  --rootly-tertiary: #9FE1CB;
+  --rootly-text: #F0EFEB;
+  --rootly-background: #161615;
+  --rootly-muted: #A09F9A;
+  --rootly-surface: #2A2A28;
+  --rootly-border: #2E2E2C;
+  --rootly-deep-bg: #0E0E0D;
+  --rootly-marquee-fade: #2A2A28;
+  --rootly-admin-bg: #111110;
+  --rootly-admin-sidebar: #161615;
+  --rootly-admin-card: #2A2A28;
+  --rootly-admin-border: #2E2E2C;
 }
 
 @layer base {
@@ -173,7 +196,11 @@
   .bg-rootly-tertiary { background-color: var(--rootly-tertiary); }
   .bg-rootly-background { background-color: var(--rootly-background); }
   .bg-rootly-muted { background-color: var(--rootly-muted); }
+  .bg-rootly-surface { background-color: var(--rootly-surface); }
+  .bg-rootly-deep-bg { background-color: var(--rootly-deep-bg); }
   .border-rootly-muted { border-color: var(--rootly-muted); }
+  .border-rootly-border { border-color: var(--rootly-border); }
+  .border-rootly-admin-border { border-color: var(--rootly-admin-border); }
 }
 
 /* Custom Scrollbars */
@@ -206,4 +233,15 @@ body::-webkit-scrollbar-thumb,
     scrollbar-color: var(--sb-thumb-color)
                      var(--sb-track-color);
   }
+}
+
+/* Smooth theme transition — page fade pulse */
+@keyframes theme-blend {
+  0% { opacity: 1; }
+  35% { opacity: 0.55; }
+  100% { opacity: 1; }
+}
+
+html.color-transition {
+  animation: theme-blend 0.35s ease;
 }

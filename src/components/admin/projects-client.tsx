@@ -166,12 +166,12 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
   })
 
   return (
-    <div className="p-8 bg-[#F7F6F2] min-h-screen text-[#1C1C1A]">
+    <div className="p-8 bg-rootly-admin-bg min-h-screen text-rootly-text">
       {/* Telemetry Control Panel */}
-      <div className="flex flex-wrap items-center justify-between border-b border-dashed border-[#E2E2DF] pb-4 mb-8 font-mono text-[10px] gap-4">
+      <div className="flex flex-wrap items-center justify-between border-b border-dashed border-rootly-admin-border pb-4 mb-8 font-mono text-[10px] gap-4">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[#1D9E75] font-bold">SYSTEM CONTROL PANEL // PROJECT_DATABASE</span>
+          <span className="text-rootly-primary font-bold">SYSTEM CONTROL PANEL // PROJECT_DATABASE</span>
         </div>
         <div className="text-gray-400 uppercase tracking-wider font-semibold">
           NODE REGISTRY // SECURE CONNECTION
@@ -180,20 +180,20 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-serif text-[#1C1C1A]">Projects Console</h1>
-          <p className="text-xs font-mono text-[#888780] mt-1">QUERYING SYSTEM PROJECTS... STATUS: OK</p>
+          <h1 className="text-3xl font-serif text-rootly-text">Projects Console</h1>
+          <p className="text-xs font-mono text-rootly-muted mt-1">QUERYING SYSTEM PROJECTS... STATUS: OK</p>
         </div>
         <div className="flex items-center gap-3">
           <Button 
             variant="outline"
             onClick={handleOpenReorder}
-            className="border-[#E2E2DF] text-gray-700 font-mono text-xs uppercase tracking-wider h-10 px-4 cursor-pointer hover:bg-gray-50 border-dashed"
+            className="border-rootly-admin-border text-gray-700 font-mono text-xs uppercase tracking-wider h-10 px-4 cursor-pointer hover:bg-gray-50 border-dashed"
           >
             {"[ REORDER_NODES ]"}
           </Button>
           <Button 
             onClick={() => setIsCreateOpen(true)} 
-            className="bg-[#1D9E75] hover:bg-[#1a8c66] text-white font-mono text-xs uppercase tracking-wider border border-[#1D9E75] hover:border-[#1a8c66] rounded-md h-10 px-4 cursor-pointer shadow-xs transition-all duration-200"
+            className="bg-rootly-primary hover:brightness-90 text-white font-mono text-xs uppercase tracking-wider border border-[#1D9E75] hover:border-[#1a8c66] rounded-md h-10 px-4 cursor-pointer shadow-xs transition-all duration-200"
           >
             <Plus className="mr-2 h-3.5 w-3.5" />
             {"[ ADD_NEW_PROJECT ]"}
@@ -202,15 +202,15 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
       </div>
 
       {/* Filters Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 bg-white p-4 rounded-lg border border-[#E2E2DF] border-dashed font-mono">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 bg-rootly-admin-card p-4 rounded-lg border border-rootly-admin-border border-dashed font-mono">
         {/* Search bar */}
         <div className="relative flex-1 max-w-md">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#1D9E75] font-bold">DIR_SEARCH &gt;</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-rootly-primary font-bold">DIR_SEARCH &gt;</span>
           <Input
             placeholder="query_title_or_client..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-24 bg-[#F7F6F2]/65 border-[#E2E2DF] text-black placeholder-gray-450 focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
+            className="pl-24 bg-rootly-admin-bg/65 border-rootly-admin-border text-rootly-text placeholder-gray-450 focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
           />
         </div>
 
@@ -251,7 +251,7 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
       </div>
 
       {filteredProjects.length === 0 ? (
-        <Card className="bg-white border-[#E2E2DF] border-dashed text-black">
+        <Card className="bg-rootly-admin-card border-rootly-admin-border border-dashed text-rootly-text">
           <CardContent className="p-12 text-center text-gray-500 font-mono text-xs">
             {"// ERROR: NO REGISTERED PROJECT NODES MATCHING SEARCH METADATA."}
           </CardContent>
@@ -263,10 +263,10 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
             return (
               <div
                 key={project.id}
-                className="group bg-white rounded-lg border border-[#E2E2DF] border-dashed overflow-hidden hover:border-[#1D9E75] transition-all duration-300 flex flex-col hover:shadow-xs"
+                className="group bg-rootly-admin-card rounded-lg border border-rootly-admin-border border-dashed overflow-hidden hover:border-rootly-primary transition-all duration-300 flex flex-col hover:shadow-xs"
               >
                 {/* Header Telemetry bar */}
-                <div className="flex items-center justify-between px-3 py-2 border-b border-[#E2E2DF] border-dashed font-mono text-[9px] text-[#888780] bg-[#F7F6F2]/30">
+                <div className="flex items-center justify-between px-3 py-2 border-b border-rootly-admin-border border-dashed font-mono text-[9px] text-rootly-muted bg-rootly-admin-bg/30">
                   <div className="flex items-center gap-1.5">
                     <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${project.isFeatured ? 'bg-amber-400 animate-pulse' : 'bg-emerald-500'}`} />
                     <span>BUILD_ID: 0x{shortId}</span>
@@ -277,7 +277,7 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
                 </div>
 
                 {/* Thumbnail Container */}
-                <div className="relative aspect-video w-full bg-[#F7F6F2] overflow-hidden border-b border-[#E2E2DF] border-dashed">
+                <div className="relative aspect-video w-full bg-rootly-admin-bg overflow-hidden border-b border-rootly-admin-border border-dashed">
                   {project.thumbnailUrl ? (
                     <Image
                       src={project.thumbnailUrl}
@@ -294,11 +294,11 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
                   
                   {/* Overlay Badges */}
                   <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5 pointer-events-none font-mono">
-                    <Badge className="bg-[#1C1C1A] text-white border border-[#E2E2DF]/50 hover:bg-[#1C1C1A] text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-none">
+                    <Badge className="bg-[#1C1C1A] text-white border border-rootly-admin-border/50 hover:bg-[#1C1C1A] text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-none">
                       {categoryLabels[project.category] || project.category}
                     </Badge>
                     {project.isFeatured && (
-                      <Badge className="bg-[#1D9E75]/10 text-[#1D9E75] border border-[#1D9E75]/30 hover:bg-[#1D9E75]/10 text-[9px] flex items-center gap-1 px-2 py-0.5 rounded-none font-bold">
+                      <Badge className="bg-rootly-primary/10 text-rootly-primary border border-[#1D9E75]/30 hover:bg-rootly-primary/10 text-[9px] flex items-center gap-1 px-2 py-0.5 rounded-none font-bold">
                         <Star className="w-2.5 h-2.5 fill-[#1D9E75] stroke-[#1D9E75]" />
                         FEATURED
                       </Badge>
@@ -309,39 +309,39 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
                 {/* Card Body */}
                 <div className="p-4 flex-1 flex flex-col justify-between font-mono">
                   <div>
-                    <h3 className="font-serif text-base text-[#1C1C1A] font-bold line-clamp-1 group-hover:text-[#1D9E75] transition-colors leading-tight">
+                    <h3 className="font-serif text-base text-rootly-text font-bold line-clamp-1 group-hover:text-rootly-primary transition-colors leading-tight">
                       {project.title}
                     </h3>
                     
                     {/* Meta variables map */}
-                    <div className="mt-3.5 space-y-1 text-[10px] text-gray-500 border-t border-b border-dashed border-[#E2E2DF] py-2">
+                    <div className="mt-3.5 space-y-1 text-[10px] text-gray-500 border-t border-b border-dashed border-rootly-admin-border py-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-[#888780]">CLIENT ==&gt;</span>
-                        <span className="text-[#1C1C1A] font-bold truncate max-w-[150px]">{project.client || 'PERSONAL_PROJECT'}</span>
+                        <span className="text-rootly-muted">CLIENT ==&gt;</span>
+                        <span className="text-rootly-text font-bold truncate max-w-[150px]">{project.client || 'PERSONAL_PROJECT'}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-[#888780]">RELEASE_YEAR ==&gt;</span>
-                        <span className="text-[#1C1C1A] font-bold">{project.year}</span>
+                        <span className="text-rootly-muted">RELEASE_YEAR ==&gt;</span>
+                        <span className="text-rootly-text font-bold">{project.year}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-[#888780]">INDEX_SLUG ==&gt;</span>
-                        <span className="text-[#1D9E75] font-bold">{project.slug}</span>
+                        <span className="text-rootly-muted">INDEX_SLUG ==&gt;</span>
+                        <span className="text-rootly-primary font-bold">{project.slug}</span>
                       </div>
                     </div>
 
-                    <p className="text-[10px] text-[#888780] mt-3.5 line-clamp-2 leading-relaxed font-sans">
+                    <p className="text-[10px] text-rootly-muted mt-3.5 line-clamp-2 leading-relaxed font-sans">
                       {project.summary || 'No project summary telemetry provided.'}
                     </p>
                   </div>
 
                   {/* Card Action Buttons */}
-                  <div className="flex items-center justify-between mt-5 pt-3.5 border-t border-dashed border-[#E2E2DF]">
+                  <div className="flex items-center justify-between mt-5 pt-3.5 border-t border-dashed border-rootly-admin-border">
                     {project.liveUrl ? (
                       <a
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[10px] text-[#1D9E75] hover:text-[#1a8c66] flex items-center gap-1 font-bold tracking-wider hover:underline"
+                        className="text-[10px] text-rootly-primary hover:text-[#1a8c66] flex items-center gap-1 font-bold tracking-wider hover:underline"
                       >
                         <ExternalLink size={10} />
                         RUN_LIVE_ENVIRONMENT
@@ -355,7 +355,7 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEditClick(project)}
-                        className="text-[#1C1C1A] border border-[#E2E2DF] hover:border-[#1D9E75] hover:bg-[#1D9E75]/5 text-[9px] font-bold px-2 h-6 rounded-none cursor-pointer"
+                        className="text-rootly-text border border-rootly-admin-border hover:border-rootly-primary hover:bg-rootly-primary/5 text-[9px] font-bold px-2 h-6 rounded-none cursor-pointer"
                         title="Edit Project"
                       >
                         {"[ EDIT ]"}
@@ -396,33 +396,33 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
               onDrop={(e) => handleDrop(e, index)}
               onDragEnd={handleDragEnd}
               className={cn(
-                "flex items-center justify-between p-3 bg-white border border-dashed rounded-lg cursor-move transition-all",
+                "flex items-center justify-between p-3 bg-rootly-admin-card border border-dashed rounded-lg cursor-move transition-all",
                 draggedIndex === index 
-                  ? "opacity-50 border-[#1D9E75] bg-[#1D9E75]/5" 
-                  : "border-[#E2E2DF] hover:border-[#1D9E75]"
+                  ? "opacity-50 border-[#1D9E75] bg-rootly-primary/5" 
+                  : "border-rootly-admin-border hover:border-rootly-primary"
               )}
             >
               <div className="flex items-center gap-3">
                 <GripVertical className="h-4 w-4 text-gray-400 shrink-0" />
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-[#1C1C1A]">{project.title}</span>
-                  <span className="text-[9px] text-[#888780] uppercase">
+                  <span className="text-xs font-bold text-rootly-text">{project.title}</span>
+                  <span className="text-[9px] text-rootly-muted uppercase">
                     Category: {categoryLabels[project.category] || project.category} {project.client ? `// Client: ${project.client}` : ''}
                   </span>
                 </div>
               </div>
-              <Badge className="bg-[#F7F6F2] border border-dashed border-[#E2E2DF] text-gray-500 text-[10px] font-bold rounded-none px-2 py-0.5">
+              <Badge className="bg-rootly-admin-bg border border-dashed border-rootly-admin-border text-gray-500 text-[10px] font-bold rounded-none px-2 py-0.5">
                 POS_{index + 1}
               </Badge>
             </div>
           ))}
         </div>
-        <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-dashed border-[#E2E2DF] font-mono">
+        <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-dashed border-rootly-admin-border font-mono">
           <Button
             type="button"
             variant="outline"
             onClick={() => setIsReorderOpen(false)}
-            className="border-[#E2E2DF] border-dashed text-gray-700 cursor-pointer text-xs h-9 rounded-md px-4 uppercase"
+            className="border-rootly-admin-border border-dashed text-gray-700 cursor-pointer text-xs h-9 rounded-md px-4 uppercase"
             disabled={isSavingOrder}
           >
             {"[ CANCEL ]"}
@@ -430,7 +430,7 @@ export function ProjectsClient({ projectList }: ProjectsClientProps) {
           <Button
             type="button"
             onClick={handleSaveOrder}
-            className="bg-[#1D9E75] hover:bg-[#1a8c66] text-white border border-[#1D9E75] hover:border-[#1a8c66] cursor-pointer text-xs h-9 rounded-md px-4 uppercase"
+            className="bg-rootly-primary hover:brightness-90 text-white border border-[#1D9E75] hover:border-[#1a8c66] cursor-pointer text-xs h-9 rounded-md px-4 uppercase"
             disabled={isSavingOrder}
           >
             {isSavingOrder ? 'SAVING_SEQUENCE...' : '[ SAVE_SEQUENCE ]'}

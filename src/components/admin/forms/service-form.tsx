@@ -35,6 +35,7 @@ export function ServiceForm({ initialData, onSuccess }: ServiceFormProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [newUseCase, setNewUseCase] = useState('')
+  const [useCaseLang, setUseCaseLang] = useState<'en' | 'id'>('en')
 
   const form = useForm({
     resolver: zodResolver(serviceSchema),
@@ -60,13 +61,15 @@ export function ServiceForm({ initialData, onSuccess }: ServiceFormProps) {
 
   const handleAddUseCase = (setValue: any, useCasesList: string[]) => {
     if (newUseCase.trim()) {
-      setValue('useCases', [...useCasesList, newUseCase.trim()])
+      const field = useCaseLang === 'id' ? 'useCasesId' : 'useCases'
+      setValue(field, [...useCasesList, newUseCase.trim()])
       setNewUseCase('')
     }
   }
 
   const handleRemoveUseCase = (indexToRemove: number, setValue: any, useCasesList: string[]) => {
-    setValue('useCases', useCasesList.filter((_, i) => i !== indexToRemove))
+    const field = useCaseLang === 'id' ? 'useCasesId' : 'useCases'
+    setValue(field, useCasesList.filter((_, i) => i !== indexToRemove))
   }
 
   const onSubmit = async (data: ServiceFormData) => {
@@ -98,7 +101,7 @@ export function ServiceForm({ initialData, onSuccess }: ServiceFormProps) {
     {
       title: 'Basic Info Registry',
       fields: [
-        { name: 'title', label: 'Title', type: 'text' },
+        { name: 'title', label: 'Title', type: 'bilingual-text' },
         {
           name: 'slug',
           label: 'Slug',
@@ -108,7 +111,7 @@ export function ServiceForm({ initialData, onSuccess }: ServiceFormProps) {
               <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Slug</Label>
               <Input
                 {...f.register('slug')}
-                className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black placeholder-gray-400 mt-1.5 focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
+                className="bg-rootly-admin-bg/50 border-rootly-admin-border border-dashed text-rootly-text placeholder-gray-400 mt-1.5 focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
               />
               <span className="text-[9px] text-gray-400 block mt-1">{"// SYSTEM_GENERATED_NODE_URI"}</span>
             </div>
@@ -127,25 +130,51 @@ export function ServiceForm({ initialData, onSuccess }: ServiceFormProps) {
     {
       title: 'Service Capability Details',
       fields: [
-        { name: 'summary', label: 'Summary', type: 'textarea', gridClass: 'md:col-span-2' },
-        { name: 'description', label: 'Description', type: 'textarea', gridClass: 'md:col-span-2' },
+        { name: 'summary', label: 'Summary', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
+        { name: 'description', label: 'Description', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
         {
           name: 'useCases',
           label: 'Use Cases',
           type: 'custom',
           gridClass: 'md:col-span-2',
           renderCustom: (f) => {
-            const useCasesList = f.watch('useCases') || []
+            const useCasesList = f.watch(useCaseLang === 'id' ? 'useCasesId' : 'useCases') || []
             return (
               <div className="flex flex-col gap-1.5 font-mono">
-                <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Use Cases</Label>
+                <div className="flex items-center justify-between">
+                  <Label className="text-gray-500 font-bold uppercase tracking-wider text-[10px]">Use Cases</Label>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setUseCaseLang('en')}
+                      className={`text-[9px] font-bold font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border cursor-pointer transition-all ${
+                        useCaseLang === 'en'
+                          ? 'bg-rootly-primary/15 text-rootly-primary border-rootly-primary/40'
+                          : 'text-gray-400 border-transparent hover:text-gray-300 hover:border-rootly-admin-border'
+                      }`}
+                    >
+                      EN
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUseCaseLang('id')}
+                      className={`text-[9px] font-bold font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border cursor-pointer transition-all ${
+                        useCaseLang === 'id'
+                          ? 'bg-rootly-primary/15 text-rootly-primary border-rootly-primary/40'
+                          : 'text-gray-400 border-transparent hover:text-gray-300 hover:border-rootly-admin-border'
+                      }`}
+                    >
+                      ID
+                    </button>
+                  </div>
+                </div>
                 <div className="flex gap-2 mt-1 mb-2">
                   <Input
                     type="text"
                     value={newUseCase}
                     onChange={(e) => setNewUseCase(e.target.value)}
-                    placeholder="Add target application case..."
-                    className="bg-[#F7F6F2]/50 border-[#E2E2DF] border-dashed text-black focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
+                    placeholder={useCaseLang === 'id' ? 'Tambah kasus penggunaan...' : 'Add target application case...'}
+                    className="bg-rootly-admin-bg/50 border-rootly-admin-border border-dashed text-rootly-text focus-visible:ring-[#1D9E75] font-mono text-xs h-9"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault()
@@ -156,7 +185,7 @@ export function ServiceForm({ initialData, onSuccess }: ServiceFormProps) {
                   <Button
                     type="button"
                     onClick={() => handleAddUseCase(f.setValue, useCasesList)}
-                    className="bg-[#1D9E75] hover:bg-[#1a8c66] text-white border border-[#1D9E75] h-9 cursor-pointer font-mono text-xs uppercase"
+                    className="bg-rootly-primary hover:brightness-90 text-white border border-[#1D9E75] h-9 cursor-pointer font-mono text-xs uppercase"
                   >
                     Add
                   </Button>
@@ -164,7 +193,7 @@ export function ServiceForm({ initialData, onSuccess }: ServiceFormProps) {
 
                 <div className="flex flex-wrap gap-2 mt-2">
                   {useCasesList.map((useCase: string, index: number) => (
-                    <div key={index} className="flex items-center gap-1.5 px-2.5 py-1 bg-[#F7F6F2]/40 border border-dashed border-[#E2E2DF] text-xs text-black font-mono">
+                    <div key={index} className="flex items-center gap-1.5 px-2.5 py-1 bg-rootly-admin-bg/40 border border-dashed border-rootly-admin-border text-xs text-rootly-text font-mono">
                       <span>{useCase}</span>
                       <button
                         type="button"

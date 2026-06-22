@@ -21,13 +21,13 @@ export function ConsoleModal({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent 
-        className={`${maxWidth} bg-[#F7F6F2] border-[#E2E2DF] border-dashed text-black`}
+        className={`${maxWidth} bg-rootly-admin-bg border-rootly-admin-border border-dashed text-rootly-text`}
         data-lenis-prevent
       >
         {isOpen && (
           <>
             <DialogHeader>
-              <DialogTitle className="text-lg font-semibold text-[#1C1C1A] font-mono">
+              <DialogTitle className="text-lg font-semibold text-rootly-text font-mono">
                 {title}
               </DialogTitle>
               {subtitle && (

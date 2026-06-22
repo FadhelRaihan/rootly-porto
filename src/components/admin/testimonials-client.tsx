@@ -139,12 +139,12 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
   }
 
   return (
-    <div className="p-8 bg-[#F7F6F2] min-h-screen text-[#1C1C1A]">
+    <div className="p-8 bg-rootly-admin-bg min-h-screen text-rootly-text">
       {/* Telemetry Control Panel */}
-      <div className="flex flex-wrap items-center justify-between border-b border-dashed border-[#E2E2DF] pb-4 mb-8 font-mono text-[10px] gap-4">
+      <div className="flex flex-wrap items-center justify-between border-b border-dashed border-rootly-admin-border pb-4 mb-8 font-mono text-[10px] gap-4">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#1D9E75] animate-pulse" />
-          <span className="text-[#1D9E75] font-bold">SYSTEM CONTROL PANEL // TESTIMONIALS_DATABASE</span>
+          <span className="w-2 h-2 rounded-full bg-rootly-primary animate-pulse" />
+          <span className="text-rootly-primary font-bold">SYSTEM CONTROL PANEL // TESTIMONIALS_DATABASE</span>
         </div>
         <div className="text-gray-400 uppercase tracking-wider font-semibold">
           NODE REGISTRY // SECURE CONNECTION
@@ -153,21 +153,21 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-serif text-[#1C1C1A]">Testimonials Console</h1>
-          <p className="text-xs font-mono text-[#888780] mt-1">QUERYING SYSTEM FEEDBACKS... STATUS: OK</p>
+          <h1 className="text-3xl font-serif text-rootly-text">Testimonials Console</h1>
+          <p className="text-xs font-mono text-rootly-muted mt-1">QUERYING SYSTEM FEEDBACKS... STATUS: OK</p>
         </div>
         <div className="flex items-center gap-3">
           <Button 
             variant="outline"
             onClick={handleOpenReorder}
-            className="border-[#E2E2DF] text-gray-700 font-mono text-xs uppercase tracking-wider h-10 px-4 cursor-pointer hover:bg-gray-50 border-dashed"
+            className="border-rootly-admin-border text-gray-700 font-mono text-xs uppercase tracking-wider h-10 px-4 cursor-pointer hover:bg-gray-50 border-dashed"
           >
             <ArrowUpDown className="mr-2 h-3.5 w-3.5 text-gray-500" />
             {"[ REORDER_TESTIMONIALS ]"}
           </Button>
           <Button 
             onClick={() => setIsCreateOpen(true)}
-            className="bg-[#1D9E75] hover:bg-[#1a8c66] text-white font-mono text-xs uppercase tracking-wider border border-[#1D9E75] hover:border-[#1a8c66] rounded-md h-10 px-4 cursor-pointer shadow-xs transition-all duration-200"
+            className="bg-rootly-primary hover:brightness-90 text-white font-mono text-xs uppercase tracking-wider border border-[#1D9E75] hover:border-[#1a8c66] rounded-md h-10 px-4 cursor-pointer shadow-xs transition-all duration-200"
           >
             <Plus className="mr-2 h-3.5 w-3.5" />
             {"[ ADD_TESTIMONIAL ]"}
@@ -177,7 +177,7 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
 
       <div className="grid gap-4">
         {testimonialList.length === 0 ? (
-          <Card className="bg-white border-[#E2E2DF] border-dashed text-black">
+          <Card className="bg-rootly-admin-card border-rootly-admin-border border-dashed text-rootly-text">
             <CardContent className="p-12 text-center text-gray-500 font-mono text-xs">
               {"// ERROR: NO REGISTERED TESTIMONIAL READOUTS FOUND."}
             </CardContent>
@@ -188,11 +188,11 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
             .map((testimonial) => {
               const shortId = testimonial.id.slice(0, 8).toUpperCase()
               return (
-                <Card key={testimonial.id} className="bg-white border-[#E2E2DF] border-dashed hover:border-[#1D9E75] hover:shadow-xs transition-all duration-300 text-black group font-mono">
+                <Card key={testimonial.id} className="bg-rootly-admin-card border-rootly-admin-border border-dashed hover:border-rootly-primary hover:shadow-xs transition-all duration-300 text-rootly-text group font-mono">
                   <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between p-5 gap-4">
                     <div className="flex items-start sm:items-center gap-4 flex-1">
                       {/* Client Avatar */}
-                      <div className="w-12 h-12 border border-dashed border-[#E2E2DF] bg-gray-50 flex items-center justify-center overflow-hidden shrink-0 shadow-2xs rounded-none">
+                      <div className="w-12 h-12 border border-dashed border-rootly-admin-border bg-gray-50 flex items-center justify-center overflow-hidden shrink-0 shadow-2xs rounded-none">
                         {testimonial.clientPhoto ? (
                           <Image 
                             src={testimonial.clientPhoto} 
@@ -210,13 +210,13 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
-                          <h3 className="font-serif text-base font-bold text-[#1C1C1A] transition-colors group-hover:text-[#1D9E75]">
+                          <h3 className="font-serif text-base font-bold text-rootly-text transition-colors group-hover:text-rootly-primary">
                             {testimonial.clientName}
                           </h3>
                           <span className="text-[10px] font-mono text-amber-600 font-bold bg-amber-500/5 px-2 py-0.5 border border-dashed border-amber-500/20">
                             {`[ RATING: ${testimonial.rating}/5 ★ ]`}
                           </span>
-                          <span className="text-[9px] text-[#888780] font-mono">{"// ID: 0x"}{shortId}</span>
+                          <span className="text-[9px] text-rootly-muted font-mono">{"// ID: 0x"}{shortId}</span>
                         </div>
                         
                         {/* Rolling Panel */}
@@ -231,7 +231,7 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
                             
                             {/* Layer B: Client Details */}
                             <div className="h-[20px] flex items-center shrink-0">
-                              <p className="text-[#1D9E75] font-semibold truncate w-full">
+                              <p className="text-rootly-primary font-semibold truncate w-full">
                                 {"METRIC ==> "}{testimonial.clientRole} at {testimonial.clientCompany}
                               </p>
                             </div>
@@ -240,7 +240,7 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
                       </div>
                     </div>
                     
-                    <div className="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-[#E2E2DF]/50 border-dashed">
+                    <div className="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-rootly-admin-border/50 border-dashed">
                       <div className="flex items-center gap-1.5">
                         {testimonial.isFeatured && (
                           <span className="text-[10px] text-amber-600 font-bold bg-amber-500/5 border border-dashed border-amber-500/20 px-2 py-0.5">
@@ -248,8 +248,8 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
                           </span>
                         )}
                         {testimonial.isActive ? (
-                          <div className="flex items-center gap-1.5 text-[10px] text-[#1D9E75] font-bold bg-[#1D9E75]/5 border border-dashed border-[#1D9E75]/20 px-2 py-0.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#1D9E75] animate-pulse" />
+                          <div className="flex items-center gap-1.5 text-[10px] text-rootly-primary font-bold bg-rootly-primary/5 border border-dashed border-[#1D9E75]/20 px-2 py-0.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-rootly-primary animate-pulse" />
                             ACTIVE
                           </div>
                         ) : (
@@ -265,7 +265,7 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
                           variant="ghost" 
                           size="sm" 
                           onClick={() => handleEditClick(testimonial)}
-                          className="text-[#1C1C1A] border border-[#E2E2DF] hover:border-[#1D9E75] hover:bg-[#1D9E75]/5 text-[9px] font-bold px-2 h-6 rounded-none cursor-pointer"
+                          className="text-rootly-text border border-rootly-admin-border hover:border-rootly-primary hover:bg-rootly-primary/5 text-[9px] font-bold px-2 h-6 rounded-none cursor-pointer"
                           title="Edit Testimonial"
                         >
                           {"[ EDIT ]"}
@@ -306,15 +306,15 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
               onDrop={(e) => handleDrop(e, index)}
               onDragEnd={handleDragEnd}
               className={cn(
-                "flex items-center justify-between p-3 bg-white border border-dashed rounded-lg cursor-move transition-all",
+                "flex items-center justify-between p-3 bg-rootly-admin-card border border-dashed rounded-lg cursor-move transition-all",
                 draggedIndex === index 
-                  ? "opacity-50 border-[#1D9E75] bg-[#1D9E75]/5" 
-                  : "border-[#E2E2DF] hover:border-[#1D9E75]"
+                  ? "opacity-50 border-[#1D9E75] bg-rootly-primary/5" 
+                  : "border-rootly-admin-border hover:border-rootly-primary"
               )}
             >
               <div className="flex items-center gap-3">
                 <GripVertical className="h-4 w-4 text-gray-400 shrink-0" />
-                <div className="w-8 h-8 border border-dashed border-[#E2E2DF] flex items-center justify-center overflow-hidden shrink-0 shadow-2xs rounded-none bg-gray-50">
+                <div className="w-8 h-8 border border-dashed border-rootly-admin-border flex items-center justify-center overflow-hidden shrink-0 shadow-2xs rounded-none bg-gray-50">
                   {testimonial.clientPhoto ? (
                     <Image 
                       src={testimonial.clientPhoto} 
@@ -329,20 +329,20 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
                     </span>
                   )}
                 </div>
-                <span className="text-xs font-bold text-[#1C1C1A]">{testimonial.clientName}</span>
+                <span className="text-xs font-bold text-rootly-text">{testimonial.clientName}</span>
               </div>
-              <Badge className="bg-[#F7F6F2] border border-dashed border-[#E2E2DF] text-gray-500 text-[10px] font-bold rounded-none px-2 py-0.5 font-mono">
+              <Badge className="bg-rootly-admin-bg border border-dashed border-rootly-admin-border text-gray-500 text-[10px] font-bold rounded-none px-2 py-0.5 font-mono">
                 POS_{index + 1}
               </Badge>
             </div>
           ))}
         </div>
-        <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-dashed border-[#E2E2DF] font-mono">
+        <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-dashed border-rootly-admin-border font-mono">
           <Button
             type="button"
             variant="outline"
             onClick={() => setIsReorderOpen(false)}
-            className="border-[#E2E2DF] border-dashed text-gray-700 cursor-pointer text-xs h-9 rounded-md px-4 uppercase"
+            className="border-rootly-admin-border border-dashed text-gray-700 cursor-pointer text-xs h-9 rounded-md px-4 uppercase"
             disabled={isSavingOrder}
           >
             {"[ CANCEL ]"}
@@ -350,7 +350,7 @@ export function TestimonialsClient({ testimonialList }: TestimonialsClientProps)
           <Button
             type="button"
             onClick={handleSaveOrder}
-            className="bg-[#1D9E75] hover:bg-[#1a8c66] text-white border border-[#1D9E75] hover:border-[#1a8c66] cursor-pointer text-xs h-9 rounded-md px-4 uppercase"
+            className="bg-rootly-primary hover:brightness-90 text-white border border-[#1D9E75] hover:border-[#1a8c66] cursor-pointer text-xs h-9 rounded-md px-4 uppercase"
             disabled={isSavingOrder}
           >
             {isSavingOrder ? 'SAVING_SEQUENCE...' : '[ SAVE_SEQUENCE ]'}

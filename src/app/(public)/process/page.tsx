@@ -2,80 +2,82 @@ import { Metadata } from 'next'
 import { AnimatedSection } from '@/components/public/shared/animated-section'
 import { Terminal } from 'lucide-react'
 import { CTA } from '@/components/public/shared/cta'
+import { getServerTranslation } from '@/lib/i18n-server'
 
 export const metadata: Metadata = {
   title: 'Process — Rootly',
   description: 'How we work: from discovery to delivery, we keep you involved every step of the way.',
 }
 
-const steps = [
-  {
-    number: '01',
-    title: 'Discovery',
-    description: 'We start by understanding your business, your goals, and your users. We ask questions, do research, and dig deep to uncover what really matters.',
-    items: ['Business goals analysis', 'User research', 'Competitor analysis', 'Technical feasibility check'],
-  },
-  {
-    number: '02',
-    title: 'Strategy',
-    description: 'Based on our findings, we create a clear roadmap. We define the scope, prioritize features, and outline the technical approach.',
-    items: ['Project roadmap', 'Feature prioritization', 'Technical architecture', 'Timeline & budget planning'],
-  },
-  {
-    number: '03',
-    title: 'Design',
-    description: 'We design with purpose. Every screen, every interaction, every detail is crafted to solve problems and create great experiences.',
-    items: ['UI/UX design', 'Interactive prototypes', 'Design system', 'User testing'],
-  },
-  {
-    number: '04',
-    title: 'Development',
-    description: 'We build using modern, maintainable technologies. We communicate regularly and show you progress every two weeks.',
-    items: ['Agile development', 'Code reviews', 'Continuous integration', 'Regular demos'],
-  },
-  {
-    number: '05',
-    title: 'Launch',
-    description: 'We do not just hand over the code and walk away. We help you deploy, train your team, and make sure everything runs smoothly.',
-    items: ['Deployment assistance', 'Testing & QA', 'Team training', 'Documentation'],
-  },
-  {
-    number: '06',
-    title: 'Ongoing Support',
-    description: 'Technology needs care. We offer ongoing support to keep your product running, improving, and adapting to changing needs.',
-    items: ['Maintenance & updates', 'Performance monitoring', 'Feature enhancements', 'Priority support'],
-  },
-]
+export default async function ProcessPage() {
+  const { t } = await getServerTranslation()
 
-export default function ProcessPage() {
+  const steps = [
+    {
+      number: '01',
+      titleKey: 'process.step1.title',
+      descKey: 'process.step1.desc',
+      itemsKey: 'process.step1.items',
+    },
+    {
+      number: '02',
+      titleKey: 'process.step2.title',
+      descKey: 'process.step2.desc',
+      itemsKey: 'process.step2.items',
+    },
+    {
+      number: '03',
+      titleKey: 'process.step3.title',
+      descKey: 'process.step3.desc',
+      itemsKey: 'process.step3.items',
+    },
+    {
+      number: '04',
+      titleKey: 'process.step4.title',
+      descKey: 'process.step4.desc',
+      itemsKey: 'process.step4.items',
+    },
+    {
+      number: '05',
+      titleKey: 'process.step5.title',
+      descKey: 'process.step5.desc',
+      itemsKey: 'process.step5.items',
+    },
+    {
+      number: '06',
+      titleKey: 'process.step6.title',
+      descKey: 'process.step6.desc',
+      itemsKey: 'process.step6.items',
+    },
+  ]
+
   return (
-    <div className="pt-20 bg-[#F7F6F2] min-h-screen text-[#1C1C1A]">
+    <div className="pt-20 bg-rootly-background min-h-screen text-rootly-text">
       {/* Hero */}
-      <section className="py-20 relative overflow-hidden border-b border-dashed border-[#E8E6E0]">
-        {/* Warm Dotted Grid Background */}
+      <section className="py-20 relative overflow-hidden border-b border-dashed border-rootly-border">
         <div className="absolute inset-0 bg-[radial-gradient(#1d9e7508_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
           <AnimatedSection>
             <div className="flex items-center gap-2 mb-4">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-mono text-xs tracking-widest text-[#1D9E75] uppercase">
+              <span className="font-mono text-xs tracking-widest text-rootly-primary uppercase">
                 {"[ SYSTEM // DEPLOYMENT PIPELINE ]"}
               </span>
             </div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif text-[#1C1C1A] mb-6 leading-tight">
-              How We Work
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif text-rootly-text mb-6 leading-tight">
+              {t('process.title')}
             </h1>
-            <p className="text-lg text-[#888780] max-w-2xl font-mono text-xs">
-              A CLEAR, TRANSPARENT PIPELINE DESIGNED TO ANCHOR YOUR PROJECT AND ENSURE SYSTEM STABILITY.
+            <p className="text-lg text-rootly-muted max-w-2xl font-mono text-xs">
+              {t('process.subtitle')}
             </p>
           </AnimatedSection>
         </div>
       </section>
 
       {/* Steps List */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section className="py-20 bg-rootly-surface relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-24 relative z-10">
           {steps.map((step, index) => (
             <AnimatedSection key={step.number} delay={index * 0.1}>
@@ -83,19 +85,19 @@ export default function ProcessPage() {
                 
                 {/* Number & Title */}
                 <div className="lg:col-span-3">
-                  <span className="text-sm font-mono text-[#1D9E75] tracking-widest block uppercase mb-1">
+                  <span className="text-sm font-mono text-rootly-primary tracking-widest block uppercase mb-1">
                     {`[ PHASE // 0${index + 1} ]`}
                   </span>
-                  <h3 className="text-3xl font-serif text-[#1C1C1A] mt-2">{step.title}</h3>
+                  <h3 className="text-3xl font-serif text-rootly-text mt-2">{t(step.titleKey)}</h3>
                 </div>
 
                 {/* Description & List */}
                 <div className="lg:col-span-6">
-                  <p className="text-[#888780] text-sm leading-relaxed mb-6 font-sans">{step.description}</p>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-[#F7F6F2]/50 p-4 border border-[#E8E6E0] rounded-xl font-mono text-xs text-[#888780]">
-                    {step.items.map((item) => (
+                  <p className="text-rootly-muted text-sm leading-relaxed mb-6 font-sans">{t(step.descKey)}</p>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-rootly-background/50 p-4 border border-rootly-border rounded-xl font-mono text-xs text-rootly-muted">
+                    {t(step.itemsKey).split(',').map((item: string) => (
                       <li key={item} className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-[#1D9E75] rounded-full shrink-0" />
+                        <span className="w-1.5 h-1.5 bg-rootly-primary rounded-full shrink-0" />
                         <span className="truncate">{item}</span>
                       </li>
                     ))}
@@ -104,13 +106,13 @@ export default function ProcessPage() {
 
                 {/* Right Side Visual Diagnostic Box */}
                 <div className="lg:col-span-3 hidden lg:block">
-                  <div className="bg-[#1C1C1A] text-gray-300 rounded-xl p-4 border border-[#2A2A28] font-mono text-[9px] shadow-sm relative overflow-hidden">
+                  <div className="bg-rootly-deep-bg text-gray-300 rounded-xl p-4 border border-rootly-border/60 font-mono text-[9px] shadow-sm relative overflow-hidden">
                     <div className="absolute inset-0 bg-[radial-gradient(rgba(29,158,117,0.02)_1px,transparent_1px)] bg-[size:12px_12px] pointer-events-none" />
                     
                     {/* Console Tab Header */}
-                    <div className="flex items-center justify-between border-b border-[#2A2A28] pb-2 mb-2 text-gray-500">
+                    <div className="flex items-center justify-between border-b border-rootly-border/60 pb-2 mb-2 text-gray-500">
                       <div className="flex items-center gap-1.5">
-                        <Terminal className="w-3 h-3 text-[#1D9E75]" />
+                        <Terminal className="w-3 h-3 text-rootly-primary" />
                         <span>
                           {step.number === '01' && 'research_node.sh'}
                           {step.number === '02' && 'sys_blueprint.cfg'}

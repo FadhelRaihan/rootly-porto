@@ -7,7 +7,7 @@ import { AnimatedSection } from '@/components/public/shared/animated-section'
 
 export function CTA() {
   return (
-    <section className="py-20 bg-gradient-to-br from-[#1D9E75] to-[#12664B] relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-br from-rootly-primary to-[#12664B] relative overflow-hidden">
       {/* Subtle Neural Dotted Grid Background */}
       <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
       {/* White Ambient Glow Center */}
@@ -31,7 +31,7 @@ export function CTA() {
             
             <div className="flex justify-center mb-8">
               <Link href="/contact">
-                <Button size="lg" variant="secondary" className="text-[#1D9E75] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-300 cursor-pointer">
+                <Button size="lg" variant="secondary" className="text-rootly-primary hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-300 cursor-pointer">
                   Start a Conversation <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>

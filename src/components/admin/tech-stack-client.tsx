@@ -28,12 +28,12 @@ interface TechStackClientProps {
 }
 
 const CATEGORIES = [
-  { key: 'FRONTEND', label: 'Frontend', icon: Code2, color: 'text-[#1D9E75] bg-[#1D9E75]/5 border-[#1D9E75]/20' },
-  { key: 'BACKEND', label: 'Backend', icon: Terminal, color: 'text-[#1D9E75] bg-[#1D9E75]/5 border-[#1D9E75]/20' },
-  { key: 'DATABASE', label: 'Database', icon: Database, color: 'text-[#1D9E75] bg-[#1D9E75]/5 border-[#1D9E75]/20' },
-  { key: 'MOBILE', label: 'Mobile', icon: Smartphone, color: 'text-[#1D9E75] bg-[#1D9E75]/5 border-[#1D9E75]/20' },
-  { key: 'DEVOPS', label: 'DevOps', icon: Settings, color: 'text-[#1D9E75] bg-[#1D9E75]/5 border-[#1D9E75]/20' },
-  { key: 'DESIGN', label: 'Design', icon: Palette, color: 'text-[#1D9E75] bg-[#1D9E75]/5 border-[#1D9E75]/20' },
+  { key: 'FRONTEND', label: 'Frontend', icon: Code2, color: 'text-rootly-primary bg-rootly-primary/5 border-[#1D9E75]/20' },
+  { key: 'BACKEND', label: 'Backend', icon: Terminal, color: 'text-rootly-primary bg-rootly-primary/5 border-[#1D9E75]/20' },
+  { key: 'DATABASE', label: 'Database', icon: Database, color: 'text-rootly-primary bg-rootly-primary/5 border-[#1D9E75]/20' },
+  { key: 'MOBILE', label: 'Mobile', icon: Smartphone, color: 'text-rootly-primary bg-rootly-primary/5 border-[#1D9E75]/20' },
+  { key: 'DEVOPS', label: 'DevOps', icon: Settings, color: 'text-rootly-primary bg-rootly-primary/5 border-[#1D9E75]/20' },
+  { key: 'DESIGN', label: 'Design', icon: Palette, color: 'text-rootly-primary bg-rootly-primary/5 border-[#1D9E75]/20' },
 ] as const
 
 export function TechStackClient({ techList }: TechStackClientProps) {
@@ -85,12 +85,12 @@ export function TechStackClient({ techList }: TechStackClientProps) {
     : CATEGORIES.filter((cat) => cat.key === activeCategory)
 
   return (
-    <div className="p-8 bg-[#F7F6F2] min-h-screen text-[#1C1C1A]">
+    <div className="p-8 bg-rootly-admin-bg min-h-screen text-rootly-text">
       {/* Telemetry Control Panel */}
-      <div className="flex flex-wrap items-center justify-between border-b border-dashed border-[#E2E2DF] pb-4 mb-8 font-mono text-[10px] gap-4">
+      <div className="flex flex-wrap items-center justify-between border-b border-dashed border-rootly-admin-border pb-4 mb-8 font-mono text-[10px] gap-4">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#1D9E75] animate-pulse" />
-          <span className="text-[#1D9E75] font-bold">SYSTEM CONTROL PANEL // TECH_STACK_DATABASE</span>
+          <span className="w-2 h-2 rounded-full bg-rootly-primary animate-pulse" />
+          <span className="text-rootly-primary font-bold">SYSTEM CONTROL PANEL // TECH_STACK_DATABASE</span>
         </div>
         <div className="text-gray-400 uppercase tracking-wider font-semibold">
           NODE REGISTRY // SECURE CONNECTION
@@ -99,12 +99,12 @@ export function TechStackClient({ techList }: TechStackClientProps) {
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-3xl font-serif text-[#1C1C1A]">Tech Stack Console</h1>
-          <p className="text-xs font-mono text-[#888780] mt-1">QUERYING SYSTEM STACKS... STATUS: ACTIVE</p>
+          <h1 className="text-3xl font-serif text-rootly-text">Tech Stack Console</h1>
+          <p className="text-xs font-mono text-rootly-muted mt-1">QUERYING SYSTEM STACKS... STATUS: ACTIVE</p>
         </div>
         <Button 
           onClick={() => setIsCreateOpen(true)}
-          className="bg-[#1D9E75] hover:bg-[#1a8c66] text-white font-mono text-xs uppercase tracking-wider border border-[#1D9E75] hover:border-[#1a8c66] rounded-md h-10 px-4 cursor-pointer shadow-xs transition-all duration-200"
+          className="bg-rootly-primary hover:brightness-90 text-white font-mono text-xs uppercase tracking-wider border border-[#1D9E75] hover:border-[#1a8c66] rounded-md h-10 px-4 cursor-pointer shadow-xs transition-all duration-200"
         >
           <Plus className="mr-2 h-3.5 w-3.5" />
           {"[ ADD_NEW_STACK ]"}
@@ -112,10 +112,10 @@ export function TechStackClient({ techList }: TechStackClientProps) {
       </div>
 
       {/* Interactive Command Filter Station */}
-      <div className="mb-8 border border-dashed border-[#E2E2DF] bg-white p-4 font-mono text-xs rounded-lg">
+      <div className="mb-8 border border-dashed border-rootly-admin-border bg-rootly-admin-card p-4 font-mono text-xs rounded-lg">
         <div className="text-gray-400 mb-2 flex items-center gap-1 text-[10px] uppercase font-bold">
           <span>DIR_QUERY_FILTER &gt; select_category --active=</span>
-          <span className="text-[#1D9E75]">{activeCategory}</span>
+          <span className="text-rootly-primary">{activeCategory}</span>
         </div>
         <div className="flex flex-wrap gap-2">
           <button
@@ -123,8 +123,8 @@ export function TechStackClient({ techList }: TechStackClientProps) {
             className={cn(
               "px-3 py-1.5 border text-xs cursor-pointer transition-all",
               activeCategory === 'ALL'
-                ? "bg-[#1D9E75]/10 border-[#1D9E75] text-[#1D9E75] font-bold"
-                : "border-dashed border-[#E2E2DF] hover:border-[#1D9E75] text-gray-500 hover:text-black"
+                ? "bg-rootly-primary/10 border-[#1D9E75] text-rootly-primary font-bold"
+                : "border-dashed border-rootly-admin-border hover:border-rootly-primary text-gray-500 hover:text-rootly-text"
             )}
           >
             {`[ ALL_NODES (${techList.length}) ]`}
@@ -138,8 +138,8 @@ export function TechStackClient({ techList }: TechStackClientProps) {
                 className={cn(
                   "px-3 py-1.5 border text-xs cursor-pointer transition-all",
                   activeCategory === cat.key
-                    ? "bg-[#1D9E75]/10 border-[#1D9E75] text-[#1D9E75] font-bold"
-                    : "border-dashed border-[#E2E2DF] hover:border-[#1D9E75] text-gray-500 hover:text-black"
+                    ? "bg-rootly-primary/10 border-[#1D9E75] text-rootly-primary font-bold"
+                    : "border-dashed border-rootly-admin-border hover:border-rootly-primary text-gray-500 hover:text-rootly-text"
                 )}
               >
                 {`[ ${cat.label.toUpperCase()} (${count}) ]`}
@@ -156,15 +156,15 @@ export function TechStackClient({ techList }: TechStackClientProps) {
           const items = techList.filter((item) => item.category === cat.key)
           
           return (
-            <Card key={cat.key} className="bg-white border-[#E2E2DF] border-dashed shadow-xs flex flex-col min-h-[300px] rounded-lg">
-              <CardHeader className="border-b border-dashed border-[#E2E2DF] pb-3 flex flex-row items-center justify-between space-y-0 font-mono">
-                <CardTitle className="text-[#1C1C1A] font-serif text-base flex items-center gap-2 font-bold">
-                  <span className="p-1 border border-dashed border-[#E2E2DF] bg-[#F7F6F2]/35 text-[#1D9E75]">
+            <Card key={cat.key} className="bg-rootly-admin-card border-rootly-admin-border border-dashed shadow-xs flex flex-col min-h-[300px] rounded-lg">
+              <CardHeader className="border-b border-dashed border-rootly-admin-border pb-3 flex flex-row items-center justify-between space-y-0 font-mono">
+                <CardTitle className="text-rootly-text font-serif text-base flex items-center gap-2 font-bold">
+                  <span className="p-1 border border-dashed border-rootly-admin-border bg-rootly-admin-bg/35 text-rootly-primary">
                     <CatIcon className="w-3.5 h-3.5" />
                   </span>
                   {cat.label}
                 </CardTitle>
-                <Badge variant="outline" className="border-[#E2E2DF] border-dashed text-gray-500 bg-[#F7F6F2] font-bold text-[9px] rounded-none px-2 py-0.5">
+                <Badge variant="outline" className="border-rootly-admin-border border-dashed text-gray-500 bg-rootly-admin-bg font-bold text-[9px] rounded-none px-2 py-0.5">
                   {`[ ${items.length} NODES ]`}
                 </Badge>
               </CardHeader>
@@ -180,11 +180,11 @@ export function TechStackClient({ techList }: TechStackClientProps) {
                       return (
                         <div 
                           key={tech.id} 
-                          className="group/item flex items-center justify-between p-3 border border-dashed border-[#E2E2DF] hover:border-[#1D9E75] transition-all duration-200 bg-white"
+                          className="group/item flex items-center justify-between p-3 border border-dashed border-rootly-admin-border hover:border-rootly-primary transition-all duration-200 bg-rootly-admin-card"
                         >
                           <div className="flex items-center gap-3">
                             {/* Tech Icon / Avatar */}
-                            <div className="w-8 h-8 border border-dashed border-[#E2E2DF] flex items-center justify-center overflow-hidden shrink-0 bg-[#F7F6F2]/20 p-1">
+                            <div className="w-8 h-8 border border-dashed border-rootly-admin-border flex items-center justify-center overflow-hidden shrink-0 bg-rootly-admin-bg/20 p-1">
                               {tech.iconUrl ? (
                                 <Image 
                                   src={tech.iconUrl} 
@@ -199,15 +199,15 @@ export function TechStackClient({ techList }: TechStackClientProps) {
                             </div>
                             
                             <div className="flex flex-col">
-                              <span className="text-xs font-bold text-[#1C1C1A]">{tech.name}</span>
-                              <div className="flex items-center gap-1.5 text-[9px] text-[#888780] mt-0.5">
+                              <span className="text-xs font-bold text-rootly-text">{tech.name}</span>
+                              <div className="flex items-center gap-1.5 text-[9px] text-rootly-muted mt-0.5">
                                 <span>{`NODE::0x${shortId}`}</span>
                                 <span>{"//"}</span>
                                 <span className={cn(
                                   "w-1.5 h-1.5 rounded-full shrink-0",
-                                  tech.isActive ? "bg-[#1D9E75] animate-pulse" : "bg-gray-300"
+                                  tech.isActive ? "bg-rootly-primary animate-pulse" : "bg-gray-300"
                                 )} />
-                                <span className={tech.isActive ? "text-[#1D9E75] font-semibold" : "text-gray-400"}>
+                                <span className={tech.isActive ? "text-rootly-primary font-semibold" : "text-gray-400"}>
                                   {tech.isActive ? "ACTIVE" : "OFFLINE"}
                                 </span>
                               </div>
@@ -219,7 +219,7 @@ export function TechStackClient({ techList }: TechStackClientProps) {
                               variant="ghost" 
                               size="sm" 
                               onClick={() => handleEditClick(tech)}
-                              className="text-[#1C1C1A] border border-[#E2E2DF] hover:border-[#1D9E75] hover:bg-[#1D9E75]/5 text-[8px] font-bold px-1.5 h-5 rounded-none cursor-pointer"
+                              className="text-rootly-text border border-rootly-admin-border hover:border-rootly-primary hover:bg-rootly-primary/5 text-[8px] font-bold px-1.5 h-5 rounded-none cursor-pointer"
                               title="Edit"
                             >
                               {"[ EDIT ]"}

@@ -41,10 +41,10 @@ export function SlidingTabs({ categories, categoryLabels, allProjectsCount, cate
   return (
     <div className="w-full max-w-4xl mx-auto px-2">
       {/* 1. Mobile view: CLI/Bootloader style menu */}
-      <div className="md:hidden space-y-3 font-mono border border-dashed border-[#E8E6E0] rounded-xl p-5 bg-[#F7F6F2]/30 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-12 h-12 bg-[#1D9E75]/5 rounded-bl-full pointer-events-none" />
+      <div className="md:hidden space-y-3 font-mono border border-dashed border-rootly-border rounded-xl p-5 bg-rootly-background/30 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-12 h-12 bg-rootly-primary/5 rounded-bl-full pointer-events-none" />
         
-        <div className="flex items-center gap-2 mb-2 text-[#888780] text-[9px] tracking-widest uppercase">
+        <div className="flex items-center gap-2 mb-2 text-rootly-muted text-[9px] tracking-widest uppercase">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
           <span>SELECT REGISTRY MODE //</span>
         </div>
@@ -53,13 +53,13 @@ export function SlidingTabs({ categories, categoryLabels, allProjectsCount, cate
           {/* All Projects Option */}
           <Link
             href="/portfolio"
-            className={`flex items-center justify-between text-xs py-1.5 border-b border-dashed border-[#E8E6E0]/50 transition-colors ${
-              !activeCategory ? 'text-[#1D9E75] font-bold' : 'text-[#888780] hover:text-[#1C1C1A]'
+            className={`flex items-center justify-between text-xs py-1.5 border-b border-dashed border-rootly-border/50 transition-colors ${
+              !activeCategory ? 'text-rootly-primary font-bold' : 'text-rootly-muted hover:text-rootly-text'
             }`}
           >
             <div className="flex items-center gap-2">
               <span className="w-4 text-center">{!activeCategory ? '>' : ' '}</span>
-              <span className={!activeCategory ? 'text-[#1D9E75]' : 'text-gray-400'}>{"[01]"}</span>
+              <span className={!activeCategory ? 'text-rootly-primary' : 'text-gray-400'}>{"[01]"}</span>
               <span>ALL PROJECTS</span>
             </div>
             <span>{`// ${allProjectsCount}`}</span>
@@ -73,13 +73,13 @@ export function SlidingTabs({ categories, categoryLabels, allProjectsCount, cate
               <Link
                 key={cat}
                 href={`/portfolio?category=${cat}`}
-                className={`flex items-center justify-between text-xs py-1.5 border-b border-dashed border-[#E8E6E0]/50 last:border-0 transition-colors ${
-                  isActive ? 'text-[#1D9E75] font-bold' : 'text-[#888780] hover:text-[#1C1C1A]'
+                className={`flex items-center justify-between text-xs py-1.5 border-b border-dashed border-rootly-border/50 last:border-0 transition-colors ${
+                  isActive ? 'text-rootly-primary font-bold' : 'text-rootly-muted hover:text-rootly-text'
                 }`}
               >
                 <div className="flex items-center gap-2">
                   <span className="w-4 text-center">{isActive ? '>' : ' '}</span>
-                  <span className={isActive ? 'text-[#1D9E75]' : 'text-gray-400'}>{`[0${idx + 2}]`}</span>
+                  <span className={isActive ? 'text-rootly-primary' : 'text-gray-400'}>{`[0${idx + 2}]`}</span>
                   <span>{categoryLabels[cat].toUpperCase()}</span>
                 </div>
                 <span>{`// ${count}`}</span>
@@ -91,10 +91,10 @@ export function SlidingTabs({ categories, categoryLabels, allProjectsCount, cate
 
       {/* 2. Desktop View: Smooth Horizontal Sliding Tabs */}
       <div className="hidden md:flex justify-center w-full">
-        <div className="relative inline-flex items-center p-1 bg-[#F7F6F2] rounded-xl border border-[#E8E6E0] gap-1 shadow-sm max-w-full font-mono text-xs">
+        <div className="relative inline-flex items-center p-1 bg-rootly-background rounded-xl border border-rootly-border gap-1 shadow-sm max-w-full font-mono text-xs">
           {/* Sliding Active Highlight */}
           <div 
-            className="absolute top-1 bottom-1 bg-white border border-[#E8E6E0] rounded-lg transition-all duration-300 ease-out pointer-events-none shadow-xs"
+            className="absolute top-1 bottom-1 bg-rootly-surface border border-rootly-border rounded-lg transition-all duration-300 ease-out pointer-events-none shadow-xs"
             style={{
               left: `${coords.left}px`,
               width: `${coords.width}px`,
@@ -107,15 +107,15 @@ export function SlidingTabs({ categories, categoryLabels, allProjectsCount, cate
             ref={(el) => { tabsRef.current[''] = el }}
             href="/portfolio"
             className={`relative z-10 flex items-center gap-1 px-3 py-2 rounded-lg uppercase tracking-wider transition-colors duration-300 ${
-              !activeCategory ? 'text-[#1C1C1A] font-bold' : 'text-[#888780] hover:text-[#1C1C1A]'
+              !activeCategory ? 'text-rootly-text font-bold' : 'text-rootly-muted hover:text-rootly-text'
             }`}
           >
-            <span className={!activeCategory ? 'text-[#1D9E75] mr-1' : 'text-transparent mr-1'}>[</span>
+            <span className={!activeCategory ? 'text-rootly-primary mr-1' : 'text-transparent mr-1'}>[</span>
             <span>All</span>
-            <span className={`text-[10px] ${!activeCategory ? 'text-[#1D9E75]' : 'text-[#888780]/70'}`}>
+            <span className={`text-[10px] ${!activeCategory ? 'text-rootly-primary' : 'text-rootly-muted/70'}`}>
               {` // ${allProjectsCount}`}
             </span>
-            <span className={!activeCategory ? 'text-[#1D9E75] ml-1' : 'text-transparent ml-1'}>]</span>
+            <span className={!activeCategory ? 'text-rootly-primary ml-1' : 'text-transparent ml-1'}>]</span>
           </Link>
 
           {/* Category Tabs */}
@@ -128,15 +128,15 @@ export function SlidingTabs({ categories, categoryLabels, allProjectsCount, cate
                 ref={(el) => { tabsRef.current[cat] = el }}
                 href={`/portfolio?category=${cat}`}
                 className={`relative z-10 flex items-center gap-1 px-3 py-2 rounded-lg uppercase tracking-wider transition-colors duration-300 ${
-                  isActive ? 'text-[#1C1C1A] font-bold' : 'text-[#888780] hover:text-[#1C1C1A]'
+                  isActive ? 'text-rootly-text font-bold' : 'text-rootly-muted hover:text-rootly-text'
                 }`}
               >
-                <span className={isActive ? 'text-[#1D9E75] mr-1' : 'text-transparent mr-1'}>[</span>
+                <span className={isActive ? 'text-rootly-primary mr-1' : 'text-transparent mr-1'}>[</span>
                 <span>{categoryLabels[cat]}</span>
-                <span className={`text-[10px] ${isActive ? 'text-[#1D9E75]' : 'text-[#888780]/70'}`}>
+                <span className={`text-[10px] ${isActive ? 'text-rootly-primary' : 'text-rootly-muted/70'}`}>
                   {` // ${count}`}
                 </span>
-                <span className={isActive ? 'text-[#1D9E75] ml-1' : 'text-transparent ml-1'}>]</span>
+                <span className={isActive ? 'text-rootly-primary ml-1' : 'text-transparent ml-1'}>]</span>
               </Link>
             )
           })}

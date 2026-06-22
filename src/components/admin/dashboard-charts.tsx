@@ -125,11 +125,11 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Visitor Analytics Chart */}
-        <Card className="lg:col-span-2 bg-white border-[#E2E2DF] border-dashed text-black rounded-lg">
-          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-dashed border-[#E2E2DF] gap-4">
+        <Card className="lg:col-span-2 bg-rootly-admin-card border-rootly-admin-border border-dashed text-rootly-text rounded-lg">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-dashed border-rootly-admin-border gap-4">
             <div>
-              <CardTitle className="text-sm font-serif text-[#1C1C1A] flex items-center gap-2 font-bold font-mono">
-                <span className="p-1 border border-dashed border-[#E2E2DF] bg-[#F7F6F2]/30 text-[#1D9E75]">
+              <CardTitle className="text-sm font-serif text-rootly-text flex items-center gap-2 font-bold font-mono">
+                <span className="p-1 border border-dashed border-rootly-admin-border bg-rootly-admin-bg/30 text-rootly-primary">
                   <Users className="w-3.5 h-3.5" />
                 </span>
                 {"[ TELEMETRY // WEB_VISITORS_ANALYTICS ]"}
@@ -138,14 +138,14 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
                 {"// TRAFFIC DATA STREAM FOR ROOTLY MAIN NODE"}
               </CardDescription>
             </div>
-            <div className="flex gap-1.5 border border-dashed border-[#E2E2DF] p-1 bg-[#F7F6F2]">
+            <div className="flex gap-1.5 border border-dashed border-rootly-admin-border p-1 bg-rootly-admin-bg">
               <button
                 onClick={() => { setVisitorPeriod('monthly'); setHoveredPoint(null); }}
                 className={cn(
                   "px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer",
                   visitorPeriod === 'monthly'
-                    ? "bg-white border border-dashed border-[#E2E2DF] text-[#1D9E75] shadow-2xs"
-                    : "text-gray-400 hover:text-black"
+                    ? "bg-rootly-admin-card border border-dashed border-rootly-admin-border text-rootly-primary shadow-2xs"
+                    : "text-gray-400 hover:text-rootly-text"
                 )}
               >
                 [ MONTHLY ]
@@ -155,8 +155,8 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
                 className={cn(
                   "px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer",
                   visitorPeriod === 'yearly'
-                    ? "bg-white border border-dashed border-[#E2E2DF] text-[#1D9E75] shadow-2xs"
-                    : "text-gray-400 hover:text-black"
+                    ? "bg-rootly-admin-card border border-dashed border-rootly-admin-border text-rootly-primary shadow-2xs"
+                    : "text-gray-400 hover:text-rootly-text"
                 )}
               >
                 [ YEARLY ]
@@ -258,24 +258,24 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
                   {/* Chart Tooltip */}
                   {hoveredPoint && (
                     <div
-                      className="absolute bg-white border border-dashed border-[#E2E2DF] shadow-xs p-2.5 text-[9px] pointer-events-none transition-all duration-75 text-black font-mono"
+                      className="absolute bg-rootly-admin-card border border-dashed border-rootly-admin-border shadow-xs p-2.5 text-[9px] pointer-events-none transition-all duration-75 text-rootly-text font-mono"
                       style={{
                         left: `${(hoveredPoint.x / width) * 100}%`,
                         top: `${(hoveredPoint.y / height) * 100 - 15}%`,
                         transform: 'translate(-50%, -100%)',
                       }}
                     >
-                      <p className="font-bold text-[#1D9E75]">{`[ READOUT // 0x${hoveredPoint.label.toUpperCase()} ]`}</p>
+                      <p className="font-bold text-rootly-primary">{`[ READOUT // 0x${hoveredPoint.label.toUpperCase()} ]`}</p>
                       <p className="text-gray-500 mt-0.5">
                         {`TRAFFIC: ${hoveredPoint.value.toLocaleString()} NODES`}
                       </p>
                     </div>
                   )}
                 </div>
-                <div className="flex items-center gap-2 mt-4 text-[10px] text-gray-500 font-mono border-t border-dashed border-[#E2E2DF]/50 pt-3">
-                  <TrendingUp className="w-3.5 h-3.5 text-[#1D9E75]" />
+                <div className="flex items-center gap-2 mt-4 text-[10px] text-gray-500 font-mono border-t border-dashed border-rootly-admin-border/50 pt-3">
+                  <TrendingUp className="w-3.5 h-3.5 text-rootly-primary" />
                   <span>{"TELEMETRY_GROWTH ==> "}</span>
-                  <span className="font-bold text-[#1D9E75]">+18.4% INCREASE</span>
+                  <span className="font-bold text-rootly-primary">+18.4% INCREASE</span>
                   <span className="text-gray-400">COMPARED TO PREVIOUS MONITORING SESSION</span>
                 </div>
               </>
@@ -284,10 +284,10 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
         </Card>
 
         {/* Project Submissions / Inquiries */}
-        <Card className="bg-white border-[#E2E2DF] border-dashed text-black rounded-lg">
-          <CardHeader className="pb-3 border-b border-dashed border-[#E2E2DF]">
-            <CardTitle className="text-sm font-serif text-[#1C1C1A] flex items-center gap-2 font-bold font-mono">
-              <span className="p-1 border border-dashed border-[#E2E2DF] bg-[#F7F6F2]/30 text-[#1D9E75]">
+        <Card className="bg-rootly-admin-card border-rootly-admin-border border-dashed text-rootly-text rounded-lg">
+          <CardHeader className="pb-3 border-b border-dashed border-rootly-admin-border">
+            <CardTitle className="text-sm font-serif text-rootly-text flex items-center gap-2 font-bold font-mono">
+              <span className="p-1 border border-dashed border-rootly-admin-border bg-rootly-admin-bg/30 text-rootly-primary">
                 <Mail className="w-3.5 h-3.5" />
               </span>
               {"[ DATA_STREAM // INQUIRY_LEADS ]"}
@@ -304,10 +304,10 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
                   <div key={index} className="space-y-1.5">
                     <div className="flex justify-between text-[10px]">
                       <span className="font-bold text-gray-700">{d.category.toUpperCase().replace(/\s+/g, '_')}</span>
-                      <span className="text-[#1D9E75] font-bold">{d.count} NODES</span>
+                      <span className="text-rootly-primary font-bold">{d.count} NODES</span>
                     </div>
                     <div 
-                      className="relative h-5 w-full bg-[#F7F6F2] border border-dashed border-[#E2E2DF]/50 overflow-hidden cursor-pointer"
+                      className="relative h-5 w-full bg-rootly-admin-bg border border-dashed border-rootly-admin-border/50 overflow-hidden cursor-pointer"
                       onMouseEnter={() => setHoveredBar({ index, label: d.category, value: d.count })}
                       onMouseLeave={() => setHoveredBar(null)}
                     >
@@ -319,7 +319,7 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
                         }}
                       />
                       {hoveredBar?.index === index && (
-                        <div className="absolute inset-0 flex items-center justify-end pr-2 bg-black/5 text-[8px] text-gray-700 font-bold">
+                        <div className="absolute inset-0 flex items-center justify-end pr-2 bg-rootly-text/5 text-[8px] text-gray-700 font-bold">
                           {`[ ${Math.round((d.count / (submissionsByCategory.reduce((sum, item) => sum + item.count, 0) || 1)) * 100)}% OF TOTAL ]`}
                         </div>
                       )}
@@ -329,12 +329,12 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
               })}
             </div>
 
-            <div className="pt-3 border-t border-dashed border-[#E2E2DF] flex items-center justify-between text-[10px]">
+            <div className="pt-3 border-t border-dashed border-rootly-admin-border flex items-center justify-between text-[10px]">
               <div className="flex items-center gap-1.5 text-gray-500">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#1D9E75]" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-rootly-primary" />
                 TOTAL_PIPELINE_NODES
               </div>
-              <span className="font-bold text-sm text-[#1C1C1A]">
+              <span className="font-bold text-sm text-rootly-text">
                 {`[ ${submissionsByCategory.reduce((sum, item) => sum + item.count, 0)} SUBMISSIONS ]`}
               </span>
             </div>
@@ -344,14 +344,14 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
 
       {/* Additional Analytical Insights */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-white border-[#E2E2DF] border-dashed text-black rounded-lg">
+        <Card className="bg-rootly-admin-card border-rootly-admin-border border-dashed text-rootly-text rounded-lg">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">CONVERSION_RATE</p>
-                <p className="text-2xl font-bold text-[#1C1C1A] mt-1.5 font-mono">{conversionRate}%</p>
+                <p className="text-2xl font-bold text-rootly-text mt-1.5 font-mono">{conversionRate}%</p>
               </div>
-              <div className="w-9 h-9 border border-dashed border-[#E2E2DF] bg-[#1D9E75]/5 flex items-center justify-center text-[#1D9E75] shrink-0">
+              <div className="w-9 h-9 border border-dashed border-rootly-admin-border bg-rootly-primary/5 flex items-center justify-center text-rootly-primary shrink-0">
                 <TrendingUp className="w-4 h-4" />
               </div>
             </div>
@@ -359,14 +359,14 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-[#E2E2DF] border-dashed text-black rounded-lg">
+        <Card className="bg-rootly-admin-card border-rootly-admin-border border-dashed text-rootly-text rounded-lg">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">EST_AVG_DEAL_SIZE</p>
-                <p className="text-2xl font-bold text-[#1C1C1A] mt-1.5 font-mono">{avgDealSize}</p>
+                <p className="text-2xl font-bold text-rootly-text mt-1.5 font-mono">{avgDealSize}</p>
               </div>
-              <div className="w-9 h-9 border border-dashed border-[#E2E2DF] bg-[#5DCAA5]/5 flex items-center justify-center text-[#5DCAA5] shrink-0">
+              <div className="w-9 h-9 border border-dashed border-rootly-admin-border bg-[#5DCAA5]/5 flex items-center justify-center text-[#5DCAA5] shrink-0">
                 <Users className="w-4 h-4" />
               </div>
             </div>
@@ -374,14 +374,14 @@ export function DashboardCharts({ leads = [] }: DashboardChartsProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-[#E2E2DF] border-dashed text-black rounded-lg">
+        <Card className="bg-rootly-admin-card border-rootly-admin-border border-dashed text-rootly-text rounded-lg">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">EST_TOTAL_PIPELINE</p>
-                <p className="text-2xl font-bold text-[#1C1C1A] mt-1.5 font-mono">{totalPipeline}</p>
+                <p className="text-2xl font-bold text-rootly-text mt-1.5 font-mono">{totalPipeline}</p>
               </div>
-              <div className="w-9 h-9 border border-dashed border-[#E2E2DF] bg-black/5 flex items-center justify-center text-black shrink-0">
+              <div className="w-9 h-9 border border-dashed border-rootly-admin-border bg-rootly-text/5 flex items-center justify-center text-rootly-text shrink-0">
                 <Briefcase className="w-4 h-4" />
               </div>
             </div>
