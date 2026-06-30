@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { Controller } from 'react-hook-form'
+import { RichTextEditor } from '@/components/ui/rich-text-editor'
 
 interface BilingualFieldProps {
   enName: string
@@ -13,7 +15,8 @@ interface BilingualFieldProps {
   register: any
   setValue: any
   watch: any
-  type?: 'input' | 'textarea'
+  control?: any
+  type?: 'input' | 'textarea' | 'rich-text'
   placeholder?: string
   disabled?: boolean
   gridClass?: string
@@ -27,6 +30,7 @@ export function BilingualField({
   register,
   setValue,
   watch,
+  control,
   type = 'input',
   placeholder,
   disabled,
@@ -88,7 +92,20 @@ export function BilingualField({
       </div>
 
       {activeLang === 'en' && (
-        type === 'textarea' ? (
+        type === 'rich-text' ? (
+          <Controller
+            name={enName}
+            control={control}
+            render={({ field }) => (
+              <RichTextEditor
+                value={field.value || ''}
+                onChange={field.onChange}
+                disabled={disabled}
+                placeholder={placeholder}
+              />
+            )}
+          />
+        ) : type === 'textarea' ? (
           <Textarea
             {...register(enName)}
             disabled={disabled}
@@ -106,7 +123,20 @@ export function BilingualField({
       )}
 
       {activeLang === 'id' && (
-        type === 'textarea' ? (
+        type === 'rich-text' ? (
+          <Controller
+            name={idName}
+            control={control}
+            render={({ field }) => (
+              <RichTextEditor
+                value={field.value || ''}
+                onChange={field.onChange}
+                disabled={disabled}
+                placeholder={placeholder ? `${placeholder} (Bahasa Indonesia)` : 'Bahasa Indonesia'}
+              />
+            )}
+          />
+        ) : type === 'textarea' ? (
           <Textarea
             {...register(idName)}
             disabled={disabled}

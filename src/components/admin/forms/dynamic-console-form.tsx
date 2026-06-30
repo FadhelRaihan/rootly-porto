@@ -15,7 +15,7 @@ import { BilingualField } from './bilingual-field'
 export interface FormField {
   name: string
   label: string
-  type: 'text' | 'number' | 'textarea' | 'switch' | 'select' | 'custom' | 'bilingual-text' | 'bilingual-textarea'
+  type: 'text' | 'number' | 'textarea' | 'switch' | 'select' | 'custom' | 'bilingual-text' | 'bilingual-textarea' | 'bilingual-rich-text'
   options?: { value: string; label: string }[]
   placeholder?: string
   disabled?: boolean
@@ -129,6 +129,22 @@ export function DynamicConsoleForm({
                         setValue={setValue}
                         watch={watch}
                         type="textarea"
+                        placeholder={field.placeholder}
+                        disabled={field.disabled}
+                        errorMessage={errors[field.name]?.message as string | undefined}
+                      />
+                    )}
+
+                    {field.type === 'bilingual-rich-text' && (
+                      <BilingualField
+                        enName={field.name}
+                        idName={`${field.name}Id`}
+                        label={field.label}
+                        register={register}
+                        setValue={setValue}
+                        watch={watch}
+                        control={control}
+                        type="rich-text"
                         placeholder={field.placeholder}
                         disabled={field.disabled}
                         errorMessage={errors[field.name]?.message as string | undefined}

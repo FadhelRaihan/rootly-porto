@@ -13,6 +13,7 @@ import { useTheme } from 'next-themes'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { useTranslation } from '@/context/language-context'
 import { localizedField } from '@/lib/lang-utils'
+import { useThemeTransition } from '@/context/theme-transition-context'
 
 const NextImage = Image as any
 
@@ -71,6 +72,7 @@ export function Navbar({ services }: NavbarProps) {
   }, [])
 
   const { language, setLanguage, t } = useTranslation()
+  const { changeLanguage } = useThemeTransition()
 
   const logoSrc = mounted && resolvedTheme === 'dark' ? '/icon/Logo-NameIconWhite.svg' : '/icon/Logo-NameIconBlack.svg'
 
@@ -94,7 +96,7 @@ export function Navbar({ services }: NavbarProps) {
             {/* Language Toggle - Desktop Only */}
             <div className="hidden md:flex items-center gap-0.5 border border-rootly-border rounded-full px-1 py-1 bg-rootly-surface/50">
               <button
-                onClick={() => setLanguage('en')}
+                onClick={() => changeLanguage('en', setLanguage)}
                 className={cn(
                   'text-[10px] font-bold font-mono uppercase tracking-wider px-2 py-0.5 rounded-full cursor-pointer transition-all',
                   language === 'en'
@@ -105,7 +107,7 @@ export function Navbar({ services }: NavbarProps) {
                 {t('lang.en')}
               </button>
               <button
-                onClick={() => setLanguage('id')}
+                onClick={() => changeLanguage('id', setLanguage)}
                 className={cn(
                   'text-[10px] font-bold font-mono uppercase tracking-wider px-2 py-0.5 rounded-full cursor-pointer transition-all',
                   language === 'id'
@@ -189,7 +191,7 @@ export function Navbar({ services }: NavbarProps) {
                     {/* Language Toggle */}
                     <div className="flex items-center gap-0.5 border border-rootly-border rounded-full px-1 py-1 bg-rootly-surface/50">
                       <button
-                        onClick={() => setLanguage('en')}
+                        onClick={() => changeLanguage('en', setLanguage)}
                         className={cn(
                           'text-[10px] font-bold font-mono uppercase tracking-wider px-2 py-0.5 rounded-full cursor-pointer transition-all',
                           language === 'en'
@@ -200,7 +202,7 @@ export function Navbar({ services }: NavbarProps) {
                         {t('lang.en')}
                       </button>
                       <button
-                        onClick={() => setLanguage('id')}
+                        onClick={() => changeLanguage('id', setLanguage)}
                         className={cn(
                           'text-[10px] font-bold font-mono uppercase tracking-wider px-2 py-0.5 rounded-full cursor-pointer transition-all',
                           language === 'id'

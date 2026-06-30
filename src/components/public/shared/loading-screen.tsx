@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { useThemeTransition } from '@/context/theme-transition-context'
 
 const LOG_STEPS = [
   { text: "[0.002] INITIALIZING ROOTLY SECURE PEER CONNECTIVITY...", duration: 200 },
@@ -13,22 +14,46 @@ const LOG_STEPS = [
   { text: "[1.000] BOOT SEQUENCE TERMINATED. DEPLOYMENT INITIALIZED.", duration: 300 }
 ]
 
-function RouteChangeListener({ onTrigger, enabled }: { onTrigger: () => void; enabled: boolean }) {
+function RouteChangeListener({ enabled }: { enabled: boolean }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const { isTransitioning, transitionType, endPageTransition, triggerPageTransition } = useThemeTransition()
+  const lastPathRef = React.useRef<string | null>(null)
+  const lastSearchRef = React.useRef<string | null>(null)
 
   useEffect(() => {
-    if (enabled) {
-      onTrigger()
+    if (!enabled) {
+      lastPathRef.current = pathname
+      lastSearchRef.current = searchParams.toString()
+      return
     }
-  }, [pathname, searchParams, onTrigger, enabled])
+
+    const currentSearch = searchParams.toString()
+    const pathChanged = lastPathRef.current !== null && lastPathRef.current !== pathname
+    const searchChanged = lastSearchRef.current !== null && lastSearchRef.current !== currentSearch
+
+    if (pathChanged || searchChanged) {
+      if (isTransitioning && transitionType === 'page') {
+        // Link-clicked transition is already active (curtain closed). Hold briefly for render and open it.
+        setTimeout(() => {
+          endPageTransition()
+        }, 150)
+      } else {
+        // Browser back/forward navigation or refresh. Run the full transition cycle.
+        triggerPageTransition()
+      }
+    }
+
+    lastPathRef.current = pathname
+    lastSearchRef.current = currentSearch
+  }, [pathname, searchParams, enabled, isTransitioning, transitionType, endPageTransition, triggerPageTransition])
 
   return null
 }
 
 export function LoadingScreen() {
   const [shouldShowFullBoot, setShouldShowFullBoot] = useState(false)
-  const [shouldShowHotReload, setShouldShowHotReload] = useState(false)
+  const { triggerPageTransition } = useThemeTransition()
 
   const [logs, setLogs] = useState<string[]>([])
   const [progress, setProgress] = useState(0)
@@ -54,75 +79,65 @@ export function LoadingScreen() {
 
     if (hasSeenLoader) {
       setIsFullBootComplete(true)
-      // Trigger hot reload on first page load if session exists (e.g., hard refresh)
-      triggerHotReload()
     } else {
       setShouldShowFullBoot(true)
       startFullBootSequence()
     }
-  }, [])
 
-  const triggerHotReload = useCallback(() => {
-    setShouldShowHotReload(true)
-    const timer = setTimeout(() => {
-      setShouldShowHotReload(false)
-    }, 400) // Hot reload duration
-    return () => clearTimeout(timer)
-  }, [])
+    function startFullBootSequence() {
+      let currentLogIndex = 0
 
-  const startFullBootSequence = () => {
-    let currentLogIndex = 0
+      // Slower progress bar to match the longer duration (approx 4.3 seconds)
+      const progressInterval = setInterval(() => {
+        setProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(progressInterval)
+            return 100
+          }
+          return prev + Math.floor(Math.random() * 15) + 5
+        })
+      }, 100)
 
-    // Slower progress bar to match the longer duration (approx 4.3 seconds)
-    const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval)
-          return 100
-        }
-        return prev + Math.floor(Math.random() * 15) + 5
-      })
-    }, 100)
+      const processNextLog = () => {
+        if (currentLogIndex < LOG_STEPS.length) {
+          const step = LOG_STEPS[currentLogIndex]
 
-    const processNextLog = () => {
-      if (currentLogIndex < LOG_STEPS.length) {
-        const step = LOG_STEPS[currentLogIndex]
-
-        setTimeout(() => {
-          setLogs(prev => [...prev, step.text])
-          currentLogIndex++
-          processNextLog()
-        }, step.duration)
-      } else {
-        setTimeout(() => {
-          setProgress(100)
           setTimeout(() => {
-            setIsFullBootComplete(true)
-            setShouldShowFullBoot(false)
-            sessionStorage.setItem('rootly_boot_sequence_complete', 'true')
+            setLogs(prev => [...prev, step.text])
+            currentLogIndex++
+            processNextLog()
+          }, step.duration)
+        } else {
+          setTimeout(() => {
+            setProgress(100)
+            setTimeout(() => {
+              setIsFullBootComplete(true)
+              setShouldShowFullBoot(false)
+              sessionStorage.setItem('rootly_boot_sequence_complete', 'true')
 
-            // Remove the dynamically injected boot styles to restore normal page styles
-            const bootStyle = document.getElementById('boot-theme-style')
-            if (bootStyle) bootStyle.remove()
+              // Remove the dynamically injected boot styles to restore normal page styles
+              const bootStyle = document.getElementById('boot-theme-style')
+              if (bootStyle) bootStyle.remove()
 
-            // Remove the block class so the app content can be displayed
-            document.documentElement.classList.remove('boot-active')
-            document.documentElement.classList.add('boot-bypassed')
-          }, 600) // Hold briefly at 100%
-        }, 400)
+              // Remove the block class so the app content can be displayed
+              document.documentElement.classList.remove('boot-active')
+              document.documentElement.classList.add('boot-bypassed')
+            }, 600) // Hold briefly at 100%
+          }, 400)
+        }
       }
+
+      // Start boot sequence
+      setTimeout(processNextLog, 400)
+
+      return () => clearInterval(progressInterval)
     }
-
-    // Start boot sequence
-    setTimeout(processNextLog, 400)
-
-    return () => clearInterval(progressInterval)
-  }
+  }, [])
 
   return (
     <>
       <Suspense fallback={null}>
-        <RouteChangeListener onTrigger={triggerHotReload} enabled={isClient && isFullBootComplete} />
+        <RouteChangeListener enabled={isClient && isFullBootComplete} />
       </Suspense>
 
       {/* FULL BOOT SEQUENCE (First Visit) */}
@@ -183,29 +198,6 @@ export function LoadingScreen() {
                   />
                 </div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* HOT RELOAD SEQUENCE (Refresh / Navigation) */}
-      <AnimatePresence>
-        {shouldShowHotReload && isFullBootComplete && (
-          <motion.div
-            key="rootly-hot-reload"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, filter: 'blur(5px)' }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[9998] bg-[#0E0E0D]/60 backdrop-blur-md flex items-center justify-center pointer-events-none"
-          >
-            <div className="flex items-center gap-3 bg-[#111110]/80 border border-[#2E2E2C] px-4 py-2 rounded-lg text-[#1D9E75] font-mono text-[10px] sm:text-xs tracking-widest uppercase shadow-2xl">
-              <motion.span
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                className="w-3 h-3 border-2 border-[#1D9E75] border-t-transparent rounded-full"
-              />
-              <span>[ SYNCING_NODE_0x2A9B... ]</span>
             </div>
           </motion.div>
         )}

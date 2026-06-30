@@ -168,10 +168,10 @@ export function ProjectForm({ initialData, onSuccess }: ProjectFormProps) {
     {
       title: 'Project Metadata Content',
       fields: [
-        { name: 'summary', label: 'Summary', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
-        { name: 'challenge', label: 'Challenge', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
-        { name: 'solution', label: 'Solution', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
-        { name: 'impact', label: 'Impact', type: 'bilingual-textarea', gridClass: 'md:col-span-2' },
+        { name: 'summary', label: 'Summary', type: 'bilingual-rich-text', gridClass: 'md:col-span-2' },
+        { name: 'challenge', label: 'Challenge', type: 'bilingual-rich-text', gridClass: 'md:col-span-2' },
+        { name: 'solution', label: 'Solution', type: 'bilingual-rich-text', gridClass: 'md:col-span-2' },
+        { name: 'impact', label: 'Impact', type: 'bilingual-rich-text', gridClass: 'md:col-span-2' },
       ],
     },
     {

@@ -5,9 +5,11 @@ import { useTheme } from 'next-themes'
 import { Sun, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useThemeTransition } from '@/context/theme-transition-context'
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const { resolvedTheme, setTheme } = useTheme()
+  const { resolvedTheme } = useTheme()
+  const { toggleTheme } = useThemeTransition()
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
@@ -32,7 +34,7 @@ export function ThemeToggle({ className }: { className?: string }) {
   return (
     <Button
       variant="ghost"
-      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      onClick={toggleTheme}
       className={cn(
         "w-10 h-10 rounded-full border border-[#E8E6E0] bg-white text-[#1C1C1A] hover:bg-[#1D9E75]/10 hover:text-[#1D9E75] hover:border-[#1D9E75]/30 dark:bg-[#1C1C1A] dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white dark:hover:border-white/20 transition-all duration-300 cursor-pointer shrink-0 flex items-center justify-center p-0 shadow-sm",
         className

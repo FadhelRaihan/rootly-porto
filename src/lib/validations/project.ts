@@ -9,7 +9,7 @@ export const projectSchema = z.object({
   clientId: z.string().optional().or(z.literal('')),
   showClient: z.boolean().default(false),
   year: z.number().int().min(2020).max(2035),
-  summary: z.string().min(10).max(150),
+  summary: z.string().min(10).max(500),
   summaryId: z.string().optional().or(z.literal('')),
   challenge: z.string().min(50),
   challengeId: z.string().optional().or(z.literal('')),

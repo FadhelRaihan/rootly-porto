@@ -6,6 +6,8 @@ import Script from 'next/script'
 import { ThemeProvider } from '@/context/theme-provider'
 import { LanguageProvider } from '@/context/language-context'
 import { getServerTranslation } from '@/lib/i18n-server'
+import { ThemeTransitionProvider } from '@/context/theme-transition-context'
+import { ThemeCurtain } from '@/components/public/shared/theme-curtain'
 
 const inriaSerif = Inria_Serif({
   subsets: ['latin'],
@@ -98,9 +100,12 @@ export default async function RootLayout({
         />
         <LanguageProvider initialLanguage={language}>
           <ThemeProvider>
-            <SmoothScroll>
-              {children}
-            </SmoothScroll>
+            <ThemeTransitionProvider>
+              <ThemeCurtain />
+              <SmoothScroll>
+                {children}
+              </SmoothScroll>
+            </ThemeTransitionProvider>
           </ThemeProvider>
         </LanguageProvider>
       </body>
