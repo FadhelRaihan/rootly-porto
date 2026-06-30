@@ -30,8 +30,10 @@ export default async function ServicesPage() {
   let techList: any[] = []
 
   try {
-    serviceList = await db.select().from(services).where(eq(services.isActive, true)).orderBy(asc(services.displayOrder))
-    techList = await db.select().from(techStacks).where(eq(techStacks.isActive, true))
+    [serviceList, techList] = await Promise.all([
+      db.select().from(services).where(eq(services.isActive, true)).orderBy(asc(services.displayOrder)),
+      db.select().from(techStacks).where(eq(techStacks.isActive, true))
+    ]);
   } catch (error) {
     console.error('Database fetch failed in ServicesPage, using fallback:', error)
   }

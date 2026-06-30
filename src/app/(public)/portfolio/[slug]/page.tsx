@@ -12,8 +12,6 @@ import { CTA } from '@/components/public/shared/cta'
 import { getServerTranslation } from '@/lib/i18n-server'
 import { localizedField, localizedCategory } from '@/lib/lang-utils'
 
-export const dynamic = 'force-dynamic'
-
 export async function generateStaticParams() {
   try {
     const allProjects = await db.select({ slug: projects.slug }).from(projects)
@@ -46,15 +44,16 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
 
   if (!project) notFound()
 
-  const techs = await db
-    .select({ techStack: techStacks })
-    .from(projectTechStacks)
-    .innerJoin(techStacks, eq(projectTechStacks.techStackId, techStacks.id))
-    .where(eq(projectTechStacks.projectId, project.id))
-
-  const testimonial = await db.query.testimonials.findFirst({
-    where: eq(testimonials.projectId, project.id),
-  })
+  const [techs, testimonial] = await Promise.all([
+    db
+      .select({ techStack: techStacks })
+      .from(projectTechStacks)
+      .innerJoin(techStacks, eq(projectTechStacks.techStackId, techStacks.id))
+      .where(eq(projectTechStacks.projectId, project.id)),
+    db.query.testimonials.findFirst({
+      where: eq(testimonials.projectId, project.id),
+    })
+  ])
 
   return (
     <div className="pt-20 bg-rootly-background min-h-screen text-rootly-text">
@@ -105,7 +104,7 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
           <AnimatedSection delay={0.1}>
             <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-16 border border-rootly-border p-1 bg-rootly-background shadow-sm">
               <div className="relative w-full h-full rounded-xl overflow-hidden">
-                <Image src={project.thumbnailUrl} alt={localizedField(language, project.title, project.titleId)} fill className="object-cover" priority />
+                <Image src={project.thumbnailUrl} alt={localizedField(language, project.title, project.titleId)} fill sizes="(max-width: 1200px) 100vw, 1200px" className="object-cover" priority />
               </div>
             </div>
           </AnimatedSection>

@@ -20,7 +20,7 @@ function ThemeTransitionEffect() {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => {
       html.classList.remove('color-transition')
-    }, 400)
+    }, 300)
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)

@@ -6,7 +6,21 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Plus, GripVertical } from 'lucide-react'
-import * as Icons from 'lucide-react'
+import { Globe, Smartphone, Building2, Palette, Code, Terminal, Server, Shield, Database, Cpu } from 'lucide-react'
+
+// Custom map to replace `import * as Icons`
+const iconMap: Record<string, React.ElementType> = {
+  Globe,
+  Smartphone,
+  Building2,
+  Palette,
+  Code,
+  Terminal,
+  Server,
+  Shield,
+  Database,
+  Cpu
+}
 import { ConsoleModal } from '@/components/admin/console-modal'
 import { ServiceForm } from '@/components/admin/forms/service-form'
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog'
@@ -45,8 +59,8 @@ export function ServicesClient({ serviceList }: ServicesClientProps) {
   const [isSavingOrder, setIsSavingOrder] = useState(false)
 
   const getServiceIcon = (iconName: string) => {
-    const IconComponent = (Icons as any)[iconName] || Icons.HelpCircle
-    return <IconComponent className="w-4 h-4" />
+    const Icon = iconMap[iconName] || Code
+    return <Icon className="w-4 h-4" />
   }
 
   const handleDeleteConfirm = async () => {

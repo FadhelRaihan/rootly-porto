@@ -76,15 +76,6 @@ export function Navbar({ services }: NavbarProps) {
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}} />
       <header
         className={cn(
           'fixed max-w-4xl top-3 left-4 right-4 md:mx-auto rounded-full z-45 transition-all duration-300 border border-rootly-border/40',
@@ -96,7 +87,7 @@ export function Navbar({ services }: NavbarProps) {
       >
         <nav className="w-full mx-auto px-3 flex items-center justify-between">
           <Link href="/" className="transition-transform hover:scale-[1.02] active:scale-[0.98]">
-            <NextImage src={logoSrc} width={105} height={105} alt="Logo" className="h-8 w-auto" />
+            <NextImage src={logoSrc} width={105} height={105} alt="Logo" priority className="h-8 w-auto" />
           </Link>
 
           <div className="flex items-center gap-2.5">

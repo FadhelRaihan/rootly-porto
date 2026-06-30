@@ -115,7 +115,7 @@
   
   /* Font variables */
   --font-serif: 'Georgia', 'Times New Roman', serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 }
 
 .dark {
@@ -235,15 +235,18 @@ body::-webkit-scrollbar-thumb,
   }
 }
 
-/* Smooth theme transition — page fade pulse */
-@keyframes theme-blend {
-  0% { opacity: 1; }
-  35% { opacity: 0.55; }
-  100% { opacity: 1; }
-}
-
-html.color-transition {
-  animation: theme-blend 0.35s ease;
+/* Smooth theme transition */
+html.color-transition,
+html.color-transition *,
+html.color-transition *::before,
+html.color-transition *::after {
+  transition: background-color 0.3s ease-out,
+              color 0.3s ease-out,
+              border-color 0.3s ease-out,
+              box-shadow 0.3s ease-out,
+              stroke 0.3s ease-out,
+              fill 0.3s ease-out !important;
+  transition-delay: 0s !important;
 }
 
 /* Boot sequence blocking CSS */
@@ -254,6 +257,54 @@ html.boot-active body {
 
 html.boot-active #app-content {
   display: none !important;
+}
+
+/* Animations from inline styles */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.marquee-wrapper::before,
+.marquee-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8rem;
+  z-index: 10;
+  pointer-events: none;
+}
+.marquee-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, var(--rootly-marquee-fade), transparent);
+}
+.marquee-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, var(--rootly-marquee-fade), transparent);
+}
+.marquee-content {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+  gap: 1.5rem;
+  will-change: transform;
+}
+.marquee-wrapper:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbar utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 html.boot-bypassed #rootly-full-boot {

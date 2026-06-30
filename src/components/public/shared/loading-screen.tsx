@@ -5,12 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 const LOG_STEPS = [
-  { text: "[0.002] INITIALIZING ROOTLY SECURE PEER CONNECTIVITY...", duration: 600 },
-  { text: "[0.104] ESTABLISHING SHIELDED DATABASE SESSION... [OK]", duration: 750 },
-  { text: "[0.218] COMPRESSING SHADERS & PACKING ASSETS (0x2A9B)...", duration: 800 },
-  { text: "[0.450] MINING SYSTEM BLOCKS & RESOLVING PROTOCOLS...", duration: 650 },
-  { text: "[0.680] VERIFYING CRYPTOGRAPHIC HANDSHAKE... SECURE.", duration: 700 },
-  { text: "[1.000] BOOT SEQUENCE TERMINATED. DEPLOYMENT INITIALIZED.", duration: 800 }
+  { text: "[0.002] INITIALIZING ROOTLY SECURE PEER CONNECTIVITY...", duration: 200 },
+  { text: "[0.104] ESTABLISHING SHIELDED DATABASE SESSION... [OK]", duration: 300 },
+  { text: "[0.218] COMPRESSING SHADERS & PACKING ASSETS (0x2A9B)...", duration: 300 },
+  { text: "[0.450] MINING SYSTEM BLOCKS & RESOLVING PROTOCOLS...", duration: 200 },
+  { text: "[0.680] VERIFYING CRYPTOGRAPHIC HANDSHAKE... SECURE.", duration: 300 },
+  { text: "[1.000] BOOT SEQUENCE TERMINATED. DEPLOYMENT INITIALIZED.", duration: 300 }
 ]
 
 function RouteChangeListener({ onTrigger, enabled }: { onTrigger: () => void; enabled: boolean }) {
@@ -29,17 +29,17 @@ function RouteChangeListener({ onTrigger, enabled }: { onTrigger: () => void; en
 export function LoadingScreen() {
   const [shouldShowFullBoot, setShouldShowFullBoot] = useState(false)
   const [shouldShowHotReload, setShouldShowHotReload] = useState(false)
-  
+
   const [logs, setLogs] = useState<string[]>([])
   const [progress, setProgress] = useState(0)
-  
+
   const [isFullBootComplete, setIsFullBootComplete] = useState(false)
   const [isClient, setIsClient] = useState(false)
 
   // Run on mount to check session and setup initial state
   useEffect(() => {
     setIsClient(true)
-    
+
     // Clean up dynamic loader-hiding style once mounted
     const hideLoaderStyle = document.getElementById('boot-hide-loader')
     if (hideLoaderStyle) hideLoaderStyle.remove()
@@ -51,7 +51,7 @@ export function LoadingScreen() {
     }
 
     const hasSeenLoader = sessionStorage.getItem('rootly_boot_sequence_complete')
-    
+
     if (hasSeenLoader) {
       setIsFullBootComplete(true)
       // Trigger hot reload on first page load if session exists (e.g., hard refresh)
@@ -66,7 +66,7 @@ export function LoadingScreen() {
     setShouldShowHotReload(true)
     const timer = setTimeout(() => {
       setShouldShowHotReload(false)
-    }, 800) // Hot reload duration
+    }, 400) // Hot reload duration
     return () => clearTimeout(timer)
   }, [])
 
@@ -80,14 +80,14 @@ export function LoadingScreen() {
           clearInterval(progressInterval)
           return 100
         }
-        return prev + Math.floor(Math.random() * 5) + 1
+        return prev + Math.floor(Math.random() * 15) + 5
       })
-    }, 150)
+    }, 100)
 
     const processNextLog = () => {
       if (currentLogIndex < LOG_STEPS.length) {
         const step = LOG_STEPS[currentLogIndex]
-        
+
         setTimeout(() => {
           setLogs(prev => [...prev, step.text])
           currentLogIndex++
@@ -100,7 +100,7 @@ export function LoadingScreen() {
             setIsFullBootComplete(true)
             setShouldShowFullBoot(false)
             sessionStorage.setItem('rootly_boot_sequence_complete', 'true')
-            
+
             // Remove the dynamically injected boot styles to restore normal page styles
             const bootStyle = document.getElementById('boot-theme-style')
             if (bootStyle) bootStyle.remove()
@@ -138,7 +138,7 @@ export function LoadingScreen() {
           >
             {/* Subtle Cyber Dotted Grid Background */}
             <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-            
+
             {/* Top Header Badge */}
             <div className="absolute top-8 left-6 sm:left-12 flex items-center gap-3 text-[10px] tracking-widest text-[#1D9E75] uppercase">
               <span className="w-2 h-2 bg-[#1D9E75] rounded-full animate-pulse shadow-[0_0_8px_#1D9E75]" />
@@ -149,7 +149,7 @@ export function LoadingScreen() {
               {/* Terminal Logs */}
               <div className="flex flex-col gap-2 text-[11px] sm:text-xs md:text-sm">
                 {logs.map((log, i) => (
-                  <motion.div 
+                  <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -200,7 +200,7 @@ export function LoadingScreen() {
             className="fixed inset-0 z-[9998] bg-[#0E0E0D]/60 backdrop-blur-md flex items-center justify-center pointer-events-none"
           >
             <div className="flex items-center gap-3 bg-[#111110]/80 border border-[#2E2E2C] px-4 py-2 rounded-lg text-[#1D9E75] font-mono text-[10px] sm:text-xs tracking-widest uppercase shadow-2xl">
-              <motion.span 
+              <motion.span
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
                 className="w-3 h-3 border-2 border-[#1D9E75] border-t-transparent rounded-full"

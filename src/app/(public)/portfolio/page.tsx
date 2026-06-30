@@ -11,6 +11,8 @@ import { CTA } from '@/components/public/shared/cta'
 import { getServerTranslation } from '@/lib/i18n-server'
 import { localizedField, localizedCategory } from '@/lib/lang-utils'
 
+export const revalidate = 3600
+
 export const metadata: Metadata = {
   title: 'Portfolio — Rootly',
   description: 'See our recent projects in web development, mobile apps, and internal systems.',
@@ -105,6 +107,8 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Pr
                           src={project.thumbnailUrl}
                           alt={localizedField(language, project.title, project.titleId)}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          priority={index < 2}
                           className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                         />
                       </div>

@@ -1,8 +1,7 @@
 import './globals.css'
 import { Metadata } from 'next'
-import { Inria_Serif } from 'next/font/google'
+import { Inria_Serif, Inter } from 'next/font/google'
 import { SmoothScroll } from '@/components/public/shared/smooth-scroll'
-import { LoadingScreen } from '@/components/public/shared/loading-screen'
 import Script from 'next/script'
 import { ThemeProvider } from '@/context/theme-provider'
 import { LanguageProvider } from '@/context/language-context'
@@ -12,6 +11,11 @@ const inriaSerif = Inria_Serif({
   subsets: ['latin'],
   weight: ['300', '400', '700'],
   variable: '--font-inria',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
 })
 
 export const metadata: Metadata = {
@@ -53,9 +57,10 @@ export default async function RootLayout({
   const { language } = await getServerTranslation()
 
   return (
-    <html lang={language} className={`${inriaSerif.variable}`} suppressHydrationWarning>
+    <html lang={language} className={`${inriaSerif.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://cloud.umami.is" />
         <meta name="google-site-verification" content="2i6J4tfcd3A-Qt-saIWFFcVZTZE4yb01njXGxGcQae0" />
         <script
           dangerouslySetInnerHTML={{
@@ -93,12 +98,9 @@ export default async function RootLayout({
         />
         <LanguageProvider initialLanguage={language}>
           <ThemeProvider>
-            <LoadingScreen />
-            <div id="app-content">
-              <SmoothScroll>
-                {children}
-              </SmoothScroll>
-            </div>
+            <SmoothScroll>
+              {children}
+            </SmoothScroll>
           </ThemeProvider>
         </LanguageProvider>
       </body>

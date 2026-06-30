@@ -37,44 +37,21 @@ export const metadata: Metadata = {
 
 async function getData() {
   try {
-    const featuredProjects = await db
-      .select()
-      .from(projects)
-      .where(eq(projects.isFeatured, true))
-      .orderBy(asc(projects.displayOrder))
-      .limit(3)
-
-    const activeServices = await db
-      .select()
-      .from(services)
-      .where(eq(services.isActive, true))
-      .orderBy(asc(services.displayOrder))
-      .limit(4)
-
-    const featuredTestimonials = await db
-      .select()
-      .from(testimonials)
-      .where(and(eq(testimonials.isFeatured, true), eq(testimonials.isActive, true)))
-      .orderBy(asc(testimonials.displayOrder))
-
-    const clientProjects = await db
-      .select({ client: projects.client })
-      .from(projects)
-      .where(eq(projects.showClient, true))
-      .orderBy(asc(projects.displayOrder))
-
-    const dbProjects = await db
-      .select({
-        id: projects.id,
-        serviceId: projects.serviceId,
-        category: projects.category,
-      })
-      .from(projects)
-
-    const activeTech = await db
-      .select()
-      .from(techStacks)
-      .where(eq(techStacks.isActive, true))
+    const [
+      featuredProjects,
+      activeServices,
+      featuredTestimonials,
+      clientProjects,
+      dbProjects,
+      activeTech
+    ] = await Promise.all([
+      db.select().from(projects).where(eq(projects.isFeatured, true)).orderBy(asc(projects.displayOrder)).limit(3),
+      db.select().from(services).where(eq(services.isActive, true)).orderBy(asc(services.displayOrder)).limit(4),
+      db.select().from(testimonials).where(and(eq(testimonials.isFeatured, true), eq(testimonials.isActive, true))).orderBy(asc(testimonials.displayOrder)),
+      db.select({ client: projects.client }).from(projects).where(eq(projects.showClient, true)).orderBy(asc(projects.displayOrder)),
+      db.select({ id: projects.id, serviceId: projects.serviceId, category: projects.category }).from(projects),
+      db.select().from(techStacks).where(eq(techStacks.isActive, true))
+    ]);
 
     return { featuredProjects, activeServices, featuredTestimonials, clientProjects, dbProjects, activeTech }
   } catch (error) {
@@ -236,47 +213,6 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <p className="text-center text-rootly-muted text-xs font-mono tracking-widest uppercase mb-8">{t('trust.label')}</p>
 
-          <style dangerouslySetInnerHTML={{
-            __html: `
-            @keyframes marquee {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
-            }
-            .marquee-wrapper {
-              position: relative;
-              width: 100%;
-              overflow: hidden;
-            }
-            .marquee-wrapper::before,
-            .marquee-wrapper::after {
-              content: '';
-              position: absolute;
-              top: 0;
-              bottom: 0;
-              width: 8rem;
-              z-index: 10;
-              pointer-events: none;
-            }
-            .marquee-wrapper::before {
-              left: 0;
-              background: linear-gradient(to right, var(--rootly-marquee-fade), transparent);
-            }
-            .marquee-wrapper::after {
-              right: 0;
-              background: linear-gradient(to left, var(--rootly-marquee-fade), transparent);
-            }
-            .marquee-content {
-              display: flex;
-              width: max-content;
-              animation: marquee 25s linear infinite;
-              gap: 1.5rem;
-              will-change: transform;
-            }
-            .marquee-wrapper:hover .marquee-content {
-              animation-play-state: paused;
-            }
-          `}} />
-
           {/* Infinite Marquee Node Flow (Desktop & Mobile Unified) */}
           <div className="marquee-wrapper">
             <div className="marquee-content py-2">
@@ -398,10 +334,12 @@ export default async function HomePage() {
                 >
                   <div className="w-6 sm:w-6.5 h-6 sm:h-6.5 rounded-md sm:rounded-lg bg-rootly-surface border border-rootly-border flex items-center justify-center overflow-hidden shrink-0 transition-colors group-hover:border-rootly-primary/35 relative">
                     {tech.iconUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img 
+                      <Image 
                         src={tech.iconUrl} 
                         alt={tech.name} 
+                        width={16}
+                        height={16}
+                        loading="lazy"
                         className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain"
                       />
                     ) : (
@@ -465,6 +403,8 @@ export default async function HomePage() {
                           src={project.thumbnailUrl}
                           alt={project.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          priority={index === 0}
                           className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                         />
                       </div>
@@ -620,6 +560,7 @@ export default async function HomePage() {
                           src={testimonial.clientPhoto} 
                           alt={testimonial.clientName} 
                           fill
+                          sizes="48px"
                           className="object-cover" 
                         />
                       </div>

@@ -1,5 +1,6 @@
 import { Navbar } from '@/components/public/layout/navbar'
 import { Footer } from '@/components/public/layout/footer'
+import { LoadingScreen } from '@/components/public/shared/loading-screen'
 import { db } from '@/db'
 import { services } from '@/db/schema'
 import { eq, asc } from 'drizzle-orm'
@@ -13,9 +14,12 @@ export default async function PublicLayout({ children }: { children: React.React
 
   return (
     <>
-      <Navbar services={activeServices} />
-      <main>{children}</main>
-      <Footer />
+      <LoadingScreen />
+      <div id="app-content">
+        <Navbar services={activeServices} />
+        <main>{children}</main>
+        <Footer />
+      </div>
     </>
   )
 }
