@@ -11,6 +11,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'nav.startProject': 'Mulai Proyek',
     'nav.menu': 'Menu',
     'nav.close': 'TUTUP',
+    'nav.copyClipboard': 'Disalin!',
+    'nav.seeMoreServices': 'Lihat Layanan Lainnya',
     // Hero Section
     'hero.title': 'Teknologi yang Berakar.',
     'hero.titlePart1': 'Membangun Ekosistem Digital. Teknologi dengan ',
@@ -135,6 +137,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'footer.portfolio': 'Portofolio',
     'footer.process': 'Proses',
     'footer.contact': 'Kontak',
+    'footer.ourStory': 'Tentang Kami',
     // Contact Form
     'contact.form.nameLabel': 'ID // NAMA *',
     'contact.form.emailLabel': 'MAIL // EMAIL *',
@@ -179,6 +182,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'nav.startProject': 'Start a Project',
     'nav.menu': 'Menu',
     'nav.close': 'CLOSE',
+    'nav.copyClipboard': 'Copied to clipboard!',
+    'nav.seeMoreServices': 'See more services',
     // Hero Section
     'hero.title': 'Technology with Roots.',
     'hero.titlePart1': 'Engineering Digital Ecosystems. Technology with ',
@@ -303,6 +308,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'footer.portfolio': 'Portfolio',
     'footer.process': 'Process',
     'footer.contact': 'Contact',
+    'footer.ourStory': 'Our Story',
     // Contact Form
     'contact.form.nameLabel': 'ID // NAME *',
     'contact.form.emailLabel': 'MAIL // EMAIL *',

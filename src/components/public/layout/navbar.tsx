@@ -100,8 +100,8 @@ export function Navbar({ services }: NavbarProps) {
           </Link>
 
           <div className="flex items-center gap-2.5">
-            {/* Language Toggle */}
-            <div className="flex items-center gap-0.5 border border-rootly-border rounded-full px-1 py-1 bg-rootly-surface/50">
+            {/* Language Toggle - Desktop Only */}
+            <div className="hidden md:flex items-center gap-0.5 border border-rootly-border rounded-full px-1 py-1 bg-rootly-surface/50">
               <button
                 onClick={() => setLanguage('en')}
                 className={cn(
@@ -126,8 +126,10 @@ export function Navbar({ services }: NavbarProps) {
               </button>
             </div>
 
-            {/* Theme Toggle Button */}
-            <ThemeToggle />
+            {/* Theme Toggle Button - Desktop Only */}
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
 
             {/* Premium Hamburger Toggle with pulsing server node */}
             <button
@@ -187,6 +189,42 @@ export function Navbar({ services }: NavbarProps) {
                   </button>
                 </div>
 
+                {/* Mobile Preferences (Language & Theme Toggle) */}
+                <div className="flex md:hidden items-center justify-between py-3 border-b border-rootly-border relative z-10">
+                  <span className="text-[9px] font-mono tracking-widest text-rootly-primary uppercase">
+                    {"[ SYS // PREFERENCES ]"}
+                  </span>
+                  <div className="flex items-center gap-2.5">
+                    {/* Language Toggle */}
+                    <div className="flex items-center gap-0.5 border border-rootly-border rounded-full px-1 py-1 bg-rootly-surface/50">
+                      <button
+                        onClick={() => setLanguage('en')}
+                        className={cn(
+                          'text-[10px] font-bold font-mono uppercase tracking-wider px-2 py-0.5 rounded-full cursor-pointer transition-all',
+                          language === 'en'
+                            ? 'bg-rootly-primary/15 text-rootly-primary border border-rootly-primary/40'
+                            : 'text-rootly-muted hover:text-rootly-text border border-transparent'
+                        )}
+                      >
+                        {t('lang.en')}
+                      </button>
+                      <button
+                        onClick={() => setLanguage('id')}
+                        className={cn(
+                          'text-[10px] font-bold font-mono uppercase tracking-wider px-2 py-0.5 rounded-full cursor-pointer transition-all',
+                          language === 'id'
+                            ? 'bg-rootly-primary/15 text-rootly-primary border border-rootly-primary/40'
+                            : 'text-rootly-muted hover:text-rootly-text border border-transparent'
+                        )}
+                      >
+                        {t('lang.id')}
+                      </button>
+                    </div>
+                    {/* Theme Toggle */}
+                    <ThemeToggle />
+                  </div>
+                </div>
+
                 {/* Grid Layout (3 Columns) */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 py-4 md:py-6 relative z-10">
                   {/* Column 1: Services */}
@@ -240,7 +278,7 @@ export function Navbar({ services }: NavbarProps) {
                                   className="flex items-center justify-between py-2 group transition-all"
                                 >
                                   <span className="font-sans text-xs font-bold text-rootly-primary hover:brightness-90 transition-colors flex items-center gap-1.5">
-                                    See more services
+                                    {t('nav.seeMoreServices')}
                                   </span>
                                   <ArrowUpRight size={15} className="text-rootly-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                                 </Link>
@@ -298,7 +336,7 @@ export function Navbar({ services }: NavbarProps) {
                           "absolute left-0 -bottom-5 text-[10px] font-sans font-bold text-rootly-primary transition-all duration-200",
                           copied ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1 pointer-events-none"
                         )}>
-                          Copied to clipboard!
+                          {t('nav.copyClipboard')}
                         </span>
                       </button>
                     </div>
@@ -323,14 +361,14 @@ export function Navbar({ services }: NavbarProps) {
                 </div>
 
                 {/* Footer Buttons */}
-                <div className="flex justify-center gap-4 pt-6 border-t border-dashed border-rootly-border relative z-10">
-                  <Link href="/about" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="outline" className="border-rootly-border text-rootly-text hover:bg-rootly-background px-6 py-5 rounded-full font-semibold transition-all shadow-sm cursor-pointer">
+                <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-6 border-t border-dashed border-rootly-border relative z-10">
+                  <Link href="/about" onClick={() => setIsMenuOpen(false)} className="w-full sm:w-auto">
+                    <Button variant="outline" className="w-full sm:w-auto border-rootly-border text-rootly-text hover:bg-rootly-background px-6 py-5 rounded-full font-semibold transition-all shadow-sm cursor-pointer">
                       {t('footer.ourStory')}
                     </Button>
                   </Link>
-                  <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
-                    <Button className="bg-rootly-primary hover:brightness-90 hover:shadow-[0_0_15px_rgba(29,158,117,0.35)] text-white px-6 py-5 rounded-full font-semibold transition-all shadow-sm hover:shadow-md cursor-pointer">
+                  <Link href="/contact" onClick={() => setIsMenuOpen(false)} className="w-full sm:w-auto">
+                    <Button className="w-full sm:w-auto bg-rootly-primary hover:brightness-90 hover:shadow-[0_0_15px_rgba(29,158,117,0.35)] text-white px-6 py-5 rounded-full font-semibold transition-all shadow-sm hover:shadow-md cursor-pointer">
                       {t('nav.startProject')}
                     </Button>
                   </Link>

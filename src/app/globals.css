@@ -245,3 +245,17 @@ body::-webkit-scrollbar-thumb,
 html.color-transition {
   animation: theme-blend 0.35s ease;
 }
+
+/* Boot sequence blocking CSS */
+html.boot-active,
+html.boot-active body {
+  background-color: #0E0E0D !important;
+}
+
+html.boot-active #app-content {
+  display: none !important;
+}
+
+html.boot-bypassed #rootly-full-boot {
+  display: none !important;
+}

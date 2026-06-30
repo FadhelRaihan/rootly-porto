@@ -108,7 +108,7 @@ export default async function HomePage() {
 
   const displayClients = clients.length > 0
     ? Array.from(new Set(clients))
-    : ['TaniKita', 'SehatConnect', 'LogistikID']
+    : ['Coming Soon', 'Coming Soon', 'Coming Soon']
 
   return (
     <div className="pt-20">

@@ -119,7 +119,7 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
                   <span className="font-mono text-[9px] text-rootly-primary tracking-widest uppercase">{"[ PHASE 01 // PROBLEM STATEMENT ]"}</span>
                 </div>
                 <h2 className="text-2xl font-serif text-rootly-text mb-4">The Challenge</h2>
-                <p className="text-rootly-muted text-sm leading-relaxed font-sans">{localizedField(language, project.challenge, project.challengeId)}</p>
+                <p className="text-rootly-muted text-sm leading-relaxed font-sans whitespace-pre-line">{localizedField(language, project.challenge, project.challengeId)}</p>
               </AnimatedSection>
 
               <AnimatedSection>
@@ -127,7 +127,7 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
                   <span className="font-mono text-[9px] text-rootly-primary tracking-widest uppercase">{"[ PHASE 02 // ARCHITECTURE IMPLEMENTATION ]"}</span>
                 </div>
                 <h2 className="text-2xl font-serif text-rootly-text mb-4">Our Solution</h2>
-                <p className="text-rootly-muted text-sm leading-relaxed font-sans">{localizedField(language, project.solution, project.solutionId)}</p>
+                <p className="text-rootly-muted text-sm leading-relaxed font-sans whitespace-pre-line">{localizedField(language, project.solution, project.solutionId)}</p>
               </AnimatedSection>
 
               <AnimatedSection>
@@ -135,7 +135,7 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
                   <span className="font-mono text-[9px] text-rootly-primary tracking-widest uppercase">{"[ PHASE 03 // METRIC RESULTS ]"}</span>
                 </div>
                 <h2 className="text-2xl font-serif text-rootly-text mb-4">The Impact</h2>
-                <p className="text-rootly-muted text-sm leading-relaxed font-sans">{localizedField(language, project.impact, project.impactId)}</p>
+                <p className="text-rootly-muted text-sm leading-relaxed font-sans whitespace-pre-line">{localizedField(language, project.impact, project.impactId)}</p>
               </AnimatedSection>
             </div>
 

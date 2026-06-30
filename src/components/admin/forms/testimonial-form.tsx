@@ -26,17 +26,21 @@ export function TestimonialForm({ initialData, onSuccess }: Props) {
 
   const form = useForm({
     resolver: zodResolver(testimonialSchema),
-    defaultValues: initialData || { 
-      clientName: '', 
-      clientRole: '', 
-      clientCompany: '', 
-      clientPhoto: '', 
-      quote: '', 
-      rating: 5, 
-      isFeatured: false, 
-      isActive: true, 
-      displayOrder: 0,
-      projectId: 'none' as any
+    defaultValues: {
+      clientName: initialData?.clientName || '',
+      clientNameId: initialData?.clientNameId || '',
+      clientRole: initialData?.clientRole || '',
+      clientRoleId: initialData?.clientRoleId || '',
+      clientCompany: initialData?.clientCompany || '',
+      clientCompanyId: initialData?.clientCompanyId || '',
+      clientPhoto: initialData?.clientPhoto || '',
+      quote: initialData?.quote || '',
+      quoteId: initialData?.quoteId || '',
+      rating: initialData?.rating || 5,
+      isFeatured: initialData?.isFeatured ?? false,
+      isActive: initialData?.isActive ?? true,
+      displayOrder: initialData?.displayOrder ?? 0,
+      projectId: (initialData?.projectId || 'none') as any,
     },
   })
 

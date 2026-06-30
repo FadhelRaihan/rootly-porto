@@ -6,8 +6,14 @@ import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes'
 function ThemeTransitionEffect() {
   const { theme, resolvedTheme } = useTheme()
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isFirstMount = React.useRef(true)
 
   React.useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false
+      return
+    }
+
     const html = document.documentElement
     html.classList.add('color-transition')
 

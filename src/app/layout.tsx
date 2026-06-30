@@ -2,6 +2,7 @@ import './globals.css'
 import { Metadata } from 'next'
 import { Inria_Serif } from 'next/font/google'
 import { SmoothScroll } from '@/components/public/shared/smooth-scroll'
+import { LoadingScreen } from '@/components/public/shared/loading-screen'
 import Script from 'next/script'
 import { ThemeProvider } from '@/context/theme-provider'
 import { LanguageProvider } from '@/context/language-context'
@@ -56,6 +57,33 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" />
         <meta name="google-site-verification" content="2i6J4tfcd3A-Qt-saIWFFcVZTZE4yb01njXGxGcQae0" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var isAdmin = window.location.pathname.startsWith('/admin');
+                var hasSeenLoader = sessionStorage.getItem('rootly_boot_sequence_complete');
+                if (!isAdmin && !hasSeenLoader) {
+                  document.documentElement.classList.add('boot-active');
+                  
+                  // Inject style immediately to force dark background & hide content before stylesheet loads
+                  var style = document.createElement('style');
+                  style.id = 'boot-theme-style';
+                  style.innerHTML = 'html, body { background-color: #0E0E0D !important; color: #F0EFEB !important; } #app-content { display: none !important; }';
+                  document.head.appendChild(style);
+                } else {
+                  document.documentElement.classList.add('boot-bypassed');
+                  
+                  // Hide the loading screen immediately to prevent any flash on returning visits
+                  var style = document.createElement('style');
+                  style.id = 'boot-hide-loader';
+                  style.innerHTML = '#rootly-full-boot { display: none !important; }';
+                  document.head.appendChild(style);
+                }
+              } catch(e) {}
+            `,
+          }}
+        />
       </head>
       <body>
         <Script 
@@ -65,9 +93,12 @@ export default async function RootLayout({
         />
         <LanguageProvider initialLanguage={language}>
           <ThemeProvider>
-            <SmoothScroll>
-              {children}
-            </SmoothScroll>
+            <LoadingScreen />
+            <div id="app-content">
+              <SmoothScroll>
+                {children}
+              </SmoothScroll>
+            </div>
           </ThemeProvider>
         </LanguageProvider>
       </body>

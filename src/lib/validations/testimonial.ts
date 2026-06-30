@@ -11,7 +11,7 @@ export const testimonialSchema = z.object({
   quote: z.string().min(20).max(1000),
   quoteId: z.string().optional().or(z.literal('')),
   rating: z.number().int().min(1).max(5).optional(),
-  projectId: z.string().optional(),
+  projectId: z.string().nullable().optional(),
   isFeatured: z.boolean().default(false),
   isActive: z.boolean().default(true),
   displayOrder: z.number().int().min(0).default(0),
