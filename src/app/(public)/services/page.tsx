@@ -13,7 +13,7 @@ export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Services — Rootly',
-  description: 'We build web applications, mobile apps, internal systems, and deliver exceptional UI/UX design.',
+  description: 'Rootly provides expert web application development, mobile app building, scalable internal systems, and premium UI/UX design tailored for business success.',
 }
 
 const iconMap: Record<string, any> = {
@@ -86,7 +86,7 @@ export default async function ServicesPage() {
                     
                     {/* Use Cases styled as parameter diagnostics */}
                     <div className="mb-6 bg-rootly-background/50 border border-rootly-border rounded-xl p-5">
-                      <h4 className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-3">{"[ TARGET APPLICATION CASES ]"}</h4>
+                      <h3 className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-3">{"[ TARGET APPLICATION CASES ]"}</h3>
                       <ul className="space-y-2">
                         {localizedFieldArr(language, service.useCases, service.useCasesId).map((useCase: string) => (
                           <li key={useCase} className="text-xs text-rootly-muted flex items-start gap-2.5">

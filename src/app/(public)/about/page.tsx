@@ -5,8 +5,8 @@ import { CTA } from '@/components/public/shared/cta'
 import { getServerTranslation } from '@/lib/i18n-server'
 
 export const metadata: Metadata = {
-  title: 'About — Rootly',
-  description: 'Rootly adalah software house yang dibangun di atas fondasi nilai: grounded, purposeful, warmth, dan long-lasting.',
+  title: 'About',
+  description: 'Rootly is a specialized software house built on the foundations of grounded values, purposeful engineering, warmth, and long-lasting digital craftsmanship.',
 }
 
 export default async function AboutPage() {

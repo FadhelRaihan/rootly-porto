@@ -4,7 +4,7 @@ export default function robots(): MetadataRoute.Robots {
   const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://rootly-self.vercel.app/').replace(/\/$/, '')
   return {
     rules: [
-      { userAgent: '*', allow: '/', disallow: '/admin/' },
+      { userAgent: '*', allow: '/', disallow: ['/admin/', '/api/'] },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
   }

@@ -5,7 +5,7 @@ import { getServerTranslation } from '@/lib/i18n-server'
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: 'Hubungi Rootly untuk memulai kolaborasi pengembangan web app, mobile app, atau sistem digital perusahaan Anda.',
+  description: 'Reach out to Rootly to start a collaboration on your next web application, mobile app, or enterprise digital system. Let\'s build something resilient together.',
 }
 
 export default async function ContactPage() {

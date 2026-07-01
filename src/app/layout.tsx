@@ -27,6 +27,14 @@ export const metadata: Metadata = {
     template: '%s | Rootly',
   },
   description: 'We build resilient digital products designed to last. Crafted with software-craftsmanship care and rooted in quality.',
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en': '/en',
+      'id': '/id',
+      'x-default': '/',
+    },
+  },
   openGraph: {
     title: 'Rootly — Software House',
     description: 'We build resilient digital products designed to last. Crafted with software-craftsmanship care and rooted in decentralized values.',
@@ -100,6 +108,48 @@ export default async function RootLayout({
         />
         <LanguageProvider initialLanguage={language}>
           <ThemeProvider>
+            {/* Structured Data / JSON-LD */}
+            <Script
+              id="json-ld-organization"
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "Organization",
+                  "name": "Rootly",
+                  "url": "https://rootly-self.vercel.app/",
+                  "logo": "https://rootly-self.vercel.app/icon/Logo-NameIconBlack.svg",
+                  "description": "Software house building resilient digital products, web apps, and mobile applications rooted in software-craftsmanship values.",
+                  "contactPoint": {
+                    "@type": "ContactPoint",
+                    "email": "hello@rootly.id",
+                    "contactType": "customer service"
+                  },
+                  "sameAs": [
+                    "https://github.com/rootly",
+                    "https://linkedin.com/company/rootly",
+                    "https://x.com/rootly"
+                  ]
+                })
+              }}
+            />
+            <Script
+              id="json-ld-website"
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "WebSite",
+                  "name": "Rootly Software House",
+                  "url": "https://rootly-self.vercel.app/",
+                  "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://rootly-self.vercel.app/portfolio?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                  }
+                })
+              }}
+            />
             <ThemeTransitionProvider>
               <ThemeCurtain />
               <SmoothScroll>

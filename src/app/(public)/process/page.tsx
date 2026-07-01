@@ -6,7 +6,7 @@ import { getServerTranslation } from '@/lib/i18n-server'
 
 export const metadata: Metadata = {
   title: 'Process — Rootly',
-  description: 'How we work: from discovery to delivery, we keep you involved every step of the way.',
+  description: 'Explore Rootly\'s transparent development process. From initial discovery and design to agile development, rigorous testing, and seamless delivery.',
 }
 
 export default async function ProcessPage() {
@@ -88,7 +88,7 @@ export default async function ProcessPage() {
                   <span className="text-sm font-mono text-rootly-primary tracking-widest block uppercase mb-1">
                     {`[ PHASE // 0${index + 1} ]`}
                   </span>
-                  <h3 className="text-3xl font-serif text-rootly-text mt-2">{t(step.titleKey)}</h3>
+                  <h2 className="text-3xl font-serif text-rootly-text mt-2">{t(step.titleKey)}</h2>
                 </div>
 
                 {/* Description & List */}

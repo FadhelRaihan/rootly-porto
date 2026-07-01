@@ -15,7 +15,7 @@ export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Portfolio — Rootly',
-  description: 'See our recent projects in web development, mobile apps, and internal systems.',
+  description: 'Explore Rootly\'s latest projects in web application development, mobile apps, and robust internal systems. See how we craft software with quality and values.',
 }
 
 export default async function PortfolioPage({ searchParams }: { searchParams: Promise<{ category?: string; page?: string }> }) {
@@ -119,9 +119,9 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Pr
                       </div>
 
                       {/* Title & Client Area */}
-                      <h3 className="text-lg sm:text-xl font-bold text-rootly-text mb-2 group-hover:text-rootly-primary transition-colors line-clamp-2">
+                      <h2 className="text-lg sm:text-xl font-bold text-rootly-text mb-2 group-hover:text-rootly-primary transition-colors line-clamp-2">
                         {localizedField(language, project.title, project.titleId)}
-                      </h3>
+                      </h2>
                       
                       <div className="flex items-center gap-2 text-rootly-muted text-xs mb-4">
                         <div className="w-5 h-5 rounded-full bg-rootly-primary/10 flex items-center justify-center text-[9px] font-bold text-rootly-primary border border-rootly-primary/20">

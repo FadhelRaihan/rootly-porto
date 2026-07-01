@@ -28,9 +28,30 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const project = await db.query.projects.findFirst({ where: eq(projects.slug, slug) })
   if (!project) return { title: 'Project Not Found' }
+  
+  const title = `${localizedField(language, project.title, project.titleId)} — Rootly`
+  const description = localizedField(language, project.summary, project.summaryId)
+  const url = `https://rootly-self.vercel.app/portfolio/${slug}`
+
   return {
-    title: `${localizedField(language, project.title, project.titleId)} — Rootly`,
-    description: localizedField(language, project.summary, project.summaryId),
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      images: [
+        {
+          url: project.thumbnailUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
   }
 }
 
@@ -57,6 +78,26 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
 
   return (
     <div className="pt-20 bg-rootly-background min-h-screen text-rootly-text">
+      {/* Dynamic JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            "name": localizedField(language, project.title, project.titleId),
+            "description": localizedField(language, project.summary, project.summaryId),
+            "image": project.thumbnailUrl,
+            "creator": {
+              "@type": "Organization",
+              "name": "Rootly"
+            },
+            "dateCreated": project.year.toString(),
+            "url": `https://rootly-self.vercel.app/portfolio/${slug}`,
+            "keywords": techs.map(t => t.techStack.name).join(", "),
+          })
+        }}
+      />
       {/* Hero */}
       <section className="py-14 relative overflow-hidden border-b border-dashed border-rootly-border">
         {/* Warm Dotted Grid Background */}
